@@ -12,7 +12,6 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;900&display=swap" rel="stylesheet">
     
     <style>
-        /* === ОСНОВНЫЕ ПЕРЕМЕННЫЕ ДИЗАЙНА === */
         :root {
             --bg-color: #f4f7f9;
             --text-color: #2c3e50;
@@ -25,6 +24,9 @@
             --pros-color: #27ae60;
             --cons-color: #e74c3c;
             --recs-color: #3498db;
+            --pros-bg: rgba(39, 174, 96, 0.07);
+            --cons-bg: rgba(231, 76, 60, 0.07);
+            --recs-bg: rgba(52, 152, 219, 0.07);
         }
 
         .dark-theme {
@@ -34,11 +36,12 @@
             --card-bg: #2a2a2a;
             --border-color: #3a3a3a;
             --shadow-color: rgba(0, 0, 0, 0.2);
-            --accent-gradient: linear-gradient(45deg, #4a90e2, #3b7ac4);
-            --level-gradient: linear-gradient(45deg, #50e3c2, #48d1b3);
-            --pros-color: #73d1a2;
-            --cons-color: #f28484;
+            --pros-color: #2ecc71;
+            --cons-color: #ff7675;
             --recs-color: #4a90e2;
+            --pros-bg: rgba(46, 204, 113, 0.1);
+            --cons-bg: rgba(255, 118, 117, 0.1);
+            --recs-bg: rgba(74, 144, 226, 0.1);
         }
 
         *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -55,13 +58,11 @@
 
         .container { max-width: 900px; margin: 0 auto; padding: 0 20px; }
 
-        /* === ХЕДЕР === */
         .header {
             background-color: var(--header-bg);
             backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
             padding: 15px 0; border-bottom: 1px solid var(--border-color);
             position: sticky; top: 0; z-index: 1000;
-            transition: background-color 0.4s, border-color 0.4s;
         }
         .header .container { display: flex; justify-content: space-between; align-items: center; }
         .logo img { height: 40px; width: auto; }
@@ -74,168 +75,173 @@
         
         .main-content { padding: 40px 0; }
         
-        /* === ИНТРО БЛОК === */
         .wiki-intro { text-align: center; margin-bottom: 50px; }
-        .intro-logo { max-width: 160px; margin-bottom: 25px; transition: filter 0.4s; }
-        .hero-title { font-size: 2.2rem; font-weight: 900; margin-bottom: 1rem; line-height: 1.3; text-transform: uppercase; }
+        .intro-logo { max-width: 160px; margin-bottom: 25px; }
+        .hero-title { font-size: 2rem; font-weight: 900; margin-bottom: 1rem; line-height: 1.3; text-transform: uppercase; }
+        
         .disclaimer {
-            background-color: #e7f3ff; color: #0c5460;
-            border: 1px solid #b8daff; border-left: 5px solid #3498db;
+            background-color: var(--pros-bg); color: var(--pros-color);
+            border: 1px solid var(--border-color); border-left: 5px solid var(--pros-color);
             padding: 15px 20px; border-radius: 8px; margin: 25px auto;
             max-width: 85%; text-align: left;
         }
-        .dark-theme .disclaimer {
-            background-color: #2c3e50; color: #ecf0f1;
-            border-color: #34495e; border-left-color: #4a90e2;
-        }
 
-        /* === ОГЛАВЛЕНИЕ === */
         .toc-container {
             background-color: var(--card-bg);
-            padding: 20px 25px;
-            border-radius: 16px;
-            margin-bottom: 40px;
-            box-shadow: 0 8px 30px -10px var(--shadow-color);
+            padding: 25px; border-radius: 16px;
+            margin-bottom: 40px; box-shadow: 0 8px 30px -10px var(--shadow-color);
         }
-        .toc-container h3 { margin-bottom: 15px; }
-        .toc-container ol { list-style: none; padding-left: 0; column-count: 2; }
-        .toc-container li a { text-decoration: none; color: var(--text-color); font-weight: 500; transition: color 0.2s; }
-        .toc-container li a:hover { color: var(--recs-color); }
-
-        /* === ФИЛЬТРЫ И ПОИСК === */
-        .filters-container {
-            background-color: var(--card-bg);
-            padding: 20px;
-            border-radius: 16px;
-            margin-bottom: 40px;
-            display: flex;
-            flex-wrap: wrap;
-            gap: 15px;
-            align-items: center;
+        .toc-toggle {
+            cursor: pointer;
+            position: relative;
+            text-align: center;
+            margin-bottom: 20px;
+            font-size: 1.4rem;
         }
-        .filters-container .search-wrapper { flex-grow: 1; min-width: 250px; }
-        #search-input {
-            width: 100%;
-            padding: 10px 15px;
-            border-radius: 8px;
-            border: 1px solid var(--border-color);
+        .toc-toggle::after {
+            content: '▼';
+            position: absolute;
+            right: 0px;
+            top: 50%;
+            transform: translateY(-50%);
+            transition: transform 0.4s ease;
+            font-size: 16px;
+            color: #95a5a6;
+        }
+        .toc-container.is-open .toc-toggle::after {
+            transform: translateY(-50%) rotate(180deg);
+        }
+        .toc-body {
+            overflow: hidden;
+        }
+        .toc-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 12px;
+        }
+        .toc-grid a {
+            text-decoration: none;
             background-color: var(--bg-color);
             color: var(--text-color);
-            font-size: 1rem;
-        }
-        .filter-group .btn-filter {
-            background: none;
+            padding: 12px;
+            border-radius: 10px;
+            text-align: center;
+            font-weight: 500;
             border: 1px solid var(--border-color);
-            padding: 8px 15px;
-            border-radius: 20px;
-            cursor: pointer;
-            color: var(--text-color);
-            transition: all 0.2s;
+            transition: all 0.2s ease-in-out;
         }
-        .filter-group .btn-filter.active {
+        .toc-grid a:hover {
             background: var(--accent-gradient);
             color: #fff;
             border-color: transparent;
+            transform: translateY(-2px);
         }
+
+        .filters-container {
+            background-color: var(--card-bg); padding: 20px;
+            border-radius: 16px; margin-bottom: 40px;
+            display: flex; flex-wrap: wrap; gap: 15px; align-items: center;
+        }
+        .filters-container .search-wrapper { flex-grow: 1; min-width: 250px; }
+        #search-input {
+            width: 100%; padding: 10px 15px; border-radius: 8px;
+            border: 1px solid var(--border-color); background-color: var(--bg-color);
+            color: var(--text-color); font-size: 1rem;
+        }
+        .filter-group { display: flex; flex-wrap: wrap; gap: 10px; }
+        .filter-group .btn-filter {
+            background: none; border: 1px solid var(--border-color);
+            padding: 8px 15px; border-radius: 20px; cursor: pointer;
+            color: var(--text-color); transition: all 0.2s;
+        }
+        .filter-group .btn-filter.active { background: var(--accent-gradient); color: #fff; border-color: transparent; }
         
-        /* === КАРТОЧКИ КУРСОВ === */
         .course-card {
-            background-color: var(--card-bg);
-            border: 1px solid var(--border-color);
-            border-radius: 16px; margin-bottom: 25px;
-            box-shadow: 0 8px 30px -10px var(--shadow-color);
-            overflow: hidden;
-            opacity: 0; transform: translateY(20px);
-            transition: transform 0.3s ease, box-shadow 0.3s ease, opacity 0.3s;
+            background-color: var(--card-bg); border: 1px solid var(--border-color);
+            border-radius: 16px; margin-bottom: 25px; box-shadow: 0 8px 30px -10px var(--shadow-color);
+            overflow: hidden; opacity: 0; transform: translateY(20px); transition: all 0.4s ease;
         }
-        .course-card.hidden { opacity: 0; transform: scale(0.95); height: 0; margin-bottom: 0; padding: 0; border: 0; overflow: hidden; pointer-events: none;}
+        .course-card.hidden { opacity: 0; transform: scale(0.95); height: 0; margin-bottom: 0; padding: 0; border: 0; pointer-events: none;}
         .course-card:hover { transform: translateY(-5px); box-shadow: 0 12px 40px -10px var(--shadow-color); }
         .course-header { padding: 25px; cursor: pointer; border-bottom: 1px solid var(--border-color); position: relative; }
         .course-header::after { content: '▼'; position: absolute; right: 25px; top: 50%; transform: translateY(-50%); transition: transform 0.4s ease; font-size: 16px; color: #95a5a6; }
         .course-card.is-open .course-header::after { transform: translateY(-50%) rotate(180deg); }
-        .course-header h2 {
-            font-size: 1.6rem; margin-top: 15px; padding-right: 35px; /* Увеличили отступ справа для стрелки */
-            line-height: 1.25; /* Улучшили межстрочный интервал */
-            word-break: break-word; /* РЕШЕНИЕ: перенос длинных слов */
-            hyphens: auto; /* Для более красивых переносов */
-        }
+        .course-header h2 { font-size: 1.6rem; margin-top: 15px; padding-right: 35px; line-height: 1.25; word-break: break-word; hyphens: auto; }
         .course-body { padding: 0 25px; overflow: hidden;}
         .course-body-content { padding: 25px 0; }
         .course-tags { display: flex; gap: 10px; flex-wrap: wrap; align-items: center;}
         .tag { padding: 6px 14px; border-radius: 16px; font-size: 0.85rem; font-weight: 600; color: #fff; text-shadow: 1px 1px 2px rgba(0,0,0,0.2); }
         .tag-purpose { background: var(--accent-gradient); }
         
-        /* === ВИЗУАЛЬНЫЙ ИНДИКАТОР УРОВНЯ === */
         .level-indicator { display: flex; gap: 4px; align-items: center; }
         .level-indicator .bar { height: 18px; width: 8px; border-radius: 3px; background-color: var(--border-color); }
         .level-indicator .bar.filled { background: var(--level-gradient); }
-        .level-indicator span { font-size: 0.85rem; font-weight: 600; margin-left: 8px; color: #95a5a6; }
+        .level-indicator .level-text { font-size: 0.85rem; font-weight: 600; margin-left: 8px; color: var(--text-color); opacity: 0.7; }
 
-        .details-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 25px; margin: 25px 0; }
+        .details-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 30px; margin: 25px 0; }
         
-        .details-grid h3 { 
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            border-bottom: 2px solid var(--border-color); 
-            padding-bottom: 8px; 
+        .details-grid h3 {
+            display: flex; align-items: center; gap: 10px;
+            padding: 10px 15px; border-radius: 10px; margin-bottom: 15px;
+            font-size: 1.1rem; border: none;
         }
-        .details-grid .icon { width: 22px; height: 22px; } /* Стили для SVG иконок */
+        .details-grid .icon { width: 24px; height: 24px; }
         
+        .pros h3 { background-color: var(--pros-bg); color: var(--pros-color); }
         .pros h3 .icon { stroke: var(--pros-color); }
+        .cons h3 { background-color: var(--cons-bg); color: var(--cons-color); }
         .cons h3 .icon { stroke: var(--cons-color); }
+        
+        .recommendations { margin-top: 0; } /* Убрали лишний отступ */
+        .recommendations h3 { background-color: var(--recs-bg); color: var(--recs-color); }
         .recommendations h3 .icon { stroke: var(--recs-color); }
         
-        .pros ul, .cons ul, .recommendations ul { list-style: none; padding-left: 0; }
+        .pros ul, .cons ul, .recommendations ul { list-style: none; padding-left: 5px; }
         
-        .recommendations { margin-top: 20px; background-color: var(--bg-color); padding: 20px; border-radius: 12px; }
+        .pros ul li, .cons ul li, .recommendations ul li { line-height: 1.7; }
+        .pros ul li { color: var(--pros-color); }
+        .cons ul li { color: var(--cons-color); }
 
-        /* === FAQ СЕКЦИЯ === */
         #faq { margin-top: 60px; }
         #faq h2 { text-align: center; margin-bottom: 30px; }
-        .faq-item { /* Стили как у .course-card */
-            background-color: var(--card-bg); border: 1px solid var(--border-color);
-            border-radius: 16px; margin-bottom: 15px; box-shadow: 0 8px 30px -10px var(--shadow-color);
-            overflow: hidden;
-        }
+        .faq-item { background-color: var(--card-bg); border: 1px solid var(--border-color); border-radius: 16px; margin-bottom: 15px; box-shadow: 0 8px 30px -10px var(--shadow-color); overflow: hidden; }
         .faq-header { font-weight: 700; font-size: 1.1rem; padding: 20px; cursor: pointer; position: relative; }
         .faq-header::after { content: '▼'; position: absolute; right: 25px; top: 50%; transform: translateY(-50%); transition: transform 0.4s ease; }
         .faq-item.is-open .faq-header::after { transform: translateY(-50%) rotate(180deg); }
         .faq-body { padding: 0 20px; overflow: hidden;}
         .faq-body-content { padding: 20px 0; border-top: 1px solid var(--border-color); }
 
-        /* === КНОПКА НАВЕРХ === */
         #to-top-btn {
-            position: fixed; bottom: 20px; right: 20px;
-            width: 50px; height: 50px;
-            background: var(--accent-gradient);
-            color: white; border: none; border-radius: 50%;
-            cursor: pointer; z-index: 1001;
-            display: flex; align-items: center; justify-content: center;
-            opacity: 0; visibility: hidden;
-            transform: translateY(20px);
-            transition: all 0.3s ease;
+            position: fixed; bottom: 20px; right: 20px; width: 50px; height: 50px;
+            background: var(--accent-gradient); color: white; border: none; border-radius: 50%;
+            cursor: pointer; z-index: 1001; display: flex; align-items: center; justify-content: center;
+            opacity: 0; visibility: hidden; transform: translateY(20px); transition: all 0.3s ease;
         }
-        #to-top-btn.visible {
-            opacity: 1; visibility: visible;
-            transform: translateY(0);
-        }
+        #to-top-btn.visible { opacity: 1; visibility: visible; transform: translateY(0); }
 
         .footer { text-align: center; padding: 20px 0; margin-top: 40px; border-top: 1px solid var(--border-color); font-size: 0.9rem; color: #7f8c8d; }
+
+        @media (max-width: 768px) {
+            .hero-title { font-size: 1.6rem; }
+            .course-header h2 { font-size: 1.3rem; }
+            .toc-grid { grid-template-columns: 1fr; }
+            .details-grid { grid-template-columns: 1fr; }
+            .filters-container { flex-direction: column; align-items: stretch; }
+        }
     </style>
 </head>
 <body>
 
     <svg width="0" height="0" style="position:absolute">
       <defs>
-        <symbol id="icon-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <polyline points="20 6 9 17 4 12"></polyline>
+        <symbol id="icon-pros" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M14 9V5a3 3 0 0 0-3-3l-4 9v11h11.28a2 2 0 0 0 2-1.7l1.38-9a2 2 0 0 0-2-2.3zM7 22H4a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h3"></path>
         </symbol>
-        <symbol id="icon-alert" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path><line x1="12" y1="9" x2="12" y2="13"></line><line x1="12" y1="17" x2="12.01" y2="17"></line>
+        <symbol id="icon-cons" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M10 15v7a3 3 0 0 0 3 3l4-9V2H5.72a2 2 0 0 0-2 1.7l-1.38 9a2 2 0 0 0 2 2.3zM7 2h3a2 2 0 0 1 2 2v7a2 2 0 0 1-2 2H7"></path>
         </symbol>
-        <symbol id="icon-flask" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M9 3h6"></path><path d="M10 9h4"></path><path d="M10 3v6l-4 11h12l-4-11V3z"></path>
+        <symbol id="icon-recs" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"></path><rect x="8" y="2" width="8" height="4" rx="1" ry="1"></rect>
         </symbol>
       </defs>
     </svg>
@@ -255,8 +261,8 @@
     <main class="main-content">
         <div class="container">
             <div class="wiki-intro">
-                <img src="https://static.tildacdn.one/tild6461-6365-4266-b662-336533346434/whitewhite_3.png" alt="Nefarma Logo" class="intro-logo">
-                <h1 class="hero-title">Каталог курсов анаболических стероидов<br>для начинающих и среднего уровня</h1>
+                 <img src="https://static.tildacdn.one/tild6461-6365-4266-b662-336533346434/whitewhite_3.png" alt="Nefarma Logo" class="intro-logo">
+                <h1 class="hero-title">Каталог курсов<br>для начинающих и среднего уровня</h1>
                 <p class="disclaimer">
                     <strong>Внимание:</strong> информация предоставлена в ознакомительных целях и не несет пропаганды применения.
                     <br>Консультации: +77780990459 (whatsapp)
@@ -264,9 +270,10 @@
             </div>
             
             <div class="toc-container">
-                <h3>Содержание</h3>
-                <ol id="toc-list">
-                    </ol>
+                <h3 class="toc-toggle">Содержание</h3>
+                <div class="toc-body">
+                    <div class="toc-grid" id="toc-list"></div>
+                </div>
             </div>
 
             <div class="filters-container">
@@ -274,8 +281,10 @@
                      <input type="text" id="search-input" placeholder="Поиск по названию или препарату...">
                 </div>
                 <div class="filter-group" data-filter-group="purpose">
-                    <button class="btn-filter" data-filter="массу">На массу</button>
-                    <button class="btn-filter" data-filter="сушку">На сушку</button>
+                    <button class="btn-filter" data-filter="масса">На массу</button>
+                    <button class="btn-filter" data-filter="сушка">На сушку</button>
+                    <button class="btn-filter" data-filter="рекомп">Рекомпозиция</button>
+                    <button class="btn-filter" data-filter="сила">Сила</button>
                 </div>
                  <div class="filter-group" data-filter-group="level">
                     <button class="btn-filter" data-filter="новичок">Новичок</button>
@@ -285,24 +294,148 @@
             </div>
             
             <div id="courses-container">
+                
                 <article class="course-card" id="course-1" data-tags="сушка рекомп новичок">
                     <div class="course-header">
                         <div class="course-tags">
                             <span class="tag tag-purpose">на сухую массу, сушку, рекомп</span>
-                            <div class="level-indicator" aria-label="Уровень: начальный">
-                                <div class="bar filled"></div><div class="bar"></div><div class="bar"></div>
-                                <span>Начальный</span>
-                            </div>
+                            <div class="level-indicator" aria-label="Уровень: начальный"><div class="bar filled"></div><div class="bar"></div><div class="bar"></div><span class="level-text">Начальный</span></div>
                         </div>
                         <h2>КУРС №1 “КОМБО, КОТОРОЕ НЕ ПОДВОДИТ”</h2>
                     </div>
                     <div class="course-body"><div class="course-body-content">
                         <p><strong>Комбинация из 2 препаратов:</strong> 1) тестостерон энантат (200-500мг/нед), 2) Мастерона энантат (300мг/нед).</p>
                         <div class="details-grid">
-                            <div class="pros"><h3><svg class="icon"><use xlink:href="#icon-check"/></svg>ПЛЮСЫ</h3><ul><li>Сухой, плотный, зернистый внешний вид.</li><li>Минимизация побочек от теста.</li></ul></div>
-                            <div class="cons"><h3><svg class="icon"><use xlink:href="#icon-alert"/></svg>МИНУСЫ</h3><ul><li>Не для массонабора.</li><li>Возможная сухость суставов.</li></ul></div>
+                            <div class="pros"><h3><svg class="icon"><use xlink:href="#icon-pros"/></svg>ПЛЮСЫ</h3><ul><li>Сухой, плотный, зернистый внешний вид.</li><li>Минимизация побочек от теста.</li><li>Контроль эстрогена без ИА.</li><li>Идеален как 'возвращение' после ПКТ.</li><li>Значительное увеличение свободного тестостерона.</li></ul></div>
+                            <div class="cons"><h3><svg class="icon"><use xlink:href="#icon-cons"/></svg>МИНУСЫ</h3><ul><li>Не для массонабора.</li><li>Возможная сухость суставов.</li><li>Андрогенные побочки (при склонности).</li></ul></div>
                         </div>
-                        <div class="recommendations"><h3><svg class="icon"><use xlink:href="#icon-flask"/></svg>Рекомендации</h3><ul><li><strong>Продолжительность:</strong> 8–12 недель</li></ul></div>
+                        <div class="recommendations"><h3><svg class="icon"><use xlink:href="#icon-recs"/></svg>Рекомендации</h3><ul><li><strong>Продолжительность:</strong> 8–12 недель</li><li><strong>Инъекции:</strong> 2 раза в неделю</li><li><strong>ПКТ:</strong> кломид</li><li><strong>Анализы:</strong> Эстрадиол каждые 2 недели.</li></ul></div>
+                    </div></div>
+                </article>
+
+                <article class="course-card" id="course-2" data-tags="сушка рекомп новичок средний">
+                    <div class="course-header">
+                        <div class="course-tags">
+                            <span class="tag tag-purpose">на сухую массу / рекомпозицию</span>
+                            <div class="level-indicator" aria-label="Уровень: начальный/средний"><div class="bar filled"></div><div class="bar filled"></div><div class="bar"></div><span class="level-text">Нач./средний</span></div>
+                        </div>
+                        <h2>КУРС №2 “КЛАССИКА НА СУХУЮ МАССУ”</h2>
+                    </div>
+                    <div class="course-body"><div class="course-body-content">
+                        <p><strong>Комбинация:</strong> тестостерон энантат (400-500мг/нед) и болденона ундесиленат (400-500мг/нед).</p>
+                        <div class="details-grid">
+                            <div class="pros"><h3><svg class="icon"><use xlink:href="#icon-pros"/></svg>ПЛЮСЫ</h3><ul><li>Рост качественной, не водянистой массы.</li><li>Эстрадиол под контролем без ИА.</li><li>Сила, выносливость, пампинг.</li><li>Улучшение аппетита и пищеварения.</li><li>Отличное самочувствие и либидо.</li></ul></div>
+                            <div class="cons"><h3><svg class="icon"><use xlink:href="#icon-cons"/></svg>МИНУСЫ</h3><ul><li>Медленный старт (результат на 4-5 неделе).</li><li>Легкий рост эритроцитов.</li><li>Не для 'супер' формы, а для 'рабоче-мясной'.</li></ul></div>
+                        </div>
+                        <div class="recommendations"><h3><svg class="icon"><use xlink:href="#icon-recs"/></svg>Рекомендации</h3><ul><li><strong>Продолжительность:</strong> 10–12 недель</li><li><strong>Инъекции:</strong> 2 раза в неделю</li><li><strong>Анализы:</strong> Эстрадиол (3, 5 нед), ОАК (8 нед).</li></ul></div>
+                    </div></div>
+                </article>
+                
+                <article class="course-card" id="course-3" data-tags="масса новичок средний">
+                    <div class="course-header">
+                        <div class="course-tags">
+                            <span class="tag tag-purpose">ДЛЯ МАССЫ</span>
+                            <div class="level-indicator" aria-label="Уровень: начальный/средний"><div class="bar filled"></div><div class="bar filled"></div><div class="bar"></div><span class="level-text">Нач./средний</span></div>
+                        </div>
+                        <h2>КУРС №3 “КЛАССИКА НА ОБЩУЮ МАССУ”</h2>
+                    </div>
+                    <div class="course-body"><div class="course-body-content">
+                        <p><strong>Комбинация:</strong> тестостерон энантат/сустанон (500мг/нед) и нандролона деканоат (250-300мг/нед).</p>
+                        <div class="details-grid">
+                            <div class="pros"><h3><svg class="icon"><use xlink:href="#icon-pros"/></svg>ПЛЮСЫ</h3><ul><li>Реальный рост массы (+5–12 кг).</li><li>Сильный анаболизм и защита суставов.</li><li>Устойчивое настроение и высокая мотивация.</li><li>Меньше эстрадиоловых побочек, чем от соло теста.</li></ul></div>
+                            <div class="cons"><h3><svg class="icon"><use xlink:href="#icon-cons"/></svg>МИНУСЫ</h3><ul><li>Возможны отеки (решается ИА).</li><li>Падение либидо (редко, решается каберголином).</li><li>Возможна гинекомастия (решается анастразолом/кломидом).</li></ul></div>
+                        </div>
+                        <div class="recommendations"><h3><svg class="icon"><use xlink:href="#icon-recs"/></svg>Рекомендации</h3><ul><li><strong>Продолжительность:</strong> 10–12 недель</li><li><strong>Инъекции:</strong> 2 раза в неделю</li><li><strong>Анализы:</strong> Эстрадиол (2, 5 нед), Пролактин (при снижении либидо).</li></ul></div>
+                    </div></div>
+                </article>
+
+                <article class="course-card" id="course-4" data-tags="сушка рекомп сила новичок">
+                    <div class="course-header">
+                        <div class="course-tags">
+                            <span class="tag tag-purpose">сушка, рекомп, сила</span>
+                            <div class="level-indicator" aria-label="Уровень: начальный"><div class="bar filled"></div><div class="bar"></div><div class="bar"></div><span class="level-text">Начальный</span></div>
+                        </div>
+                        <h2>КУРС №4 “КОРОТКИЙ КУРС - ТЕСТ ПРОПИК”</h2>
+                    </div>
+                    <div class="course-body"><div class="course-body-content">
+                        <p><strong>Препарат:</strong> тестостерон пропионат (75-100мг через день, или 50мг каждый день).</p>
+                        <div class="details-grid">
+                            <div class="pros"><h3><svg class="icon"><use xlink:href="#icon-pros"/></svg>ПЛЮСЫ</h3><ul><li>Мгновенное начало действия (3-5 дней).</li><li>Полный контроль над побочками.</li><li>Меньше задержки воды.</li><li>Подходит для сушки и лёгкой массы.</li><li>Идеальный для пробы на первый курс.</li></ul></div>
+                            <div class="cons"><h3><svg class="icon"><use xlink:href="#icon-cons"/></svg>МИНУСЫ</h3><ul><li>Частые инъекции.</li><li>Возможны шишки от укола.</li><li>Не набрать много массы.</li><li>Слабый жиросжигающий эффект.</li></ul></div>
+                        </div>
+                        <div class="recommendations"><h3><svg class="icon"><use xlink:href="#icon-recs"/></svg>Рекомендации</h3><ul><li><strong>Продолжительность:</strong> 6-8 недель</li><li><strong>Инъекции:</strong> через день/каждый день</li><li><strong>Анализы:</strong> Эстрадиол (2, 5 нед).</li></ul></div>
+                    </div></div>
+                </article>
+
+                <article class="course-card" id="course-5" data-tags="сушка рекомп сила новичок средний">
+                    <div class="course-header">
+                        <div class="course-tags">
+                            <span class="tag tag-purpose">сушка, рекомп, сила</span>
+                            <div class="level-indicator" aria-label="Уровень: начальный/средний"><div class="bar filled"></div><div class="bar filled"></div><div class="bar"></div><span class="level-text">Нач./средний</span></div>
+                        </div>
+                        <h2>КУРС №5 “КОРОТКИЙ КУРС - ПРОПИК+МАСТ”</h2>
+                    </div>
+                    <div class="course-body"><div class="course-body-content">
+                        <p><strong>Комбинация:</strong> тестостерон пропионат (75-100мг/через день) и мастерона пропионат (75-100мг/через день).</p>
+                        <div class="details-grid">
+                            <div class="pros"><h3><svg class="icon"><use xlink:href="#icon-pros"/></svg>ПЛЮСЫ</h3><ul><li>Сухая, жёсткая, плотная форма.</li><li>Никакой воды, минимум ИА.</li><li>Мощный памп, венозность, выносливость.</li><li>Либидо и стабильная энергия.</li></ul></div>
+                            <div class="cons"><h3><svg class="icon"><use xlink:href="#icon-cons"/></svg>МИНУСЫ</h3><ul><li>Частые инъекции.</li><li>Возможны шишки от укола.</li><li>Не набрать много массы.</li><li>Избыточное либидо.</li></ul></div>
+                        </div>
+                        <div class="recommendations"><h3><svg class="icon"><use xlink:href="#icon-recs"/></svg>Рекомендации</h3><ul><li><strong>Продолжительность:</strong> 6-8 недель</li><li><strong>Инъекции:</strong> через день/каждый день</li><li><strong>Анализы:</strong> Эстрадиол каждые 3-4 недели.</li></ul></div>
+                    </div></div>
+                </article>
+                
+                <article class="course-card" id="course-6" data-tags="сушка рекомп средний проф">
+                    <div class="course-header">
+                        <div class="course-tags">
+                            <span class="tag tag-purpose">сушка, рекомп</span>
+                            <div class="level-indicator" aria-label="Уровень: средний/ПРОФ"><div class="bar filled"></div><div class="bar filled"></div><div class="bar filled"></div><span class="level-text">Средний/ПРОФ</span></div>
+                        </div>
+                        <h2>КУРС №6 “КОРОТКИЙ КУРС - CUTMIX”</h2>
+                    </div>
+                    <div class="course-body"><div class="course-body-content">
+                        <p><strong>Микс (в 1 мл):</strong> Тестостерон фенилпропионат (75мг), Дростанолон пропионат (75мг), Тренболон ацетат (50мг).</p>
+                        <div class="details-grid">
+                            <div class="pros"><h3><svg class="icon"><use xlink:href="#icon-pros"/></svg>ПЛЮСЫ</h3><ul><li>Мощная 'тройка' в одном флаконе.</li><li>Без воды, только 'мясо'.</li><li>Максимальный визуальный апгрейд.</li><li>Супер-психоактивный фон и рост силы.</li></ul></div>
+                            <div class="cons"><h3><svg class="icon"><use xlink:href="#icon-cons"/></svg>МИНУСЫ</h3><ul><li>Частые инъекции.</li><li>Возможны шишки от укола.</li><li>Избыточное либидо.</li><li>Может повышаться пролактин.</li><li>Потливость.</li></ul></div>
+                        </div>
+                        <div class="recommendations"><h3><svg class="icon"><use xlink:href="#icon-recs"/></svg>Рекомендации</h3><ul><li><strong>Продолжительность:</strong> 6-8 недель</li><li><strong>Инъекции:</strong> через день/каждый день</li><li><strong>Анализы:</strong> пролактин через 2 недели.</li></ul></div>
+                    </div></div>
+                </article>
+
+                <article class="course-card" id="course-7" data-tags="масса средний проф">
+                    <div class="course-header">
+                        <div class="course-tags">
+                            <span class="tag tag-purpose">на массу</span>
+                            <div class="level-indicator" aria-label="Уровень: средний/ПРОФ"><div class="bar filled"></div><div class="bar filled"></div><div class="bar filled"></div><span class="level-text">Средний/ПРОФ</span></div>
+                        </div>
+                        <h2>КУРС №7 “ТЕСТ ДЕКА МАСТ”</h2>
+                    </div>
+                    <div class="course-body"><div class="course-body-content">
+                        <p><strong>Комбинация:</strong> Тестостерон энантат (400-500мг), Нандролон деканоат (200-300мг), Дростанолона энантат (300-400мг).</p>
+                        <div class="details-grid">
+                            <div class="pros"><h3><svg class="icon"><use xlink:href="#icon-pros"/></svg>ПЛЮСЫ</h3><ul><li>Масса с минимальной водой.</li><li>Контроль эстрадиола без ИА.</li><li>Сбалансированное состояние ЦНС и психики.</li><li>Сила и восстановление на уровне.</li></ul></div>
+                            <div class="cons"><h3><svg class="icon"><use xlink:href="#icon-cons"/></svg>МИНУСЫ</h3><ul><li>Может повышаться пролактин (решается каберголином).</li></ul></div>
+                        </div>
+                        <div class="recommendations"><h3><svg class="icon"><use xlink:href="#icon-recs"/></svg>Рекомендации</h3><ul><li><strong>Продолжительность:</strong> 10-12 недель</li><li><strong>Инъекции:</strong> 2 раза в неделю</li><li><strong>Анализы:</strong> эстрадиол и пролактин через 2 недели.</li></ul></div>
+                    </div></div>
+                </article>
+
+                <article class="course-card" id="course-8" data-tags="масса рекомп новичок">
+                    <div class="course-header">
+                        <div class="course-tags">
+                            <span class="tag tag-purpose">на массу либо рекомп</span>
+                            <div class="level-indicator" aria-label="Уровень: начальный"><div class="bar filled"></div><div class="bar"></div><div class="bar"></div><span class="level-text">Начальный</span></div>
+                        </div>
+                        <h2>КУРС №8 “ТЕСТОСТЕРОН ЭНАНТАТ СОЛО”</h2>
+                    </div>
+                    <div class="course-body"><div class="course-body-content">
+                        <p><strong>Препарат:</strong> Тестостерон энантат — 400-500 мг/нед.</p>
+                        <div class="details-grid">
+                            <div class="pros"><h3><svg class="icon"><use xlink:href="#icon-pros"/></svg>ПЛЮСЫ</h3><ul><li>+5–9 кг массы за курс.</li><li>Мощное либидо и мотивация.</li><li>Легко управлять и контролировать.</li></ul></div>
+                            <div class="cons"><h3><svg class="icon"><use xlink:href="#icon-cons"/></svg>МИНУСЫ</h3><ul><li>Задержка воды.</li><li>Гинекомастия (при предрасположенности).</li></ul></div>
+                        </div>
+                        <div class="recommendations"><h3><svg class="icon"><use xlink:href="#icon-recs"/></svg>Рекомендации</h3><ul><li><strong>Продолжительность:</strong> 10-12 недель</li><li><strong>Инъекции:</strong> 2 раза в неделю</li><li><strong>Анализы:</strong> эстрадиол на 3-5 неделе.</li></ul></div>
                     </div></div>
                 </article>
 
@@ -310,34 +443,38 @@
                     <div class="course-header">
                         <div class="course-tags">
                             <span class="tag tag-purpose">на массу, рекомп</span>
-                             <div class="level-indicator" aria-label="Уровень: средний">
-                                <div class="bar filled"></div><div class="bar filled"></div><div class="bar"></div>
-                                <span>Средний</span>
-                            </div>
+                            <div class="level-indicator" aria-label="Уровень: средний"><div class="bar filled"></div><div class="bar filled"></div><div class="bar"></div><span class="level-text">Средний</span></div>
                         </div>
-                        <h2>КУРС №9 “ТЕСТОСТЕРОН+ДЕКА+БОЛДЕНOН (ДЛИННОЕ НАЗВАНИЕ ДЛЯ ПРОВЕРКИ)”</h2>
+                        <h2>КУРС №9 “ТЕСТОСТЕРОН+ДЕКА+БОЛД”</h2>
                     </div>
                     <div class="course-body"><div class="course-body-content">
-                         <p><strong>Препараты:</strong> Тестостерон энантат (400-500мг/нед), Нандролона деканоат (250мг/нед), Болденона ундесиленат (400-500мг/нед).</p>
+                        <p><strong>Препараты:</strong> Тестостерон энантат (400-500мг/нед), Нандролона деканоат (250мг/нед), Болденона ундесиленат (400-500мг/нед).</p>
+                        <div class="details-grid">
+                            <div class="pros"><h3><svg class="icon"><use xlink:href="#icon-pros"/></svg>ПЛЮСЫ</h3><ul><li>+6–10 кг 'рабочей массы' без воды.</li><li>Восстановление и защита суставов.</li><li>Аппетит и выносливость.</li><li>БЕЗ ИА (анастразола).</li></ul></div>
+                            <div class="cons"><h3><svg class="icon"><use xlink:href="#icon-cons"/></svg>МИНУСЫ</h3><ul><li>Повышение пролактина.</li><li>Медленный разгон курса.</li></ul></div>
+                        </div>
+                        <div class="recommendations"><h3><svg class="icon"><use xlink:href="#icon-recs"/></svg>Рекомендации</h3><ul><li><strong>Продолжительность:</strong> 12-14 недель</li><li><strong>Инъекции:</strong> 2 раза в неделю</li><li><strong>Анализы:</strong> эстрадиол на 3-5 неделе.</li></ul></div>
                     </div></div>
                 </article>
-
+                
                 <article class="course-card" id="course-10" data-tags="рекомп сила средний проф">
                      <div class="course-header">
                         <div class="course-tags">
                             <span class="tag tag-purpose">рекомп, сила</span>
-                            <div class="level-indicator" aria-label="Уровень: средний/ПРОФ">
-                                <div class="bar filled"></div><div class="bar filled"></div><div class="bar filled"></div>
-                                <span>Средний/ПРОФ</span>
-                            </div>
+                            <div class="level-indicator" aria-label="Уровень: средний/ПРОФ"><div class="bar filled"></div><div class="bar filled"></div><div class="bar filled"></div><span class="level-text">Средний/ПРОФ</span></div>
                         </div>
-                        <h2>КУРС №10 “ТЕСТОСТЕРОН ПРОПИОНАТ + ТРЕНБОЛОН АЦЕТАТ (ЕЩЕ ОДНО ОЧЕНЬ ДЛИННОЕ НАЗВАНИЕ)”</h2>
+                        <h2>КУРС №10 “ТЕСТОСТЕРОН.П+ТРЕНБОЛОН АЦЕТАТ”</h2>
                     </div>
                     <div class="course-body"><div class="course-body-content">
-                         <p><strong>Препараты:</strong> Тестостерон пропионат (50-100мг/день), Тренболона ацетат (50мг/день).</p>
+                        <p><strong>Препараты:</strong> Тестостерон пропионат (50-100мг/день), Тренболона ацетат (50мг/день).</p>
+                        <div class="details-grid">
+                            <div class="pros"><h3><svg class="icon"><use xlink:href="#icon-pros"/></svg>ПЛЮСЫ</h3><ul><li>Мышцы твердеют с 5-7 дня.</li><li>Жиросжигание даже на профиците.</li><li>Жесткий памп, фокус и сила.</li><li>Доминация и уверенность.</li><li>Поднимает уровень дофамина.</li></ul></div>
+                            <div class="cons"><h3><svg class="icon"><use xlink:href="#icon-cons"/></svg>МИНУСЫ</h3><ul><li>Вспышки агрессии, бессоница.</li><li>Потливость по ночам.</li></ul></div>
+                        </div>
+                        <div class="recommendations"><h3><svg class="icon"><use xlink:href="#icon-recs"/></svg>Рекомендации</h3><ul><li><strong>Продолжительность:</strong> 6-8 недель</li><li><strong>Инъекции:</strong> 3-7 раз в неделю</li><li><strong>Анализы:</strong> пролактин (при депрессии).</li></ul></div>
                     </div></div>
                 </article>
-                </div>
+            </div>
 
             <section id="faq">
                 <h2>Часто Задаваемые Вопросы</h2>
@@ -366,13 +503,12 @@
     </footer>
     
     <button id="to-top-btn" aria-label="Вернуться наверх">
-        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19V5M5 12l7-7 7 7"/></svg>
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19V5M5 12l7-7 7 7"/></svg>
     </button>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
     <script>
         document.addEventListener('DOMContentLoaded', () => {
-            // === Базовая логика: год и тема ===
             document.getElementById('current-year').textContent = new Date().getFullYear();
             const themeSwitcher = document.querySelector('.theme-switcher');
             const body = document.body;
@@ -383,6 +519,37 @@
                 let theme = body.classList.contains('dark-theme') ? 'dark-theme' : 'light-theme';
                 localStorage.setItem('theme', theme);
             });
+
+            // TOC Collapsible Logic
+            const tocContainer = document.querySelector('.toc-container');
+            const tocToggle = document.querySelector('.toc-toggle');
+            const tocBody = document.querySelector('.toc-body');
+
+            if (tocContainer && tocToggle && tocBody) {
+                // Set initial state to collapsed
+                gsap.set(tocBody, { height: 0, autoAlpha: 0 });
+                tocToggle.style.marginBottom = '0'; 
+                
+                tocToggle.addEventListener('click', () => {
+                    const isOpen = tocContainer.classList.toggle('is-open');
+
+                    if (isOpen) {
+                        tocToggle.style.marginBottom = '20px'; // Restore margin
+                        gsap.to(tocBody, { duration: 0.5, height: 'auto', autoAlpha: 1, ease: 'power2.out' });
+                    } else {
+                        gsap.to(tocBody, {
+                            duration: 0.4,
+                            height: 0,
+                            autoAlpha: 0,
+                            ease: 'power2.in',
+                            onComplete: () => {
+                                tocToggle.style.marginBottom = '0'; // Remove margin when animation finishes
+                            }
+                        });
+                    }
+                });
+            }
+
 
             const allAccordionItems = document.querySelectorAll('.course-card, .faq-item');
             allAccordionItems.forEach(item => {
@@ -396,20 +563,13 @@
                         gsap.to(contentBody, { duration: 0.5, height: 'auto', autoAlpha: 1, ease: 'power2.out' });
                         item.classList.add('is-open');
                         
-                        // Анимация для списков "Плюсы/Минусы"
                         const listItems = item.querySelectorAll('.pros li, .cons li');
                         if(listItems.length > 0 && !item.dataset.animated) {
                              gsap.from(listItems, {
-                                duration: 0.5,
-                                opacity: 0,
-                                x: -20,
-                                stagger: 0.1,
-                                ease: "power2.out",
-                                delay: 0.2
+                                duration: 0.5, opacity: 0, x: -20, stagger: 0.1, ease: "power2.out", delay: 0.2
                             });
-                            item.dataset.animated = "true"; // Чтобы анимация не повторялась
+                            item.dataset.animated = "true";
                         }
-
                     } else {
                         gsap.to(contentBody, { duration: 0.4, height: 0, autoAlpha: 0, ease: 'power2.in' });
                         item.classList.remove('is-open');
@@ -417,51 +577,41 @@
                 });
             });
 
-            // === Анимация появления карточек при загрузке ===
             gsap.to(".course-card", {
-                duration: 0.6, opacity: 1, y: 0,
-                stagger: 0.1, ease: "power2.out", delay: 0.1
+                duration: 0.6, opacity: 1, y: 0, stagger: 0.05, ease: "power2.out", delay: 0.1
             });
             
-            // === Кнопка "Наверх" ===
             const toTopBtn = document.getElementById('to-top-btn');
             window.addEventListener('scroll', () => {
-                if (window.scrollY > 300) {
-                    toTopBtn.classList.add('visible');
-                } else {
-                    toTopBtn.classList.remove('visible');
-                }
+                if (window.scrollY > 300) toTopBtn.classList.add('visible');
+                else toTopBtn.classList.remove('visible');
             });
-            toTopBtn.addEventListener('click', () => {
+            toTopBtn.addEventListener('click', (e) => {
+                e.preventDefault();
                 window.scrollTo({ top: 0, behavior: 'smooth' });
             });
 
             const courseCards = document.querySelectorAll('.course-card');
             
-            // === Генерация Оглавления ===
             const tocList = document.getElementById('toc-list');
+            tocList.innerHTML = '';
             courseCards.forEach(card => {
                 const title = card.querySelector('h2').textContent;
                 const id = card.id;
-                const listItem = document.createElement('li');
-                listItem.innerHTML = `<a href="#${id}">${title}</a>`;
-                tocList.appendChild(listItem);
+                const link = document.createElement('a');
+                link.href = `#${id}`;
+                link.textContent = title;
+                tocList.appendChild(link);
             });
 
-            // === Логика ФИЛЬТРАЦИИ и ПОИСКА ===
             const searchInput = document.getElementById('search-input');
             const filterButtons = document.querySelectorAll('.btn-filter');
             let activeFilters = {};
 
             function applyFiltersAndSearch() {
                 const searchText = searchInput.value.toLowerCase().trim();
-
                 courseCards.forEach(card => {
-                    // Проверка по поиску
-                    const cardText = card.textContent.toLowerCase();
-                    const searchMatch = cardText.includes(searchText);
-
-                    // Проверка по фильтрам
+                    const searchMatch = card.textContent.toLowerCase().includes(searchText);
                     let filterMatch = true;
                     for (const group in activeFilters) {
                         if (activeFilters[group].size > 0) {
@@ -473,37 +623,22 @@
                             }
                         }
                     }
-
-                    // Показываем или скрываем карточку
-                    if (searchMatch && filterMatch) {
-                        card.classList.remove('hidden');
-                    } else {
-                        card.classList.add('hidden');
-                    }
+                    if (searchMatch && filterMatch) card.classList.remove('hidden');
+                    else card.classList.add('hidden');
                 });
             }
 
-            // Слушатели для кнопок фильтров
             filterButtons.forEach(button => {
                 const group = button.closest('.filter-group').dataset.filterGroup;
                 const filter = button.dataset.filter;
-
-                if (!activeFilters[group]) {
-                    activeFilters[group] = new Set();
-                }
-
+                if (!activeFilters[group]) activeFilters[group] = new Set();
                 button.addEventListener('click', () => {
                     button.classList.toggle('active');
-                    if (activeFilters[group].has(filter)) {
-                        activeFilters[group].delete(filter);
-                    } else {
-                        activeFilters[group].add(filter);
-                    }
+                    if (activeFilters[group].has(filter)) activeFilters[group].delete(filter);
+                    else activeFilters[group].add(filter);
                     applyFiltersAndSearch();
                 });
             });
-
-            // Слушатель для поля поиска
             searchInput.addEventListener('input', applyFiltersAndSearch);
         });
     </script>
