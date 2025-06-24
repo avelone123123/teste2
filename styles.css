@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 /* 1. Настройки и переменные
 ----------------------------------------------------*/
 
@@ -259,4 +260,267 @@ body.dark-mode .icon-sun { display: none; }
 .dark-theme .btn-wiki {
     background: linear-gradient(135deg, #c0c0c0, #a0a0a0);
     color: #121212;
+=======
+/* 1. Настройки и переменные
+----------------------------------------------------*/
+
+:root {
+    /* Светлая тема */
+    --bg-color: #F3F4F6;
+    --bg-secondary-color: #FFFFFF;
+    --text-color: #111827;
+    --text-secondary-color: #4B5563;
+    --accent-color: #2563EB;
+    --header-bg: rgba(243, 244, 246, 0.8);
+    --shadow-color: rgba(0, 0, 0, 0.05);
+
+    /* Цвета кнопок */
+    --whatsapp-color: #25D366;
+    --telegram-color: #0088CC;
+    --instagram-color: #E4405F;
+    --price-color: #333333;
+
+    /* Типографика и геометрия */
+    --font-family: 'Inter', sans-serif;
+    --container-width: 1100px;
+    --container-padding: 20px;
+    --border-radius: 12px;
+    --transition-speed: 0.3s;
+}
+
+body.dark-mode {
+    /* Темная тема */
+    --bg-color: #111827;
+    --bg-secondary-color: #1F2937;
+    --text-color: #F9FAFB;
+    --text-secondary-color: #9CA3AF;
+    --accent-color: #3B82F6;
+    --header-bg: rgba(17, 24, 39, 0.8);
+    --shadow-color: rgba(0, 0, 0, 0.2);
+}
+
+/* 2. Базовые стили
+----------------------------------------------------*/
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    font-family: var(--font-family);
+    line-height: 1.6;
+    transition: background-color var(--transition-speed) ease, color var(--transition-speed) ease;
+    overflow-x: hidden;
+    /* Мы можем скрыть тело до тех пор, пока JS не будет готов, чтобы избежать "прыжка" контента */
+    visibility: hidden;
+}
+
+.container {
+    max-width: var(--container-width);
+    margin: 0 auto;
+    padding: 0 var(--container-padding);
+}
+
+img {
+    max-width: 100%;
+    height: auto;
+    display: block;
+}
+
+a {
+    color: var(--accent-color);
+    text-decoration: none;
+    transition: color var(--transition-speed) ease;
+}
+
+a:hover {
+    color: var(--text-secondary-color);
+}
+
+ul {
+    list-style: none;
+}
+
+/* 3. Компоненты
+----------------------------------------------------*/
+
+/* --- Header --- */
+.header {
+    padding: 20px 0;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 100;
+    background-color: var(--header-bg);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border-bottom: 1px solid var(--shadow-color);
+}
+
+.header .container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.logo img {
+    height: 35px;
+    /* По умолчанию (для светлой темы) инвертируем цвет, делая логотип черным */
+    filter: invert(1); 
+    transition: filter 0.3s ease;
+}
+
+/* В темной теме возвращаем логотип к исходному белому цвету, убирая инверсию */
+body.dark-mode .logo img {
+   filter: invert(0);
+}
+
+.theme-switcher {
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: var(--text-color);
+    padding: 5px;
+}
+
+.theme-switcher .icon {
+    transition: transform var(--transition-speed) ease;
+}
+.theme-switcher:hover .icon {
+    transform: scale(1.1) rotate(15deg);
+}
+
+.icon-moon { display: none; }
+.icon-sun { display: block; }
+
+body.dark-mode .icon-moon { display: block; }
+body.dark-mode .icon-sun { display: none; }
+
+/* --- Hero Section --- */
+.main-content {
+    padding-top: 150px; /* Отступ от хедера */
+    padding-bottom: 50px;
+}
+
+.hero {
+    text-align: center;
+    margin-bottom: 60px;
+}
+
+.hero-title {
+    font-size: 2.5rem;
+    font-weight: 900;
+    line-height: 1.2;
+    margin-bottom: 1rem;
+    letter-spacing: -1px;
+}
+
+.hero-subtitle {
+    font-size: 1.125rem;
+    color: var(--text-secondary-color);
+    max-width: 650px;
+    margin: 0 auto;
+}
+
+/* --- CTA Links --- */
+.links-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1rem;
+}
+
+.btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1rem 1.5rem;
+    border-radius: var(--border-radius);
+    font-size: 1rem;
+    font-weight: 500;
+    color: #fff;
+    text-align: center;
+    transition: transform var(--transition-speed) ease, box-shadow var(--transition-speed) ease;
+    box-shadow: 0 4px 15px var(--shadow-color);
+}
+
+.btn:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 25px var(--shadow-color);
+    color: #fff;
+}
+
+.btn svg {
+    width: 28px;
+    height: 28px;
+    margin-right: 12px;
+    fill: #fff;
+}
+
+.btn-whatsapp { background-color: var(--whatsapp-color); }
+.btn-telegram { background-color: var(--telegram-color); }
+.btn-telegram-channel { background: linear-gradient(45deg, #0088CC, #00A0E9); }
+.btn-instagram { background: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%); }
+.btn-price { background-color: var(--price-color); }
+
+/* --- Footer --- */
+.footer {
+    padding: 40px 0;
+    text-align: center;
+    font-size: 0.9rem;
+    color: var(--text-secondary-color);
+    border-top: 1px solid var(--shadow-color);
+    margin-top: 60px;
+}
+
+.tilda-ref {
+    margin-top: 8px;
+    font-size: 0.8rem;
+}
+
+/* 4. Адаптивность
+----------------------------------------------------*/
+
+/* Планшеты */
+@media (min-width: 768px) {
+    .hero-title {
+        font-size: 3.5rem;
+    }
+    .hero-subtitle {
+        font-size: 1.25rem;
+    }
+    .links-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 1.5rem;
+    }
+}
+
+/* Десктопы */
+@media (min-width: 1024px) {
+    .main-content {
+        padding-top: 180px;
+    }
+    .hero-title {
+        font-size: 4rem;
+    }
+}
+
+/* Стиль для новой кнопки Wiki */
+.btn-wiki {
+    background: linear-gradient(135deg, #4a4a4a, #2a2a2a);
+    color: #fff;
+}
+
+.btn-wiki:hover {
+    background: linear-gradient(135deg, #5a5a5a, #3a3a3a);
+}
+
+.dark-theme .btn-wiki {
+    background: linear-gradient(135deg, #c0c0c0, #a0a0a0);
+    color: #121212;
+>>>>>>> c01c80a9d2997e56134f85cda8ebe22e08dd6e93
 }

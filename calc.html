@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 <!DOCTYPE html>
 <html lang="ru">
 <head>
@@ -831,4 +832,839 @@
     app.init();
     </script>
 </body>
+=======
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="format-detection" content="telephone=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.5, user-scalable=yes" />
+    <title>Прайс-лист и Калькулятор заказа</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="icon" type="image/x-icon" href="/favicon.ico">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
+
+    <style>
+        :root {
+            --bg-color: #1a1a1a;
+            --surface-color: #2c2c2c;
+            --primary-color: #00aaff;
+            --primary-hover-color: #0088cc;
+            --text-color: #f0f0f0;
+            --text-muted-color: #a0a0a0;
+            --border-color: #444;
+            --success-color: #28a745;
+            --highlight-bg: rgba(0, 170, 255, 0.1);
+            --font-main: 'Inter', sans-serif;
+            --border-radius: 8px;
+            --shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+            /* Цвета для меток */
+            --tag-bestseller-bg: #e74c3c;
+            --tag-new-bg: #2a527a;
+            --tag-low-stock-bg: #8c5a03;
+            --tag-text-color: #ffffff;
+        }
+
+        body {
+            font-family: var(--font-main);
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            margin: 0;
+            padding: 15px;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            font-size: 16px;
+        }
+        
+        .header {
+            background-color: var(--bg-color);
+            padding: 15px 0;
+            margin-bottom: 15px;
+        }
+
+        .header .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 15px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .logo img {
+            height: 40px;
+            display: block;
+        }
+
+        .calculator-container {
+            max-width: 1200px;
+            margin: auto;
+            animation: fadeIn 0.3s ease-in-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .filter-wrapper {
+            margin: 15px 0;
+            max-width: 100%;
+        }
+
+        .filter-input {
+            width: 100%;
+            padding: 10px;
+            background: var(--surface-color);
+            color: var(--text-color);
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            font-size: 16px;
+            box-sizing: border-box;
+        }
+
+        .filter-input::placeholder {
+            color: var(--text-muted-color);
+        }
+
+        .table-wrapper {
+            background: var(--surface-color);
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow);
+            overflow-x: auto;
+            margin-top: 15px;
+            -webkit-overflow-scrolling: touch;
+            position: relative;
+        }
+
+        .table-wrapper::before {
+            content: '← Прокручивайте таблицу →';
+            display: none;
+            position: absolute;
+            bottom: 10px;
+            right: 10px;
+            color: var(--text-muted-color);
+            font-size: 12px;
+            opacity: 0.8;
+        }
+
+        #priceTable {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 600px;
+        }
+
+        #priceTable th, #priceTable td {
+            padding: 10px 12px;
+            text-align: left;
+            border-bottom: 1px solid var(--border-color);
+            vertical-align: middle;
+            transition: background-color 0.3s ease;
+        }
+        
+        #priceTable th {
+            font-weight: 600;
+            color: var(--text-color);
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            position: sticky;
+            top: 0;
+            background: #3a3a3a;
+            z-index: 1;
+            text-align: center;
+        }
+
+        /* ИСПРАВЛЕНИЕ 2: Уменьшен размер плашки "Выгодно" */
+        .profitable-tag {
+            background-color: var(--tag-bestseller-bg);
+            color: white;
+            font-size: 7px; /* Было 9px */
+            font-weight: 600;
+            border-radius: 10em;
+            padding: 3px 8px; /* Было 4px 10px */
+            margin-left: 5px; /* Было 6px */
+            text-transform: uppercase;
+            vertical-align: middle;
+            transform: rotate(-3deg);
+            display: inline-block;
+            box-shadow: 1px 2px 4px rgba(0,0,0,0.2);
+            letter-spacing: 0.5px;
+        }
+        
+        #priceTable tbody tr:last-child td {
+            border-bottom: none;
+        }
+        
+        .col-name { 
+            width: 35%;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            align-items: flex-start;
+        }
+        
+        .tags-container {
+            display: flex;
+            gap: 6px;
+            flex-wrap: wrap;
+        }
+        
+        .tag {
+            font-size: 9px;
+            font-weight: 600;
+            padding: 3px 8px;
+            border-radius: 10px;
+            color: var(--tag-text-color);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.1), 0 1px 3px rgba(0,0,0,0.3);
+        }
+
+        .tag-bestseller { background-color: var(--tag-bestseller-bg); }
+        .tag-new { background-color: var(--tag-new-bg); }
+        .tag-low-stock { background-color: var(--tag-low-stock-bg); }
+
+        .category-row {
+            cursor: pointer;
+            user-select: none;
+        }
+
+        .category-row td {
+            background-color: rgba(0,0,0,0.2);
+            color: var(--text-color);
+            font-size: 15px;
+            font-weight: 600;
+            padding-left: 15px;
+            position: relative;
+        }
+
+        .category-row td::before {
+            content: '▼';
+            display: inline-block;
+            margin-right: 8px;
+            font-size: 12px;
+            transition: transform 0.2s ease;
+        }
+
+        .category-row.collapsed td::before {
+            transform: rotate(-90deg);
+        }
+
+        .product-row.hidden {
+            display: none;
+        }
+
+        .col-brand { width: 15%; color: var(--text-muted-color); text-align: center; }
+        .col-price { width: 12%; text-align: center; }
+        .col-qty { width: 18%; text-align: center; }
+        .col-sum { width: 15%; text-align: right; font-weight: 500; }
+
+        .price-highlight {
+            background-color: var(--highlight-bg);
+            color: var(--primary-color);
+            font-weight: 600;
+            border-radius: 4px;
+            padding: 2px 4px;
+        }
+        
+        #priceTable th.price-highlight {
+            background-color: var(--primary-color);
+            color: white;
+        }
+
+        .quantity-control {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+        }
+
+        .quantity-btn {
+            background: var(--border-color);
+            color: var(--text-color);
+            border: none;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            font-size: 20px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background-color 0.2s ease;
+        }
+
+        .quantity-btn:hover {
+            background: var(--primary-color);
+        }
+        
+        .quantity-input {
+            width: 45px;
+            height: 34px;
+            text-align: center;
+            background: var(--bg-color);
+            color: var(--text-color);
+            border: 1px solid var(--border-color);
+            border-radius: var(--border-radius);
+            font-size: 16px;
+            font-weight: 500;
+            -moz-appearance: textfield;
+        }
+        .quantity-input::-webkit-outer-spin-button,
+        .quantity-input::-webkit-inner-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+
+        .summary-panel {
+            background: var(--surface-color);
+            border-radius: var(--border-radius);
+            padding: 15px;
+            margin-top: 20px;
+            box-shadow: var(--shadow);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .totals {
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        .totals #tier {
+            font-weight: 600;
+            color: var(--primary-color);
+        }
+
+        .final-total {
+            font-size: 24px;
+            font-weight: 700;
+        }
+
+        .savings {
+            color: var(--success-color);
+            font-weight: 600;
+        }
+
+        .kaspi-info {
+            font-size: 12px;
+            color: var(--text-muted-color);
+        }
+
+        .actions {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .action-button {
+            padding: 10px 20px;
+            font-size: 15px;
+            font-weight: 600;
+            border: none;
+            border-radius: var(--border-radius);
+            cursor: pointer;
+            transition: background-color 0.2s ease;
+            text-align: center;
+            min-width: 140px;
+        }
+
+        .whatsapp-btn {
+            background-color: var(--success-color);
+            color: white;
+        }
+        .whatsapp-btn:hover { background-color: #218838; }
+
+        .copy-btn {
+            background-color: var(--primary-color);
+            color: white;
+        }
+        .copy-btn:hover { background-color: var(--primary-hover-color); }
+
+        #loader {
+            text-align: center;
+            padding: 40px;
+            font-size: 16px;
+            color: var(--text-muted-color);
+        }
+
+        .toast-notification {
+            position: fixed;
+            bottom: 15px;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: var(--primary-color);
+            color: white;
+            padding: 10px 20px;
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow);
+            z-index: 1000;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s ease;
+        }
+
+        .toast-notification.show {
+            opacity: 1;
+            visibility: visible;
+        }
+        
+        .scroll-top-btn {
+            display: none;
+            position: fixed;
+            bottom: 70px;
+            right: 15px;
+            background: var(--primary-color);
+            color: white;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            border: none;
+            font-size: 20px;
+            cursor: pointer;
+            z-index: 1000;
+            opacity: 0.8;
+            transition: opacity 0.2s ease;
+        }
+
+        .scroll-top-btn:hover {
+            opacity: 1;
+        }
+
+        .scroll-top-btn.visible {
+            display: block;
+        }
+
+        @media (max-width: 768px) {
+            body { padding: 10px; font-size: 14px; }
+            .table-wrapper::before { display: block; }
+            #priceTable th, #priceTable td { padding: 8px 10px; }
+            .quantity-input { width: 40px; height: 32px; font-size: 14px; }
+            .summary-panel { flex-direction: column; align-items: stretch; }
+            .actions { width: 100%; flex-direction: column; }
+            .action-button { width: 100%; }
+        }
+    </style>
+</head>
+<body>
+
+    <header class="header">
+        <div class="container">
+            <a href="index.html" class="logo" aria-label="На главную Nefarma">
+                <img src="https://static.tildacdn.one/tild6461-6365-4266-b662-336533346434/whitewhite_3.png" alt="Nefarma Logo">
+            </a>
+        </div>
+    </header>
+
+    <div class="calculator-container" id="app" style="display: none;">
+        <div class="filter-wrapper">
+            <input type="text" class="filter-input" id="filterInput" placeholder="Поиск по названию..." />
+        </div>
+        <div class="table-wrapper">
+            <table id="priceTable">
+                <thead>
+                    <tr>
+                        <th style="border-bottom: none;"></th>
+                        <th style="border-bottom: none;"></th>
+                        <th style="text-align: center; border-bottom: none; padding-bottom: 4px; color: var(--text-muted-color);" colspan="3">Скидка от суммы заказа</th>
+                        <th style="border-bottom: none;"></th>
+                        <th style="border-bottom: none;"></th>
+                    </tr>
+                    <tr>
+                        <th class="col-name">Препарат</th>
+                        <th class="col-brand">Бренд</th>
+                        <th class="col-price price-p1-header">до 60000 ₸</th>
+                        <th class="col-price price-p2-header">60000-100000 ₸</th>
+                        <th class="col-price price-p3-header">от 100000 ₸ <span class="profitable-tag">Выгодно</span></th>
+                        <th class="col-qty">Количество</th>
+                        <th class="col-sum">Сумма</th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+        </div>
+        <div class="summary-panel">
+            <div class="totals">
+                <div>Применяется ценовой уровень: <span id="tier">до 60000 ₸</span></div>
+                <div><span class="savings" id="savings">Экономия: 0 ₸</span></div>
+                <div class="kaspi-info" id="kaspi"></div>
+                <div>Итоговая сумма: <span class="final-total" id="total">0 ₸</span></div>
+            </div>
+            <div class="actions">
+                <button class="action-button copy-btn" onclick="app.copyOrderLink()">Скопировать заказ</button>
+                <button class="action-button whatsapp-btn" onclick="app.sendToWhatsApp()">Заказ в WhatsApp</button>
+            </div>
+        </div>
+    </div>
+    <div id="loader">Загрузка прайс-листа...</div>
+    <div id="toast" class="toast-notification"></div>
+    <button class="scroll-top-btn" id="scrollTopBtn" title="Наверх">↑</button>
+    <script>
+    const app = {
+        config: {
+            csvPath: "https://docs.google.com/spreadsheets/d/e/2PACX-1vRDyEkJ9XNV89qqGQhPsl4Fx8DC9tMyRpAt6SKX0IZKHmr8-a6qgLx6B0iCwnZu4wMx7O3qYMCnueFh/pub?gid=291189384&single=true&output=csv",
+            whatsAppPhone: "77780990459",
+            priceTiers: {
+                tier1: { limit: 0, label: "до 60000 ₸" },
+                tier2: { limit: 60000, label: "60000-100000 ₸" },
+                tier3: { limit: 100000, label: "от 100000 ₸" },
+            },
+            kaspiMultiplier: 1.1
+        },
+        state: {
+            products: [],
+            quantities: {},
+            filter: '',
+            collapsedCategories: new Set(),
+        },
+        elements: {
+            appContainer: document.getElementById('app'),
+            loader: document.getElementById('loader'),
+            tableBody: document.querySelector("#priceTable tbody"),
+            totalEl: document.getElementById("total"),
+            kaspiEl: document.getElementById("kaspi"),
+            savingsEl: document.getElementById("savings"),
+            tierEl: document.getElementById("tier"),
+            toastEl: document.getElementById("toast"),
+            filterInput: document.getElementById("filterInput"),
+            scrollTopBtn: document.getElementById("scrollTopBtn"),
+        },
+        init() {
+            for (const key in this) {
+                if (typeof this[key] === 'function' && key !== 'init') {
+                    this[key] = this[key].bind(this);
+                }
+            }
+            document.addEventListener("DOMContentLoaded", this.loadData);
+            this.elements.filterInput.addEventListener('input', this.handleFilterInput);
+            this.elements.tableBody.addEventListener('click', this.handleCategoryClick);
+            window.addEventListener('scroll', this.handleScroll);
+            this.elements.scrollTopBtn.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
+        },
+        async loadData() {
+            try {
+                const response = await fetch(this.config.csvPath, { cache: "no-store" });
+                if (!response.ok) throw new Error(`Ошибка HTTP: ${response.status}`);
+                const csvText = await response.text();
+                if (!csvText.trim()) throw new Error("CSV-файл пустой");
+
+                Papa.parse(csvText, {
+                    header: true,
+                    skipEmptyLines: true,
+                    complete: (results) => {
+                        this.state.products = results.data
+                            .filter(row => row.Название && row["Цена1"])
+                            .map(row => ({
+                                id: row.ID,
+                                name: row.Название?.trim(),
+                                brand: row.Бренд?.trim(),
+                                prices: {
+                                    p1: parseFloat(row["Цена1"]) || 0,
+                                    p2: parseFloat(row["Цена2"]) || 0,
+                                    p3: parseFloat(row["Цена3"]) || 0,
+                                },
+                                category: row.Категория?.trim(),
+                                isBestseller: String(row.бестселлер || '').trim().toLowerCase() === 'да',
+                                isNew: String(row.новинка || '').trim().toLowerCase() === 'да',
+                                isLowStock: String(row.мало || '').trim().toLowerCase() === 'да',
+                            }));
+                        if (this.state.products.length === 0) throw new Error("Нет валидных данных в CSV");
+                        
+                        // ===== ИЗМЕНЕНИЕ 1: СНАЧАЛА ПРОВЕРЯЕМ ССЫЛКУ, ПОТОМ ЗАГРУЖАЕМ ОСТАЛЬНОЕ =====
+                        this.restoreStateFromUrl();
+                        this.renderTable();
+                        this.restoreState();
+                        this.calculate();
+                        this.elements.loader.style.display = 'none';
+                        this.elements.appContainer.style.display = 'block';
+                    },
+                    error: (err) => { throw new Error("Ошибка обработки CSV: " + err); }
+                });
+            } catch (error) {
+                this.elements.loader.textContent = `Не удалось загрузить прайс-лист. Проверьте ссылку и структуру CSV файла. Ошибка: ${error.message}`;
+                console.error("Ошибка загрузки CSV:", error);
+            }
+        },
+        renderTable() {
+            let currentCategory = null;
+            const fragment = document.createDocumentFragment();
+            const filter = this.state.filter.toLowerCase();
+
+            this.state.products.forEach(item => {
+                if (filter && !item.name.toLowerCase().includes(filter)) return;
+
+                if (item.category && item.category !== currentCategory) {
+                    currentCategory = item.category;
+                    const row = document.createElement("tr");
+                    row.className = 'category-row';
+                    if (this.state.collapsedCategories.has(currentCategory)) row.classList.add('collapsed');
+                    row.dataset.category = currentCategory;
+                    row.innerHTML = `<td colspan="7">${item.category}</td>`;
+                    fragment.appendChild(row);
+                }
+                const row = document.createElement("tr");
+                row.className = 'product-row';
+                row.dataset.id = item.id;
+                row.dataset.category = currentCategory;
+                if (this.state.collapsedCategories.has(currentCategory)) row.classList.add('hidden');
+                
+                const tagsHtml = `
+                    <div class="tags-container">
+                        ${item.isBestseller ? '<span class="tag tag-bestseller">🔥 HOT</span>' : ''}
+                        ${item.isNew ? '<span class="tag tag-new">✨ new</span>' : ''}
+                        ${item.isLowStock ? '<span class="tag tag-low-stock">⏳ мало</span>' : ''}
+                    </div>
+                `;
+
+                row.innerHTML = `
+                    <td class="col-name">
+                        <span>${item.name}</span>
+                        ${tagsHtml}
+                    </td>
+                    <td class="col-brand">${item.brand}</td>
+                    <td class="col-price price-p1">${item.prices.p1.toLocaleString('ru-RU')}</td>
+                    <td class="col-price price-p2">${item.prices.p2.toLocaleString('ru-RU')}</td>
+                    <td class="col-price price-p3">${item.prices.p3.toLocaleString('ru-RU')}</td>
+                    <td class="col-qty">
+                        <div class="quantity-control">
+                            <button class="quantity-btn" data-action="decrease" data-id="${item.id}">-</button>
+                            <input type="number" class="quantity-input" min="0" max="99" value="0" data-id="${item.id}" />
+                            <button class="quantity-btn" data-action="increase" data-id="${item.id}">+</button>
+                        </div>
+                    </td>
+                    <td class="col-sum sum">0 ₸</td>
+                `;
+                fragment.appendChild(row);
+            });
+            this.elements.tableBody.innerHTML = '';
+            this.elements.tableBody.appendChild(fragment);
+            this.elements.tableBody.addEventListener('click', this.handleQuantityButtonClick);
+            this.elements.tableBody.addEventListener('input', this.handleQuantityInput);
+            this.restoreQuantities();
+        },
+        handleQuantityButtonClick(event) {
+            const button = event.target.closest('.quantity-btn');
+            if (!button) return;
+            const { action, id } = button.dataset;
+            const input = this.elements.tableBody.querySelector(`input[data-id='${id}']`);
+            if (!input) return;
+            let value = parseInt(input.value, 10) || 0;
+            const max = parseInt(input.max, 10) || 99;
+            if (action === 'increase' && value < max) {
+                value++;
+            } else if (action === 'decrease' && value > 0) {
+                value--;
+            }
+            input.value = value;
+            this.updateAndSave();
+        },
+        handleQuantityInput(event) {
+            const input = event.target;
+            if (!input.classList.contains('quantity-input')) return;
+            const max = parseInt(input.max, 10) || 99;
+            let value = parseInt(input.value, 10) || 0;
+            if (value > max) value = max;
+            input.value = Math.max(0, Math.floor(value));
+            this.updateAndSave();
+        },
+        handleCategoryClick(event) {
+            const row = event.target.closest('.category-row');
+            if (!row) return;
+            const category = row.dataset.category;
+            if (this.state.collapsedCategories.has(category)) {
+                this.state.collapsedCategories.delete(category);
+                row.classList.remove('collapsed');
+                document.querySelectorAll(`.product-row[data-category="${category}"]`).forEach(r => r.classList.remove('hidden'));
+            } else {
+                this.state.collapsedCategories.add(category);
+                row.classList.add('collapsed');
+                document.querySelectorAll(`.product-row[data-category="${category}"]`).forEach(r => r.classList.add('hidden'));
+            }
+        },
+        handleFilterInput(event) {
+            this.state.filter = event.target.value;
+            this.renderTable();
+        },
+        handleScroll() {
+            const btn = this.elements.scrollTopBtn;
+            if (window.scrollY > 300) {
+                btn.classList.add('visible');
+            } else {
+                btn.classList.remove('visible');
+            }
+        },
+        updateAndSave() {
+            this.calculate();
+            this.saveState();
+        },
+        calculate() {
+            const inputs = this.elements.tableBody.querySelectorAll('.quantity-input');
+            let baseTotal = 0;
+            inputs.forEach(input => {
+                const id = input.dataset.id;
+                const product = this.state.products.find(p => p.id === id);
+                if (product) {
+                    baseTotal += product.prices.p1 * (parseInt(input.value, 10) || 0);
+                }
+            });
+            const { limit: l3, label: label3 } = this.config.priceTiers.tier3;
+            const { limit: l2, label: label2 } = this.config.priceTiers.tier2;
+            const { label: label1 } = this.config.priceTiers.tier1;
+            const tier = baseTotal >= l3 ? 3 : baseTotal >= l2 ? 2 : 1;
+            this.elements.tierEl.textContent = tier === 3 ? label3 : tier === 2 ? label2 : label1;
+            
+            document.querySelectorAll('.price-highlight').forEach(el => el.classList.remove('price-highlight'));
+            document.querySelectorAll('[class*="price-p-header"]').forEach(el => el.classList.remove('price-highlight'));
+            const activeHeader = document.querySelector(`.price-p${tier}-header`);
+            if (activeHeader) activeHeader.classList.add('price-highlight');
+
+            let finalTotal = 0;
+            inputs.forEach(input => {
+                const qty = parseInt(input.value, 10) || 0;
+                const row = input.closest('tr');
+                if (!row) return;
+                const id = row.dataset.id;
+                const product = this.state.products.find(p => p.id === id);
+                if (!product) return;
+                const price = product.prices[`p${tier}`];
+                const subtotal = price * qty;
+                finalTotal += subtotal;
+                row.querySelector('.sum').textContent = `${subtotal.toLocaleString('ru-RU')} ₸`;
+                row.querySelector(`.price-p${tier}`)?.classList.add('price-highlight');
+            });
+            const savings = baseTotal - finalTotal;
+            this.elements.totalEl.textContent = `${finalTotal.toLocaleString('ru-RU')} ₸`;
+            this.elements.savingsEl.textContent = `Экономия: ${savings.toLocaleString('ru-RU')} ₸`;
+            const kaspiTotal = Math.round(finalTotal * this.config.kaspiMultiplier);
+            const kaspiMonthly = Math.round(kaspiTotal / 12);
+            this.elements.kaspiEl.textContent = `В рассрочку KASPI ≈ ${kaspiTotal.toLocaleString('ru-RU')} ₸ (${kaspiMonthly.toLocaleString('ru-RU')} ₸/мес)`;
+        },
+        saveState() {
+            const quantities = {};
+            this.elements.tableBody.querySelectorAll('.quantity-input').forEach(input => {
+                const value = parseInt(input.value, 10);
+                if (value > 0) {
+                    quantities[input.dataset.id] = value;
+                }
+            });
+            localStorage.setItem('orderQuantities', JSON.stringify(quantities));
+        },
+        restoreState() {
+            const savedQuantities = JSON.parse(localStorage.getItem('orderQuantities') || '{}');
+            this.state.quantities = savedQuantities;
+            this.restoreQuantities();
+        },
+        restoreQuantities() {
+            Object.keys(this.state.quantities).forEach(id => {
+                const input = this.elements.tableBody.querySelector(`input[data-id='${id}']`);
+                if (input) {
+                    input.value = this.state.quantities[id];
+                }
+            });
+        },
+        // ===== ИЗМЕНЕНИЕ 2: НОВАЯ ФУНКЦИЯ ДЛЯ ВОССТАНОВЛЕНИЯ ЗАКАЗА ИЗ ССЫЛКИ =====
+        restoreStateFromUrl() {
+            const hash = window.location.hash;
+            if (hash && hash.startsWith('#order:')) {
+                const params = hash.substring(7); // Убираем #order:
+                if (!params) return;
+
+                const urlQuantities = {};
+                params.split(',').forEach(item => {
+                    const parts = item.split('=');
+                    if (parts.length === 2) {
+                        const id = parts[0];
+                        const qty = parseInt(parts[1], 10);
+                        if (id && !isNaN(qty) && qty > 0) {
+                            urlQuantities[id] = qty;
+                        }
+                    }
+                });
+
+                if (Object.keys(urlQuantities).length > 0) {
+                    // Сохраняем данные из ссылки в локальное хранилище, перезаписывая старые
+                    localStorage.setItem('orderQuantities', JSON.stringify(urlQuantities));
+                    // Очищаем хэш из URL, чтобы при перезагрузке страницы не было конфликтов
+                    history.pushState("", document.title, window.location.pathname + window.location.search);
+                }
+            }
+        },
+        generateOrderData() {
+            const orderItems = [];
+            let baseTotal = 0;
+            this.elements.tableBody.querySelectorAll('.quantity-input').forEach(input => {
+                const qty = parseInt(input.value, 10) || 0;
+                if (qty === 0) return;
+                const id = input.dataset.id;
+                const product = this.state.products.find(p => p.id === id);
+                if (product) {
+                    baseTotal += product.prices.p1 * qty;
+                    orderItems.push({ product, qty });
+                }
+            });
+            const tier = baseTotal >= this.config.priceTiers.tier3.limit
+                            ? 3
+                            : baseTotal >= this.config.priceTiers.tier2.limit ? 2 : 1;
+            let finalTotal = 0;
+            let orderText = "*Мой заказ:*\n";
+            const orderParams = [];
+            orderItems.forEach(({ product, qty }) => {
+                const price = product.prices[`p${tier}`];
+                const subtotal = price * qty;
+                finalTotal += subtotal;
+                orderParams.push(`${product.id}=${qty}`);
+                orderText += `• ${product.name} (${product.brand}) — ${qty} шт × ${price.toLocaleString('ru-RU')} ₸ = ${subtotal.toLocaleString('ru-RU')} ₸\n`;
+            });
+            const kaspiTotal = Math.round(finalTotal * this.config.kaspiMultiplier);
+            const kaspiMonthly = Math.round(kaspiTotal / 12);
+            const baseUrl = window.location.href.split("#")[0];
+            const orderLink = `${baseUrl}#order:${orderParams.join(",")}`;
+            orderText += `\n*Итого без рассрочки: ${finalTotal.toLocaleString("ru-RU")} ₸*`;
+            orderText += `\nСумма через рассрочку KASPI 0-0-12: ${kaspiTotal.toLocaleString("ru-RU")} ₸ (≈ ${kaspiMonthly.toLocaleString("ru-RU")} ₸/мес)`;
+            orderText += `\n\nСсылка на заказ: ${orderLink}`;
+            return { orderText, orderLink, hasItems: orderItems.length > 0 };
+        },
+        sendToWhatsApp() {
+            const { orderText, hasItems } = this.generateOrderData();
+            if (!hasItems) {
+                this.showToast("Сначала добавьте товары в корзину");
+                return;
+            }
+            const encodedText = encodeURIComponent(orderText);
+            const url = `https://wa.me/${this.config.whatsAppPhone}?text=${encodedText}`;
+            window.open(url, "_blank");
+        },
+        // ===== ИЗМЕНЕНИЕ 3: ФУНКЦИЯ КОПИРОВАНИЯ ТЕПЕРЬ КОПИРУЕТ ПОЛНЫЙ ТЕКСТ ЗАКАЗА =====
+        copyOrderLink() {
+            const { orderText, hasItems } = this.generateOrderData();
+            if (!hasItems) {
+                this.showToast("Сначала добавьте товары в корзину");
+                return;
+            }
+            navigator.clipboard.writeText(orderText).then(() => {
+                this.showToast("Текст заказа скопирован!");
+            }).catch(err => {
+                this.showToast("Не удалось скопировать текст");
+                console.error('Ошибка копирования: ', err);
+            });
+        },
+        showToast(message) {
+            this.elements.toastEl.textContent = message;
+            this.elements.toastEl.classList.add('show');
+            setTimeout(() => {
+                this.elements.toastEl.classList.remove('show');
+            }, 3000);
+        }
+    };
+    app.init();
+    </script>
+</body>
+>>>>>>> c01c80a9d2997e56134f85cda8ebe22e08dd6e93
 </html>
