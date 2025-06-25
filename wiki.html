@@ -1303,7 +1303,9 @@
                 }
             }
             
-            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            // --- ИЗМЕНЕНИЕ ЗДЕСЬ ---
+            // Мы добавили :not(.order-course-btn), чтобы скрипт игнорировал кнопки заказа
+            document.querySelectorAll('a[href^="#"]:not(.order-course-btn)').forEach(anchor => {
                 anchor.addEventListener('click', function (e) {
                     e.preventDefault();
                     scrollToTarget(this.getAttribute('href').substring(1));
