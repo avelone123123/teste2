@@ -142,15 +142,14 @@
             text-align: center;
         }
 
-        /* ИСПРАВЛЕНИЕ 2: Уменьшен размер плашки "Выгодно" */
         .profitable-tag {
             background-color: var(--tag-bestseller-bg);
             color: white;
-            font-size: 7px; /* Было 9px */
+            font-size: 7px;
             font-weight: 600;
             border-radius: 10em;
-            padding: 3px 8px; /* Было 4px 10px */
-            margin-left: 5px; /* Было 6px */
+            padding: 3px 8px;
+            margin-left: 5px;
             text-transform: uppercase;
             vertical-align: middle;
             transform: rotate(-3deg);
@@ -375,6 +374,10 @@
             visibility: hidden;
             transition: opacity 0.3s ease;
         }
+        
+        .toast-notification.warning {
+             background-color: var(--tag-low-stock-bg);
+        }
 
         .toast-notification.show {
             opacity: 1;
@@ -481,7 +484,10 @@
                 tier2: { limit: 60000, label: "60000-100000 ₸" },
                 tier3: { limit: 100000, label: "от 100000 ₸" },
             },
-            kaspiMultiplier: 1.1
+            kaspiMultiplier: 1.1,
+            // ===== НОВОЕ: Настройки кэширования =====
+            cacheKey: 'priceListData_v1', // Ключ для хранения в localStorage
+            cacheDuration: 5 * 60 * 1000, // 5 минут в миллисекундах
         },
         state: {
             products: [],
@@ -513,50 +519,89 @@
             window.addEventListener('scroll', this.handleScroll);
             this.elements.scrollTopBtn.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
         },
+
+        // ===== ИЗМЕНЕНО: Полностью переработанная функция загрузки данных =====
         async loadData() {
+            const cachedItem = JSON.parse(localStorage.getItem(this.config.cacheKey));
+            
+            // Если есть свежие данные в кэше, используем их
+            if (cachedItem && (Date.now() - cachedItem.timestamp < this.config.cacheDuration)) {
+                console.log("Загрузка данных из кэша (кэш свежий).");
+                this.processData(cachedItem.products);
+                return;
+            }
+
+            // Если кэш устарел или его нет, пытаемся загрузить новые данные
+            console.log("Кэш устарел или отсутствует. Запрос новых данных...");
             try {
                 const response = await fetch(this.config.csvPath, { cache: "no-store" });
-                if (!response.ok) throw new Error(`Ошибка HTTP: ${response.status}`);
+                if (!response.ok) throw new Error(`Ошибка сети: ${response.status}`);
                 const csvText = await response.text();
-                if (!csvText.trim()) throw new Error("CSV-файл пустой");
+                if (!csvText.trim()) throw new Error("Получен пустой CSV-файл");
 
                 Papa.parse(csvText, {
                     header: true,
                     skipEmptyLines: true,
                     complete: (results) => {
-                        this.state.products = results.data
-                            .filter(row => row.Название && row["Цена1"])
-                            .map(row => ({
-                                id: row.ID,
-                                name: row.Название?.trim(),
-                                brand: row.Бренд?.trim(),
-                                prices: {
-                                    p1: parseFloat(row["Цена1"]) || 0,
-                                    p2: parseFloat(row["Цена2"]) || 0,
-                                    p3: parseFloat(row["Цена3"]) || 0,
-                                },
-                                category: row.Категория?.trim(),
-                                isBestseller: String(row.бестселлер || '').trim().toLowerCase() === 'да',
-                                isNew: String(row.новинка || '').trim().toLowerCase() === 'да',
-                                isLowStock: String(row.мало || '').trim().toLowerCase() === 'да',
-                            }));
-                        if (this.state.products.length === 0) throw new Error("Нет валидных данных в CSV");
-                        
-                        // ===== ИЗМЕНЕНИЕ 1: СНАЧАЛА ПРОВЕРЯЕМ ССЫЛКУ, ПОТОМ ЗАГРУЖАЕМ ОСТАЛЬНОЕ =====
-                        this.restoreStateFromUrl();
-                        this.renderTable();
-                        this.restoreState();
-                        this.calculate();
-                        this.elements.loader.style.display = 'none';
-                        this.elements.appContainer.style.display = 'block';
+                        console.log("Данные успешно загружены и обработаны.");
+                        const products = this.parseProducts(results.data);
+                        if (products.length === 0) {
+                           throw new Error("Не удалось найти валидные данные в CSV.");
+                        }
+                        // Сохраняем свежие данные в кэш
+                        localStorage.setItem(this.config.cacheKey, JSON.stringify({
+                            timestamp: Date.now(),
+                            products: products
+                        }));
+                        this.processData(products);
                     },
-                    error: (err) => { throw new Error("Ошибка обработки CSV: " + err); }
+                    error: (err) => { throw new Error("Ошибка обработки CSV: " + err.message); }
                 });
             } catch (error) {
-                this.elements.loader.textContent = `Не удалось загрузить прайс-лист. Проверьте ссылку и структуру CSV файла. Ошибка: ${error.message}`;
-                console.error("Ошибка загрузки CSV:", error);
+                console.error("Не удалось загрузить свежие данные:", error);
+                // Если загрузка провалилась, проверяем, есть ли хотя бы старые данные в кэше
+                if (cachedItem && cachedItem.products) {
+                    console.log("Ошибка загрузки. Используется устаревшая версия прайса из кэша.");
+                    this.showToast("Не удалось обновить прайс. Показана сохраненная версия.", 'warning');
+                    this.processData(cachedItem.products);
+                } else {
+                    // Если нет ни свежих данных, ни кэша — показываем ошибку
+                    this.elements.loader.textContent = `Не удалось загрузить прайс-лист. Проверьте интернет-соединение и попробуйте обновить страницу.`;
+                }
             }
         },
+
+        // ===== НОВАЯ ФУНКЦИЯ: Парсинг данных из CSV =====
+        parseProducts(data) {
+             return data
+                .filter(row => row.Название && row["Цена1"])
+                .map(row => ({
+                    id: row.ID,
+                    name: row.Название?.trim(),
+                    brand: row.Бренд?.trim(),
+                    prices: {
+                        p1: parseFloat(row["Цена1"]) || 0,
+                        p2: parseFloat(row["Цена2"]) || 0,
+                        p3: parseFloat(row["Цена3"]) || 0,
+                    },
+                    category: row.Категория?.trim(),
+                    isBestseller: String(row.бестселлер || '').trim().toLowerCase() === 'да',
+                    isNew: String(row.новинка || '').trim().toLowerCase() === 'да',
+                    isLowStock: String(row.мало || '').trim().toLowerCase() === 'да',
+                }));
+        },
+
+        // ===== НОВАЯ ФУНКЦИЯ: Обработка данных и отображение на странице =====
+        processData(products) {
+            this.state.products = products;
+            this.restoreStateFromUrl();
+            this.renderTable();
+            this.restoreState();
+            this.calculate();
+            this.elements.loader.style.display = 'none';
+            this.elements.appContainer.style.display = 'block';
+        },
+
         renderTable() {
             let currentCategory = null;
             const fragment = document.createDocumentFragment();
@@ -734,11 +779,10 @@
                 }
             });
         },
-        // ===== ИЗМЕНЕНИЕ 2: НОВАЯ ФУНКЦИЯ ДЛЯ ВОССТАНОВЛЕНИЯ ЗАКАЗА ИЗ ССЫЛКИ =====
         restoreStateFromUrl() {
             const hash = window.location.hash;
             if (hash && hash.startsWith('#order:')) {
-                const params = hash.substring(7); // Убираем #order:
+                const params = hash.substring(7);
                 if (!params) return;
 
                 const urlQuantities = {};
@@ -754,9 +798,7 @@
                 });
 
                 if (Object.keys(urlQuantities).length > 0) {
-                    // Сохраняем данные из ссылки в локальное хранилище, перезаписывая старые
                     localStorage.setItem('orderQuantities', JSON.stringify(urlQuantities));
-                    // Очищаем хэш из URL, чтобы при перезагрузке страницы не было конфликтов
                     history.pushState("", document.title, window.location.pathname + window.location.search);
                 }
             }
@@ -806,7 +848,6 @@
             const url = `https://wa.me/${this.config.whatsAppPhone}?text=${encodedText}`;
             window.open(url, "_blank");
         },
-        // ===== ИЗМЕНЕНИЕ 3: ФУНКЦИЯ КОПИРОВАНИЯ ТЕПЕРЬ КОПИРУЕТ ПОЛНЫЙ ТЕКСТ ЗАКАЗА =====
         copyOrderLink() {
             const { orderText, hasItems } = this.generateOrderData();
             if (!hasItems) {
@@ -820,12 +861,16 @@
                 console.error('Ошибка копирования: ', err);
             });
         },
-        showToast(message) {
+        showToast(message, type = 'normal') {
             this.elements.toastEl.textContent = message;
+            this.elements.toastEl.className = 'toast-notification'; // Reset classes
+            if (type === 'warning') {
+                this.elements.toastEl.classList.add('warning');
+            }
             this.elements.toastEl.classList.add('show');
             setTimeout(() => {
                 this.elements.toastEl.classList.remove('show');
-            }, 3000);
+            }, 4000);
         }
     };
     app.init();
