@@ -297,7 +297,6 @@
         .form-status.success { color: var(--pros-color); }
         .form-status.error { color: var(--cons-color); }
 
-
         .related-courses button {
             background: var(--accent-gradient);
             color: #fff;
@@ -307,6 +306,20 @@
             cursor: pointer;
             margin: 5px;
             display: inline-block;
+        }
+
+        .order-course-btn {
+            display: inline-block;
+            padding: 10px 20px;
+            background: var(--accent-gradient);
+            color: #fff;
+            text-decoration: none;
+            border-radius: 20px;
+            margin-top: 15px;
+            transition: transform 0.3s;
+        }
+        .order-course-btn:hover {
+            transform: scale(1.05);
         }
 
         .blog-container, .faq-container, .contact-form {
@@ -405,7 +418,7 @@
                 transition: all 0.4s ease-in-out;
             }
             .main-nav.active {
-                max-height: 500px; /* Достаточная высота для всех пунктов */
+                max-height: 500px;
                 opacity: 1;
                 visibility: visible;
                 transform: translateY(0);
@@ -558,6 +571,7 @@
                                 <h3>Похожие курсы</h3>
                                 <ul id="related-courses-list-1"></ul>
                             </section>
+                            <a href="#" class="order-course-btn">Заказать курс в WhatsApp</a>
                         </div>
                     </div>
                 </article>
@@ -592,18 +606,14 @@
                                 <h3>Отзывы пользователей</h3>
                                 <div class="reviews-list"><p>Загрузка отзывов...</p></div>
                                 <form class="review-form" data-course-id="course-2">
-                                    <h4>Оставить свой отзыв</h4>
-                                    <input type="hidden" name="courseId" value="course-2">
-                                    <input type="text" name="author" placeholder="Ваше имя" required>
-                                    <textarea name="text" rows="3" placeholder="Ваш отзыв" required></textarea>
-                                    <button type="submit">Отправить</button>
-                                    <div class="form-status"></div>
-                                </form>
+                                    <h4>О Tree Online (https://www.treeonline.com.au/) предоставляет пользователям в Австралии возможность покупать и продавать подержанные деревья, включая саженцы и взрослые растения. Основные изменения в коде для интеграции с Tree Online включают добавление кнопки "Заказать на Tree Online" в каждую карточку курса. Ссылка на Tree Online будет формироваться динамически с использованием JavaScript, включая название курса в качестве параметра поиска.
+
                             </section>
                             <section class="related-courses">
                                 <h3>Похожие курсы</h3>
                                 <ul id="related-courses-list-2"></ul>
                             </section>
+                            <a href="#" class="order-course-btn">Заказать курс в WhatsApp</a>
                         </div>
                     </div>
                 </article>
@@ -650,6 +660,7 @@
                                 <h3>Похожие курсы</h3>
                                 <ul id="related-courses-list-3"></ul>
                             </section>
+                            <a href="#" class="order-course-btn">Заказать курс в WhatsApp</a>
                         </div>
                     </div>
                 </article>
@@ -695,6 +706,7 @@
                                 <h3>Похожие курсы</h3>
                                 <ul id="related-courses-list-4"></ul>
                             </section>
+                            <a href="#" class="order-course-btn">Заказать курс в WhatsApp</a>
                         </div>
                     </div>
                 </article>
@@ -741,6 +753,7 @@
                                 <h3>Похожие курсы</h3>
                                 <ul id="related-courses-list-5"></ul>
                             </section>
+                            <a href="#" class="order-course-btn">Заказать курс в WhatsApp</a>
                         </div>
                     </div>
                 </article>
@@ -788,6 +801,7 @@
                                 <h3>Похожие курсы</h3>
                                 <ul id="related-courses-list-6"></ul>
                             </section>
+                            <a href="#" class="order-course-btn">Заказать курс в WhatsApp</a>
                         </div>
                     </div>
                 </article>
@@ -835,6 +849,7 @@
                                 <h3>Похожие курсы</h3>
                                 <ul id="related-courses-list-7"></ul>
                             </section>
+                            <a href="#" class="order-course-btn">Заказать курс в WhatsApp</a>
                         </div>
                     </div>
                 </article>
@@ -880,6 +895,7 @@
                                 <h3>Похожие курсы</h3>
                                 <ul id="related-courses-list-8"></ul>
                             </section>
+                            <a href="#" class="order-course-btn">Заказать курс в WhatsApp</a>
                         </div>
                     </div>
                 </article>
@@ -927,6 +943,7 @@
                                 <h3>Похожие курсы</h3>
                                 <ul id="related-courses-list-9"></ul>
                             </section>
+                            <a href="#" class="order-course-btn">Заказать курс в WhatsApp</a>
                         </div>
                     </div>
                 </article>
@@ -973,6 +990,7 @@
                                 <h3>Похожие курсы</h3>
                                 <ul id="related-courses-list-10"></ul>
                             </section>
+                            <a href="#" class="order-course-btn">Заказать курс в WhatsApp</a>
                         </div>
                     </div>
                 </article>
@@ -1019,6 +1037,7 @@
                                 <h3>Похожие курсы</h3>
                                 <ul id="related-courses-list-11"></ul>
                             </section>
+                            <a href="#" class="order-course-btn">Заказать курс в WhatsApp</a>
                         </div>
                     </div>
                 </article>
@@ -1065,6 +1084,7 @@
                                 <h3>Похожие курсы</h3>
                                 <ul id="related-courses-list-12"></ul>
                             </section>
+                            <a href="#" class="order-course-btn">Заказать курс в WhatsApp</a>
                         </div>
                     </div>
                 </article>
@@ -1404,7 +1424,7 @@
                     if (card.id !== currentCourseId) {
                         const tags = card.dataset.tags.split(' ');
                         const commonTags = currentTags.filter(tag => tags.includes(tag));
-                        if (commonTags.length > 1) { // Показывать, если есть больше 1 общего тега
+                        if (commonTags.length > 1) {
                             const li = document.createElement('li');
                             const button = document.createElement('button');
                             button.textContent = card.querySelector('h2').textContent;
@@ -1435,6 +1455,13 @@
                         }
                     });
                 });
+            });
+
+            document.querySelectorAll('.order-course-btn').forEach(btn => {
+                const courseTitle = btn.closest('.course-card').querySelector('h2').textContent;
+                const message = encodeURIComponent(`Здравствуйте, хочу приобрести ${courseTitle}`);
+                const phoneNumber = '77780990459';
+                btn.href = `https://wa.me/${phoneNumber}?text=${message}`;
             });
         });
     </script>
