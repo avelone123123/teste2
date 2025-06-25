@@ -15,7 +15,7 @@
     --whatsapp-color: #25D366;
     --telegram-color: #0088CC;
     --instagram-color: #E4405F;
-    --price-color: #333333;
+    --price-color: #73d325;
 
     /* Типографика и геометрия */
     --font-family: 'Inter', sans-serif;
@@ -202,7 +202,11 @@ body.dark-mode .icon-sun { display: none; }
 .btn-telegram { background-color: var(--telegram-color); }
 .btn-telegram-channel { background: linear-gradient(45deg, #0088CC, #00A0E9); }
 .btn-instagram { background: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%); }
-.btn-price { background-color: var(--price-color); }
+
+.btn-price {
+    background-color: var(--price-color);
+    color: white;
+}
 
 /* --- Footer --- */
 .footer {
