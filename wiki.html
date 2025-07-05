@@ -263,40 +263,6 @@
         .cons ul li { color: var(--cons-color); }
         .reviews { background: var(--review-bg); padding: 15px; border-radius: 8px; }
         
-        /* Стили для формы и списка отзывов */
-        .reviews-list { margin-bottom: 20px; }
-        .review-item { 
-            border-bottom: 1px solid var(--border-color); 
-            padding: 10px 0; 
-            margin-bottom: 10px;
-        }
-        .review-item:last-child { border-bottom: none; }
-        .review-item p { margin: 0 0 5px 0; }
-        .review-item .review-author { font-weight: bold; color: var(--recs-color); }
-        .review-item .review-date { font-size: 0.8em; color: var(--text-color); opacity: 0.6; }
-        
-        .review-form input, .review-form textarea {
-            width: 100%;
-            padding: 10px;
-            margin-bottom: 10px;
-            border-radius: 8px;
-            border: 1px solid var(--border-color);
-            background-color: var(--bg-color);
-            color: var(--text-color);
-            font-size: 1rem;
-        }
-        .review-form button {
-             background: var(--accent-gradient);
-            color: #fff;
-            border: none;
-            padding: 10px 20px;
-            border-radius: 20px;
-            cursor: pointer;
-        }
-        .form-status { margin-top: 10px; font-weight: 500; }
-        .form-status.success { color: var(--pros-color); }
-        .form-status.error { color: var(--cons-color); }
-
         .related-courses button {
             background: var(--accent-gradient);
             color: #fff;
@@ -591,13 +557,6 @@
                                 <div class="cons"><h3><svg class="icon"><use xlink:href="#icon-cons"/></svg>МИНУСЫ</h3><ul><li>Медленный старт (результат на 4-5 неделе).</li><li>Легкий рост эритроцитов.</li><li>Не для 'супер' формы, а для 'рабоче-мясной'.</li></ul></div>
                             </div>
                             <div class="recommendations"><h3><svg class="icon"><use xlink:href="#icon-recs"/></svg>Рекомендации</h3><ul><li><strong>Продолжительность:</strong> 10–12 недель</li><li><strong>Инъекции:</strong> 2 раза в неделю</li><li><strong>Анализы:</strong> Эстрадиол (3, 5 нед), ОАК (8 нед).</li></ul></div>
-                            <section class="reviews">
-                                <h3>Отзывы пользователей</h3>
-                                <div class="reviews-list"><p>Загрузка отзывов...</p></div>
-                                <form class="review-form" data-course-id="course-2">
-                                    <h4>О Tree Online (https://www.treeonline.com.au/) предоставляет пользователям в Австралии возможность покупать и продавать подержанные деревья, включая саженцы и взрослые растения. Основные изменения в коде для интеграции с Tree Online включают добавление кнопки "Заказать на Tree Online" в каждую карточку курса. Ссылка на Tree Online будет формироваться динамически с использованием JavaScript, включая название курса в качестве параметра поиска.
-
-                            </section>
                             <section class="related-courses">
                                 <h3>Похожие курсы</h3>
                                 <ul id="related-courses-list-2"></ul>
@@ -633,18 +592,6 @@
                                 <div class="cons"><h3><svg class="icon"><use xlink:href="#icon-cons"/></svg>МИНУСЫ</h3><ul><li>Возможны отеки (решается ИА).</li><li>Падение либидо (редко, решается каберголином).</li><li>Возможна гинекомастия (решается анастразолом/кломидом).</li></ul></div>
                             </div>
                             <div class="recommendations"><h3><svg class="icon"><use xlink:href="#icon-recs"/></svg>Рекомендации</h3><ul><li><strong>Продолжительность:</strong> 10–12 недель</li><li><strong>Инъекции:</strong> 2 раза в неделю</li><li><strong>Анализы:</strong> Эстрадиол (2, 5 нед), Пролактин (при снижении либидо).</li></ul></div>
-                            <section class="reviews">
-                                <h3>Отзывы пользователей</h3>
-                                <div class="reviews-list"><p>Загрузка отзывов...</p></div>
-                                <form class="review-form" data-course-id="course-3">
-                                    <h4>Оставить свой отзыв</h4>
-                                    <input type="hidden" name="courseId" value="course-3">
-                                    <input type="text" name="author" placeholder="Ваше имя" required>
-                                    <textarea name="text" rows="3" placeholder="Ваш отзыв" required></textarea>
-                                    <button type="submit">Отправить</button>
-                                    <div class="form-status"></div>
-                                </form>
-                            </section>
                             <section class="related-courses">
                                 <h3>Похожие курсы</h3>
                                 <ul id="related-courses-list-3"></ul>
@@ -679,18 +626,6 @@
                                 <div class="cons"><h3><svg class="icon"><use xlink:href="#icon-cons"/></svg>МИНУСЫ</h3><ul><li>Частые инъекции.</li><li>Возможны шишки от укола.</li><li>Не набрать много массы.</li><li>Слабый жиросжигающий эффект.</li></ul></div>
                             </div>
                             <div class="recommendations"><h3><svg class="icon"><use xlink:href="#icon-recs"/></svg>Рекомендации</h3><ul><li><strong>Продолжительность:</strong> 6-8 недель</li><li><strong>Инъекции:</strong> через день/каждый день</li><li><strong>Анализы:</strong> Эстрадиол (2, 5 нед).</li></ul></div>
-                            <section class="reviews">
-                                <h3>Отзывы пользователей</h3>
-                                <div class="reviews-list"><p>Загрузка отзывов...</p></div>
-                                <form class="review-form" data-course-id="course-4">
-                                    <h4>Оставить свой отзыв</h4>
-                                    <input type="hidden" name="courseId" value="course-4">
-                                    <input type="text" name="author" placeholder="Ваше имя" required>
-                                    <textarea name="text" rows="3" placeholder="Ваш отзыв" required></textarea>
-                                    <button type="submit">Отправить</button>
-                                    <div class="form-status"></div>
-                                </form>
-                            </section>
                             <section class="related-courses">
                                 <h3>Похожие курсы</h3>
                                 <ul id="related-courses-list-4"></ul>
@@ -726,18 +661,6 @@
                                 <div class="cons"><h3><svg class="icon"><use xlink:href="#icon-cons"/></svg>МИНУСЫ</h3><ul><li>Частые инъекции.</li><li>Возможны шишки от укола.</li><li>Не набрать много массы.</li><li>Избыточное либидо.</li></ul></div>
                             </div>
                             <div class="recommendations"><h3><svg class="icon"><use xlink:href="#icon-recs"/></svg>Рекомендации</h3><ul><li><strong>Продолжительность:</strong> 6-8 недель</li><li><strong>Инъекции:</strong> через день/каждый день</li><li><strong>Анализы:</strong> Эстрадиол каждые 3-4 недели.</li></ul></div>
-                            <section class="reviews">
-                                <h3>Отзывы пользователей</h3>
-                                <div class="reviews-list"><p>Загрузка отзывов...</p></div>
-                                <form class="review-form" data-course-id="course-5">
-                                    <h4>Оставить свой отзыв</h4>
-                                    <input type="hidden" name="courseId" value="course-5">
-                                    <input type="text" name="author" placeholder="Ваше имя" required>
-                                    <textarea name="text" rows="3" placeholder="Ваш отзыв" required></textarea>
-                                    <button type="submit">Отправить</button>
-                                    <div class="form-status"></div>
-                                </form>
-                            </section>
                             <section class="related-courses">
                                 <h3>Похожие курсы</h3>
                                 <ul id="related-courses-list-5"></ul>
@@ -774,18 +697,6 @@
                                 <div class="cons"><h3><svg class="icon"><use xlink:href="#icon-cons"/></svg>МИНУСЫ</h3><ul><li>Частые инъекции.</li><li>Возможны шишки от укола.</li><li>Избыточное либидо.</li><li>Может повышаться пролактин.</li><li>Потливость.</li></ul></div>
                             </div>
                             <div class="recommendations"><h3><svg class="icon"><use xlink:href="#icon-recs"/></svg>Рекомендации</h3><ul><li><strong>Продолжительность:</strong> 6-8 недель</li><li><strong>Инъекции:</strong> через день/каждый день</li><li><strong>Анализы:</strong> пролактин через 2 недели.</li></ul></div>
-                            <section class="reviews">
-                                <h3>Отзывы пользователей</h3>
-                                <div class="reviews-list"><p>Загрузка отзывов...</p></div>
-                                <form class="review-form" data-course-id="course-6">
-                                    <h4>Оставить свой отзыв</h4>
-                                    <input type="hidden" name="courseId" value="course-6">
-                                    <input type="text" name="author" placeholder="Ваше имя" required>
-                                    <textarea name="text" rows="3" placeholder="Ваш отзыв" required></textarea>
-                                    <button type="submit">Отправить</button>
-                                    <div class="form-status"></div>
-                                </form>
-                            </section>
                             <section class="related-courses">
                                 <h3>Похожие курсы</h3>
                                 <ul id="related-courses-list-6"></ul>
@@ -822,18 +733,6 @@
                                 <div class="cons"><h3><svg class="icon"><use xlink:href="#icon-cons"/></svg>МИНУСЫ</h3><ul><li>Может повышаться пролактин (решается каберголином).</li></ul></div>
                             </div>
                             <div class="recommendations"><h3><svg class="icon"><use xlink:href="#icon-recs"/></svg>Рекомендации</h3><ul><li><strong>Продолжительность:</strong> 10-12 недель</li><li><strong>Инъекции:</strong> 2 раза в неделю</li><li><strong>Анализы:</strong> эстрадиол и пролактин через 2 недели.</li></ul></div>
-                            <section class="reviews">
-                                <h3>Отзывы пользователей</h3>
-                                <div class="reviews-list"><p>Загрузка отзывов...</p></div>
-                                <form class="review-form" data-course-id="course-7">
-                                    <h4>Оставить свой отзыв</h4>
-                                    <input type="hidden" name="courseId" value="course-7">
-                                    <input type="text" name="author" placeholder="Ваше имя" required>
-                                    <textarea name="text" rows="3" placeholder="Ваш отзыв" required></textarea>
-                                    <button type="submit">Отправить</button>
-                                    <div class="form-status"></div>
-                                </form>
-                            </section>
                             <section class="related-courses">
                                 <h3>Похожие курсы</h3>
                                 <ul id="related-courses-list-7"></ul>
@@ -868,18 +767,6 @@
                                 <div class="cons"><h3><svg class="icon"><use xlink:href="#icon-cons"/></svg>МИНУСЫ</h3><ul><li>Задержка воды.</li><li>Гинекомастия (при предрасположенности).</li></ul></div>
                             </div>
                             <div class="recommendations"><h3><svg class="icon"><use xlink:href="#icon-recs"/></svg>Рекомендации</h3><ul><li><strong>Продолжительность:</strong> 10-12 недель</li><li><strong>Инъекции:</strong> 2 раза в неделю</li><li><strong>Анализы:</strong> эстрадиол на 3-5 неделе.</li></ul></div>
-                            <section class="reviews">
-                                <h3>Отзывы пользователей</h3>
-                                <div class="reviews-list"><p>Загрузка отзывов...</p></div>
-                                <form class="review-form" data-course-id="course-8">
-                                    <h4>Оставить свой отзыв</h4>
-                                    <input type="hidden" name="courseId" value="course-8">
-                                    <input type="text" name="author" placeholder="Ваше имя" required>
-                                    <textarea name="text" rows="3" placeholder="Ваш отзыв" required></textarea>
-                                    <button type="submit">Отправить</button>
-                                    <div class="form-status"></div>
-                                </form>
-                            </section>
                             <section class="related-courses">
                                 <h3>Похожие курсы</h3>
                                 <ul id="related-courses-list-8"></ul>
@@ -916,18 +803,6 @@
                                 <div class="cons"><h3><svg class="icon"><use xlink:href="#icon-cons"/></svg>МИНУСЫ</h3><ul><li>Повышение пролактина.</li><li>Медленный разгон курса.</li></ul></div>
                             </div>
                             <div class="recommendations"><h3><svg class="icon"><use xlink:href="#icon-recs"/></svg>Рекомендации</h3><ul><li><strong>Продолжительность:</strong> 12-14 недель</li><li><strong>Инъекции:</strong> 2 раза в неделю</li><li><strong>Анализы:</strong> эстрадиол на 3-5 неделе.</li></ul></div>
-                            <section class="reviews">
-                                <h3>Отзывы пользователей</h3>
-                                <div class="reviews-list"><p>Загрузка отзывов...</p></div>
-                                <form class="review-form" data-course-id="course-9">
-                                    <h4>Оставить свой отзыв</h4>
-                                    <input type="hidden" name="courseId" value="course-9">
-                                    <input type="text" name="author" placeholder="Ваше имя" required>
-                                    <textarea name="text" rows="3" placeholder="Ваш отзыв" required></textarea>
-                                    <button type="submit">Отправить</button>
-                                    <div class="form-status"></div>
-                                </form>
-                            </section>
                             <section class="related-courses">
                                 <h3>Похожие курсы</h3>
                                 <ul id="related-courses-list-9"></ul>
@@ -963,18 +838,6 @@
                                 <div class="cons"><h3><svg class="icon"><use xlink:href="#icon-cons"/></svg>МИНУСЫ</h3><ul><li>Вспышки агрессии, бессоница.</li><li>Потливость по ночам.</li></ul></div>
                             </div>
                             <div class="recommendations"><h3><svg class="icon"><use xlink:href="#icon-recs"/></svg>Рекомендации</h3><ul><li><strong>Продолжительность:</strong> 6-8 недель</li><li><strong>Инъекции:</strong> 3-7 раз в неделю</li><li><strong>Анализы:</strong> пролактин (при депрессии).</li></ul></div>
-                            <section class="reviews">
-                                <h3>Отзывы пользователей</h3>
-                                <div class="reviews-list"><p>Загрузка отзывов...</p></div>
-                                <form class="review-form" data-course-id="course-10">
-                                    <h4>Оставить свой отзыв</h4>
-                                    <input type="hidden" name="courseId" value="course-10">
-                                    <input type="text" name="author" placeholder="Ваше имя" required>
-                                    <textarea name="text" rows="3" placeholder="Ваш отзыв" required></textarea>
-                                    <button type="submit">Отправить</button>
-                                    <div class="form-status"></div>
-                                </form>
-                            </section>
                             <section class="related-courses">
                                 <h3>Похожие курсы</h3>
                                 <ul id="related-courses-list-10"></ul>
@@ -1010,18 +873,6 @@
                                 <div class="cons"><h3><svg class="icon"><use xlink:href="#icon-cons"/></svg>МИНУСЫ</h3><ul><li>Медленный эффект.</li></ul></div>
                             </div>
                             <div class="recommendations"><h3><svg class="icon"><use xlink:href="#icon-recs"/></svg>Рекомендации</h3><ul><li><strong>Продолжительность:</strong> 10 недель</li><li><strong>Инъекции:</strong> 2 раза в неделю</li><li><strong>Анализы:</strong> эстрадиол на 3-5 неделе.</li></ul></div>
-                            <section class="reviews">
-                                <h3>Отзывы пользователей</h3>
-                                <div class="reviews-list"><p>Загрузка отзывов...</p></div>
-                                <form class="review-form" data-course-id="course-11">
-                                    <h4>Оставить свой отзыв</h4>
-                                    <input type="hidden" name="courseId" value="course-11">
-                                    <input type="text" name="author" placeholder="Ваше имя" required>
-                                    <textarea name="text" rows="3" placeholder="Ваш отзыв" required></textarea>
-                                    <button type="submit">Отправить</button>
-                                    <div class="form-status"></div>
-                                </form>
-                            </section>
                             <section class="related-courses">
                                 <h3>Похожие курсы</h3>
                                 <ul id="related-courses-list-11"></ul>
@@ -1057,18 +908,6 @@
                                 <div class="cons"><h3><svg class="icon"><use xlink:href="#icon-cons"/></svg>МИНУСЫ</h3><ul><li>Агрессия.</li><li>Потливость.</li></ul></div>
                             </div>
                             <div class="recommendations"><h3><svg class="icon"><use xlink:href="#icon-recs"/></svg>Рекомендации</h3><ul><li><strong>Продолжительность:</strong> 6-8 недель</li><li><strong>Инъекции:</strong> ежедневно/через день</li><li><strong>Анализы:</strong> пролактин через 2 недели.</li></ul></div>
-                            <section class="reviews">
-                                <h3>Отзывы пользователей</h3>
-                                <div class="reviews-list"><p>Загрузка отзывов...</p></div>
-                                <form class="review-form" data-course-id="course-12">
-                                    <h4>Оставить свой отзыв</h4>
-                                    <input type="hidden" name="courseId" value="course-12">
-                                    <input type="text" name="author" placeholder="Ваше имя" required>
-                                    <textarea name="text" rows="3" placeholder="Ваш отзыв" required></textarea>
-                                    <button type="submit">Отправить</button>
-                                    <div class="form-status"></div>
-                                </form>
-                            </section>
                             <section class="related-courses">
                                 <h3>Похожие курсы</h3>
                                 <ul id="related-courses-list-12"></ul>
@@ -1228,11 +1067,6 @@
                     if (!isOpen) {
                         gsap.to(contentBody, { duration: 0.5, height: 'auto', autoAlpha: 1, ease: 'power2.out' });
                         item.classList.add('is-open');
-                        
-                        if (item.classList.contains('course-card') && !item.dataset.reviewsLoaded) {
-                            loadReviews(item.id);
-                            item.dataset.reviewsLoaded = "true";
-                        }
                     } else {
                         gsap.to(contentBody, { duration: 0.4, height: 0, autoAlpha: 0, ease: 'power2.in' });
                         item.classList.remove('is-open');
@@ -1292,8 +1126,6 @@
                 }
             }
             
-            // --- ИЗМЕНЕНИЕ ЗДЕСЬ ---
-            // Мы добавили :not(.order-course-btn), чтобы скрипт игнорировал кнопки заказа
             document.querySelectorAll('a[href^="#"]:not(.order-course-btn)').forEach(anchor => {
                 anchor.addEventListener('click', function (e) {
                     e.preventDefault();
@@ -1338,74 +1170,7 @@
                 activeFilters.level.clear();
                 applyFilters();
             });
-
-            async function loadReviews(courseId) {
-                const reviewsList = document.querySelector(`#${courseId} .reviews-list`);
-                try {
-                    const response = await fetch(`/api/reviews?courseId=${courseId}`);
-                    if (!response.ok) throw new Error('Ошибка сети');
-                    const reviews = await response.json();
-                    
-                    reviewsList.innerHTML = '';
-                    if (reviews.length === 0) {
-                        reviewsList.innerHTML = '<p>Отзывов пока нет. Будьте первым!</p>';
-                    } else {
-                        reviews.forEach(review => {
-                            const reviewEl = document.createElement('div');
-                            reviewEl.className = 'review-item';
-                            reviewEl.innerHTML = `
-                                <p>${review.text}</p>
-                                <span class="review-author">${review.author}</span> - 
-                                <span class="review-date">${new Date(review.timestamp).toLocaleDateString()}</span>
-                            `;
-                            reviewsList.appendChild(reviewEl);
-                        });
-                    }
-                } catch (error) {
-                    reviewsList.innerHTML = '<p>Не удалось загрузить отзывы.</p>';
-                    console.error('Fetch error:', error);
-                }
-            }
-
-            document.querySelectorAll('.review-form').forEach(form => {
-                form.addEventListener('submit', async (e) => {
-                    e.preventDefault();
-                    const courseId = form.dataset.courseId;
-                    const author = form.elements.author.value;
-                    const text = form.elements.text.value;
-                    const statusDiv = form.querySelector('.form-status');
-                    const submitButton = form.querySelector('button');
-
-                    submitButton.disabled = true;
-                    statusDiv.textContent = 'Отправка...';
-                    statusDiv.className = 'form-status';
-
-                    try {
-                        const response = await fetch('/api/reviews', {
-                            method: 'POST',
-                            headers: { 'Content-Type': 'application/json' },
-                            body: JSON.stringify({ courseId, author, text })
-                        });
-
-                        if (!response.ok) throw new Error('Ошибка сервера');
-                        
-                        statusDiv.textContent = 'Отзыв успешно добавлен!';
-                        statusDiv.classList.add('success');
-                        form.reset();
-                        
-                        await loadReviews(courseId);
-
-                    } catch (error) {
-                        statusDiv.textContent = 'Ошибка отправки. Попробуйте снова.';
-                        statusDiv.classList.add('error');
-                        console.error('Submit error:', error);
-                    } finally {
-                         submitButton.disabled = false;
-                         setTimeout(() => { statusDiv.textContent = ''; }, 3000);
-                    }
-                });
-            });
-
+            
             function getRelatedCourses(currentCourseId) {
                 const currentCourse = document.getElementById(currentCourseId);
                 const currentTags = currentCourse.dataset.tags.split(' ');
