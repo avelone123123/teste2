@@ -1,4 +1,4 @@
-    <!DOCTYPE html>
+<!DOCTYPE html>
     <html lang="ru">
     <head>
         <meta charset="UTF-8">
@@ -13,21 +13,91 @@
         <meta property="og:url" content="https://nefarma.vercel.app/">
         <meta property="og:type" content="website">
 
-        <link rel="icon" type="image/png" href="https://static.tildacdn.one/tild3862-6262-4662-b063-373238316537/favicon-32x32.png">
-        <link rel="apple-touch-icon" href="https://static.tildacdn.one/tild6333-3234-4439-a562-643665333264/apple-touch-icon.png">
-
         <link rel="preconnect" href="https://fonts.googleapis.com">
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-        <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;900&display=swap" rel="stylesheet">
+        <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+
+        <link rel="preload" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;900&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'">
+        <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;900&display=swap"></noscript>
         
-        <link rel="stylesheet" href="styles.css">
+        <link rel="preload" href="styles.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+        <noscript><link rel="stylesheet" href="styles.css"></noscript>
+        
+        <link rel="icon" type="image/png" href="https://static.tildacdn.one/tild3862-6262-4662-b063-373238316537/favicon-32x32.png">
+        <link rel="apple-touch-icon" href="https://static.tildacdn.one/tild6333-3234-4439-a562-643665333264/apple-touch-icon.png">
+        
+        <style>
+            :root {
+                --bg-color: #F3F4F6;
+                --text-color: #111827;
+                --header-bg: rgba(243, 244, 246, 0.8);
+                --shadow-color: rgba(0, 0, 0, 0.05);
+                --font-family: 'Inter', sans-serif;
+                --container-width: 1100px;
+                --container-padding: 20px;
+            }
+            body.dark-mode {
+                --bg-color: #111827;
+                --text-color: #F9FAFB;
+                --header-bg: rgba(17, 24, 39, 0.8);
+                --shadow-color: rgba(0, 0, 0, 0.2);
+            }
+            * { box-sizing: border-box; margin: 0; padding: 0; }
+            html { scroll-behavior: smooth; }
+            body {
+                background-color: var(--bg-color);
+                color: var(--text-color);
+                font-family: var(--font-family);
+                line-height: 1.6;
+                overflow-x: hidden;
+            }
+            .container { max-width: var(--container-width); margin: 0 auto; padding: 0 var(--container-padding); }
+            img { max-width: 100%; height: auto; display: block; }
+            .header {
+                padding: 15px 0;
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                z-index: 100;
+                background-color: var(--header-bg);
+                backdrop-filter: blur(10px);
+                -webkit-backdrop-filter: blur(10px);
+                border-bottom: 1px solid var(--shadow-color);
+            }
+            .header .container { display: flex; justify-content: space-between; align-items: center; }
+            .logo img { height: 30px; filter: invert(1); }
+            body.dark-mode .logo img { filter: invert(0); }
+            .theme-switcher { background: none; border: none; cursor: pointer; color: var(--text-color); padding: 5px; }
+            .icon-moon { display: none; }
+            .icon-sun { display: block; }
+            body.dark-mode .icon-moon { display: block; }
+            body.dark-mode .icon-sun { display: none; }
+            .main-content { padding-top: 100px; padding-bottom: 40px; }
+            .hero { text-align: center; margin-bottom: 50px; }
+            .hero-title { font-size: 2.2rem; font-weight: 900; line-height: 1.2; margin-bottom: 1rem; letter-spacing: -1px; }
+            .hero-subtitle { font-size: 1.1rem; color: #374151; max-width: 650px; margin: 0 auto; }
+            body.dark-mode .hero-subtitle { color: #9CA3AF; }
+            @media (min-width: 768px) {
+                .header { padding: 20px 0; }
+                .logo img { height: 35px; }
+                .main-content { padding-top: 150px; }
+                .hero-title { font-size: 3.5rem; }
+                .hero-subtitle { font-size: 1.25rem; }
+            }
+            @media (min-width: 1024px) {
+                .main-content { padding-top: 180px; }
+                .hero-title { font-size: 4rem; }
+            }
+        </style>
+
     </head>
     <body>
 
         <header class="header">
             <div class="container">
                 <a id="logo-link" class="logo" aria-label="На главную Nefarma">
-                    <img src="https://static.tildacdn.one/tild6461-6365-4266-b662-336533346434/whitewhite_3.png" alt="Nefarma Logo">
+                    <img src="logo.webp" alt="Nefarma Logo" fetchpriority="high">
                 </a>
                 <button class="theme-switcher" aria-label="Переключить тему">
                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-sun"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
@@ -94,8 +164,8 @@
             </div>
         </footer>
         
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
-        <script src="script.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js" defer></script>
+        <script src="script.js" defer></script>
 
     </body>
     </html>

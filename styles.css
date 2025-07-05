@@ -6,7 +6,8 @@
     --bg-color: #F3F4F6;
     --bg-secondary-color: #FFFFFF;
     --text-color: #111827;
-    --text-secondary-color: #4B5563;
+    /* ИЗМЕНЕНО: Сделан темнее для лучшей контрастности */
+    --text-secondary-color: #374151; 
     --accent-color: #2563EB;
     --header-bg: rgba(243, 244, 246, 0.8);
     --shadow-color: rgba(0, 0, 0, 0.05);
@@ -16,6 +17,10 @@
     --telegram-color: #0088CC;
     --instagram-color: #E4405F;
     --price-color: #73d325;
+    --wiki-color-light: linear-gradient(135deg, #4a4a4a, #2a2a2a);
+    --wiki-hover-light: linear-gradient(135deg, #5a5a5a, #3a3a3a);
+    --wiki-color-dark: linear-gradient(135deg, #c0c0c0, #a0a0a0);
+
 
     /* Типографика и геометрия */
     --font-family: 'Inter', sans-serif;
@@ -34,6 +39,7 @@ body.dark-mode {
     --accent-color: #3B82F6;
     --header-bg: rgba(17, 24, 39, 0.8);
     --shadow-color: rgba(0, 0, 0, 0.2);
+    --wiki-color: var(--wiki-color-dark);
 }
 
 /* 2. Базовые стили
@@ -45,6 +51,10 @@ body.dark-mode {
     padding: 0;
 }
 
+html {
+    scroll-behavior: smooth;
+}
+
 body {
     background-color: var(--bg-color);
     color: var(--text-color);
@@ -52,8 +62,8 @@ body {
     line-height: 1.6;
     transition: background-color var(--transition-speed) ease, color var(--transition-speed) ease;
     overflow-x: hidden;
-    /* Мы можем скрыть тело до тех пор, пока JS не будет готов, чтобы избежать "прыжка" контента */
-    visibility: hidden;
+    /* Скрываем тело до готовности JS, чтобы избежать "прыжка" контента */
+    visibility: hidden; 
 }
 
 .container {
@@ -82,12 +92,12 @@ ul {
     list-style: none;
 }
 
-/* 3. Компоненты
+/* 3. Компоненты (Mobile First)
 ----------------------------------------------------*/
 
 /* --- Header --- */
 .header {
-    padding: 20px 0;
+    padding: 15px 0;
     position: fixed;
     top: 0;
     left: 0;
@@ -106,13 +116,11 @@ ul {
 }
 
 .logo img {
-    height: 35px;
-    /* По умолчанию (для светлой темы) инвертируем цвет, делая логотип черным */
+    height: 30px;
     filter: invert(1); 
     transition: filter 0.3s ease;
 }
 
-/* В темной теме возвращаем логотип к исходному белому цвету, убирая инверсию */
 body.dark-mode .logo img {
    filter: invert(0);
 }
@@ -140,17 +148,17 @@ body.dark-mode .icon-sun { display: none; }
 
 /* --- Hero Section --- */
 .main-content {
-    padding-top: 150px; /* Отступ от хедера */
-    padding-bottom: 50px;
+    padding-top: 100px; /* Уменьшенный отступ для мобильных */
+    padding-bottom: 40px;
 }
 
 .hero {
     text-align: center;
-    margin-bottom: 60px;
+    margin-bottom: 50px;
 }
 
 .hero-title {
-    font-size: 2.5rem;
+    font-size: 2.2rem; /* Уменьшенный шрифт для мобильных */
     font-weight: 900;
     line-height: 1.2;
     margin-bottom: 1rem;
@@ -158,7 +166,7 @@ body.dark-mode .icon-sun { display: none; }
 }
 
 .hero-subtitle {
-    font-size: 1.125rem;
+    font-size: 1.1rem; /* Уменьшенный шрифт для мобильных */
     color: var(--text-secondary-color);
     max-width: 650px;
     margin: 0 auto;
@@ -175,7 +183,7 @@ body.dark-mode .icon-sun { display: none; }
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 1rem 1.5rem;
+    padding: 1.1rem 1.5rem; /* Слегка увеличен для тач-устройств */
     border-radius: var(--border-radius);
     font-size: 1rem;
     font-weight: 500;
@@ -192,8 +200,8 @@ body.dark-mode .icon-sun { display: none; }
 }
 
 .btn svg {
-    width: 28px;
-    height: 28px;
+    width: 24px; /* Немного уменьшены иконки для баланса */
+    height: 24px;
     margin-right: 12px;
     fill: #fff;
 }
@@ -202,32 +210,41 @@ body.dark-mode .icon-sun { display: none; }
 .btn-telegram { background-color: var(--telegram-color); }
 .btn-telegram-channel { background: linear-gradient(45deg, #0088CC, #00A0E9); }
 .btn-instagram { background: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%); }
-
-.btn-price {
-    background-color: var(--price-color);
-    color: white;
+.btn-price { background-color: var(--price-color); }
+.btn-wiki {
+    background: var(--wiki-color-light);
+    color: #fff;
+}
+.btn-wiki:hover { background: var(--wiki-hover-light); }
+body.dark-mode .btn-wiki { 
+    background: var(--wiki-color-dark);
+    color: #121212;
 }
 
 /* --- Footer --- */
 .footer {
-    padding: 40px 0;
+    padding: 30px 0;
     text-align: center;
     font-size: 0.9rem;
     color: var(--text-secondary-color);
     border-top: 1px solid var(--shadow-color);
-    margin-top: 60px;
+    margin-top: 50px;
 }
 
-.tilda-ref {
-    margin-top: 8px;
-    font-size: 0.8rem;
-}
-
-/* 4. Адаптивность
+/* 4. Адаптивность (для планшетов и десктопов)
 ----------------------------------------------------*/
 
 /* Планшеты */
 @media (min-width: 768px) {
+    .header {
+        padding: 20px 0;
+    }
+    .logo img {
+        height: 35px;
+    }
+    .main-content {
+        padding-top: 150px;
+    }
     .hero-title {
         font-size: 3.5rem;
     }
@@ -248,19 +265,4 @@ body.dark-mode .icon-sun { display: none; }
     .hero-title {
         font-size: 4rem;
     }
-}
-
-/* Стиль для новой кнопки Wiki */
-.btn-wiki {
-    background: linear-gradient(135deg, #4a4a4a, #2a2a2a);
-    color: #fff;
-}
-
-.btn-wiki:hover {
-    background: linear-gradient(135deg, #5a5a5a, #3a3a3a);
-}
-
-.dark-theme .btn-wiki {
-    background: linear-gradient(135deg, #c0c0c0, #a0a0a0);
-    color: #121212;
 }
