@@ -1,171 +1,695 @@
 <!DOCTYPE html>
-    <html lang="ru">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        
-        <title>Nefarma | Спортивная фармакология и консультации в Казахстане</title>
-        <meta name="description" content="Индивидуальный подход к улучшению физической формы, восстановлению и прогрессу. Анонимные консультации через Telegram и WhatsApp.">
-        
-        <meta property="og:title" content="Спортивная консультация и поддержка | Nefarma Казахстан">
-        <meta property="og:description" content="Индивидуальный подход к улучшению физической формы, восстановлению и прогрессу. Консультации через Telegram и WhatsApp. Анонимно и быстро.">
-        <meta property="og:image" content="https://thb.tildacdn.one/tild6461-6365-4266-b662-336533346434/-/resize/504x/whitewhite_3.png">
-        <meta property="og:url" content="https://nefarma.vercel.app/">
-        <meta property="og:type" content="website">
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <title>Nefarma | Спортивная фармакология и консультации в Казахстане</title>
+    <meta name="description" content="Индивидуальный подход к улучшению физической формы, восстановлению и прогрессу. Анонимные консультации через Telegram и WhatsApp.">
+    
+    <meta property="og:title" content="Спортивная консультация и поддержка | Nefarma Казахстан">
+    <meta property="og:description" content="Индивидуальный подход к улучшению физической формы, восстановлению и прогрессу. Консультации через Telegram и WhatsApp. Анонимно и быстро.">
+    <meta property="og:image" content="https://thb.tildacdn.one/tild6461-6365-4266-b662-336533346434/-/resize/504x/whitewhite_3.png">
+    <meta property="og:url" content="https://nefarma.vercel.app/">
+    <meta property="og:type" content="website">
 
-        <link rel="preconnect" href="https://fonts.googleapis.com">
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-        <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preconnect" href="https://cdnjs.cloudflare.com">
 
-        <link rel="preload" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;900&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'">
-        <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;900&display=swap"></noscript>
-        
-        <link rel="preload" href="styles.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
-        <noscript><link rel="stylesheet" href="styles.css"></noscript>
-        
-        <link rel="icon" type="image/png" href="https://static.tildacdn.one/tild3862-6262-4662-b063-373238316537/favicon-32x32.png">
-        <link rel="apple-touch-icon" href="https://static.tildacdn.one/tild6333-3234-4439-a562-643665333264/apple-touch-icon.png">
-        
-        <style>
-            :root {
-                --bg-color: #F3F4F6;
-                --text-color: #111827;
-                --header-bg: rgba(243, 244, 246, 0.8);
-                --shadow-color: rgba(0, 0, 0, 0.05);
-                --font-family: 'Inter', sans-serif;
-                --container-width: 1100px;
-                --container-padding: 20px;
-            }
-            body.dark-mode {
-                --bg-color: #111827;
-                --text-color: #F9FAFB;
-                --header-bg: rgba(17, 24, 39, 0.8);
-                --shadow-color: rgba(0, 0, 0, 0.2);
-            }
-            * { box-sizing: border-box; margin: 0; padding: 0; }
-            html { scroll-behavior: smooth; }
-            body {
-                background-color: var(--bg-color);
-                color: var(--text-color);
-                font-family: var(--font-family);
-                line-height: 1.6;
-                overflow-x: hidden;
-            }
-            .container { max-width: var(--container-width); margin: 0 auto; padding: 0 var(--container-padding); }
-            img { max-width: 100%; height: auto; display: block; }
-            .header {
-                padding: 15px 0;
-                position: fixed;
-                top: 0;
-                left: 0;
-                width: 100%;
-                z-index: 100;
-                background-color: var(--header-bg);
-                backdrop-filter: blur(10px);
-                -webkit-backdrop-filter: blur(10px);
-                border-bottom: 1px solid var(--shadow-color);
-            }
-            .header .container { display: flex; justify-content: space-between; align-items: center; }
-            .logo img { height: 30px; filter: invert(1); }
-            body.dark-mode .logo img { filter: invert(0); }
-            .theme-switcher { background: none; border: none; cursor: pointer; color: var(--text-color); padding: 5px; }
-            .icon-moon { display: none; }
-            .icon-sun { display: block; }
-            body.dark-mode .icon-moon { display: block; }
-            body.dark-mode .icon-sun { display: none; }
-            .main-content { padding-top: 100px; padding-bottom: 40px; }
-            .hero { text-align: center; margin-bottom: 50px; }
-            .hero-title { font-size: 2.2rem; font-weight: 900; line-height: 1.2; margin-bottom: 1rem; letter-spacing: -1px; }
-            .hero-subtitle { font-size: 1.1rem; color: #374151; max-width: 650px; margin: 0 auto; }
-            body.dark-mode .hero-subtitle { color: #9CA3AF; }
-            @media (min-width: 768px) {
-                .header { padding: 20px 0; }
-                .logo img { height: 35px; }
-                .main-content { padding-top: 150px; }
-                .hero-title { font-size: 3.5rem; }
-                .hero-subtitle { font-size: 1.25rem; }
-            }
-            @media (min-width: 1024px) {
-                .main-content { padding-top: 180px; }
-                .hero-title { font-size: 4rem; }
-            }
-        </style>
+    <link rel="preload" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;900&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;900&display=swap"></noscript>
+    
+    <link rel="preload" href="styles.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <noscript><link rel="stylesheet" href="styles.css"></noscript>
+    
+    <link rel="icon" type="image/png" href="https://static.tildacdn.one/tild3862-6262-4662-b063-373238316537/favicon-32x32.png">
+    <link rel="apple-touch-icon" href="https://static.tildacdn.one/tild6333-3234-4439-a562-643665333264/apple-touch-icon.png">
+    
+    <style>
+        :root {
+            --bg-color: #F3F4F6;
+            --text-color: #111827;
+            --header-bg: rgba(243, 244, 246, 0.8);
+            --shadow-color: rgba(0, 0, 0, 0.05);
+            --font-family: 'Inter', sans-serif;
+            --container-width: 1100px;
+            --container-padding: 20px;
+            --primary-color: #2563EB;
+            --primary-hover: #1D4ED8;
+            --card-bg: #FFFFFF;
+            --card-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+            --section-spacing: 100px;
+            --transition: all 0.3s ease;
+        }
+        body.dark-mode {
+            --bg-color: #111827;
+            --text-color: #F9FAFB;
+            --header-bg: rgba(17, 24, 39, 0.8);
+            --shadow-color: rgba(0, 0, 0, 0.2);
+            --card-bg: #1F2937;
+            --card-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+        }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        html { scroll-behavior: smooth; }
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            font-family: var(--font-family);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+        .container { max-width: var(--container-width); margin: 0 auto; padding: 0 var(--container-padding); }
+        img { max-width: 100%; height: auto; display: block; }
+        .header {
+            padding: 15px 0;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 100;
+            background-color: var(--header-bg);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--shadow-color);
+            transition: var(--transition);
+        }
+        .header.scrolled {
+            padding: 10px 0;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+        .header .container { display: flex; justify-content: space-between; align-items: center; }
+        .logo img { height: 30px; filter: invert(1); transition: var(--transition); }
+        body.dark-mode .logo img { filter: invert(0); }
+        .theme-switcher { 
+            background: none; 
+            border: none; 
+            cursor: pointer; 
+            color: var(--text-color); 
+            padding: 5px; 
+            border-radius: 50%; 
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: var(--transition);
+        }
+        .theme-switcher:hover {
+            background-color: rgba(0, 0, 0, 0.05);
+        }
+        body.dark-mode .theme-switcher:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+        .icon-moon { display: none; }
+        .icon-sun { display: block; }
+        body.dark-mode .icon-moon { display: block; }
+        body.dark-mode .icon-sun { display: none; }
+        .main-content { padding-top: 100px; padding-bottom: 40px; }
+        .hero { 
+            text-align: center; 
+            margin-bottom: 50px;
+            position: relative;
+            overflow: hidden;
+            padding: 50px 0;
+        }
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(37, 99, 235, 0.1) 0%, rgba(37, 99, 235, 0) 70%);
+            z-index: -1;
+            animation: pulse 8s infinite alternate;
+        }
+        @keyframes pulse {
+            0% { transform: scale(0.8); opacity: 0.3; }
+            100% { transform: scale(1.2); opacity: 0.1; }
+        }
+        .hero-title { 
+            font-size: 2.2rem; 
+            font-weight: 900; 
+            line-height: 1.2; 
+            margin-bottom: 1rem; 
+            letter-spacing: -1px;
+            background: linear-gradient(90deg, #2563EB, #3B82F6);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .hero-subtitle { 
+            font-size: 1.1rem; 
+            color: #374151; 
+            max-width: 650px; 
+            margin: 0 auto 30px;
+        }
+        body.dark-mode .hero-subtitle { color: #9CA3AF; }
+        .section {
+            padding: 80px 0;
+        }
+        .section-title {
+            font-size: 2rem;
+            font-weight: 800;
+            text-align: center;
+            margin-bottom: 50px;
+            position: relative;
+        }
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -15px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 60px;
+            height: 4px;
+            background: linear-gradient(90deg, #2563EB, #3B82F6);
+            border-radius: 2px;
+        }
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 30px;
+            margin-top: 50px;
+        }
+        .feature-card {
+            background: var(--card-bg);
+            border-radius: 12px;
+            padding: 30px;
+            box-shadow: var(--card-shadow);
+            transition: var(--transition);
+            text-align: center;
+        }
+        .feature-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+        }
+        body.dark-mode .feature-card:hover {
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+        }
+        .feature-icon {
+            width: 70px;
+            height: 70px;
+            margin: 0 auto 20px;
+            background: linear-gradient(135deg, #2563EB, #3B82F6);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .feature-icon svg {
+            width: 30px;
+            height: 30px;
+            fill: white;
+        }
+        .feature-card h3 {
+            font-size: 1.3rem;
+            margin-bottom: 15px;
+        }
+        .feature-card p {
+            color: #4B5563;
+        }
+        body.dark-mode .feature-card p {
+            color: #D1D5DB;
+        }
+        .testimonials-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+            margin-top: 50px;
+        }
+        .testimonial-card {
+            background: var(--card-bg);
+            border-radius: 12px;
+            padding: 30px;
+            box-shadow: var(--card-shadow);
+            position: relative;
+            border: 1px solid rgba(0, 0, 0, 0.05);
+        }
+        body.dark-mode .testimonial-card {
+            border-color: rgba(255, 255, 255, 0.05);
+        }
+        .testimonial-card::before {
+            content: '"';
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            font-size: 4rem;
+            color: rgba(37, 99, 235, 0.1);
+            font-weight: 800;
+            line-height: 1;
+        }
+        .testimonial-text {
+            margin-bottom: 20px;
+            font-style: italic;
+            position: relative;
+            z-index: 1;
+        }
+        .testimonial-author {
+            display: flex;
+            align-items: center;
+        }
+        .author-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #2563EB, #3B82F6);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 700;
+            margin-right: 15px;
+        }
+        .author-info {
+            display: flex;
+            flex-direction: column;
+        }
+        .author-name {
+            font-weight: 600;
+        }
+        .author-title {
+            font-size: 0.9rem;
+            color: #6B7280;
+        }
+        body.dark-mode .author-title {
+            color: #9CA3AF;
+        }
+        .faq-list {
+            max-width: 800px;
+            margin: 50px auto 0;
+        }
+        .faq-item {
+            background: var(--card-bg);
+            border-radius: 12px;
+            margin-bottom: 15px;
+            overflow: hidden;
+            box-shadow: var(--card-shadow);
+            transition: var(--transition);
+        }
+        .faq-item.active {
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+        }
+        body.dark-mode .faq-item.active {
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+        }
+        .faq-question {
+            width: 100%;
+            text-align: left;
+            background: none;
+            border: none;
+            padding: 20px 25px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: var(--transition);
+        }
+        .faq-question:hover {
+            background-color: rgba(0, 0, 0, 0.02);
+        }
+        body.dark-mode .faq-question:hover {
+            background-color: rgba(255, 255, 255, 0.03);
+        }
+        .faq-icon {
+            font-size: 1.5rem;
+            transition: var(--transition);
+        }
+        .faq-item.active .faq-icon {
+            transform: rotate(45deg);
+        }
+        .faq-answer {
+            padding: 0 25px 0;
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease, padding 0.3s ease;
+        }
+        .faq-item.active .faq-answer {
+            padding: 0 25px 20px;
+            max-height: 500px;
+        }
+        .faq-answer p {
+            color: #4B5563;
+            line-height: 1.7;
+        }
+        body.dark-mode .faq-answer p {
+            color: #D1D5DB;
+        }
+        .cta-section {
+            background: linear-gradient(135deg, #2563EB, #3B82F6);
+            border-radius: 20px;
+            padding: 60px 30px;
+            text-align: center;
+            margin: 80px 0;
+            color: white;
+        }
+        .cta-title {
+            font-size: 2rem;
+            font-weight: 800;
+            margin-bottom: 20px;
+        }
+        .cta-text {
+            max-width: 600px;
+            margin: 0 auto 30px;
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+        .cta-button {
+            display: inline-block;
+            background: white;
+            color: #2563EB;
+            font-weight: 700;
+            padding: 15px 35px;
+            border-radius: 50px;
+            text-decoration: none;
+            transition: var(--transition);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        }
+        .cta-button:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 7px 20px rgba(0, 0, 0, 0.3);
+        }
+        .footer {
+            background: var(--card-bg);
+            padding: 40px 0;
+            text-align: center;
+            border-top: 1px solid var(--shadow-color);
+        }
+        .footer .container p {
+            color: #6B7280;
+            margin-bottom: 20px;
+        }
+        body.dark-mode .footer .container p {
+            color: #9CA3AF;
+        }
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-top: 20px;
+        }
+        .footer-link {
+            color: #4B5563;
+            text-decoration: none;
+            transition: var(--transition);
+        }
+        body.dark-mode .footer-link {
+            color: #9CA3AF;
+        }
+        .footer-link:hover {
+            color: var(--primary-color);
+        }
+        @media (min-width: 768px) {
+            .header { padding: 20px 0; }
+            .logo img { height: 35px; }
+            .main-content { padding-top: 150px; }
+            .hero-title { font-size: 3.5rem; }
+            .hero-subtitle { font-size: 1.25rem; }
+            .section { padding: 100px 0; }
+        }
+        @media (min-width: 1024px) {
+            .main-content { padding-top: 180px; }
+            .hero-title { font-size: 4rem; }
+            .section-title { font-size: 2.5rem; }
+        }
+    </style>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js" defer></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js" defer></script>
+</head>
+<body>
 
-    </head>
-    <body>
+    <header class="header">
+        <div class="container">
+            <a id="logo-link" class="logo" aria-label="На главную Nefarma">
+                <img src="logo.webp" alt="Nefarma Logo" fetchpriority="high">
+            </a>
+            <button class="theme-switcher" aria-label="Переключить тему">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-sun"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-moon"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+            </button>
+        </div>
+    </header>
 
-        <header class="header">
+    <main class="main-content">
+        <section class="hero">
             <div class="container">
-                <a id="logo-link" class="logo" aria-label="На главную Nefarma">
-                    <img src="logo.webp" alt="Nefarma Logo" fetchpriority="high">
-                </a>
-                <button class="theme-switcher" aria-label="Переключить тему">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-sun"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-moon"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
-                </button>
+                <h1 class="hero-title">СПОРТИВНАЯ FARMA ПО ВСЕМУ КАЗАХСТАНУ</h1>
+                <p class="hero-subtitle">Индивидуальный подбор подхода под ваши цели: набор массы, рельеф, восстановление. Все детали обсудим анонимно.</p>
+                
+                <div class="cta-links">
+                    <div class="container">
+                        <ul class="links-grid">
+                            <li>
+                                <a href="calc.html" class="btn btn-price">
+                                <svg role="img" viewBox="0 0 100 100" style="width: 24px; height: 24px;"><path fill-rule="evenodd" clip-rule="evenodd" d="M38.4023 17.4607C38.9672 16.72 39.5324 16.0273 40.0916 15.3807C28.8656 18.5874 19.8813 27.1065 16.0319 38.0449H29.3367C31.1782 28.9491 34.7635 22.2321 38.4023 17.4607ZM14.7725 42.5445C14.2662 44.9491 14 47.442 14 49.997C14 52.5024 14.256 54.9479 14.7432 57.3089H28.309C28.1482 55.4148 28.0625 53.4242 28.0625 51.3329C28.0625 48.2086 28.2537 45.2822 28.6 42.5445H14.7725ZM15.9828 61.8085C19.6716 72.4319 28.1971 80.7935 38.924 84.2581C38.7796 84.0974 38.635 83.9337 38.4906 83.7669C34.4372 79.0864 30.4929 72.0647 28.8552 61.8085H15.9828ZM52.25 85.9248V61.8085H66.5831C65.0108 70.8638 61.5075 76.8955 58.1076 80.8213C56.0478 83.1999 53.9971 84.8383 52.376 85.9168C52.334 85.9196 52.292 85.9222 52.25 85.9248ZM85.2568 57.3089C85.744 54.9479 86 52.5024 86 49.997C86 47.442 85.7338 44.9491 85.2275 42.5445H71.4C71.7463 45.2822 71.9375 48.2086 71.9375 51.3329C71.9375 53.4242 71.8518 55.4148 71.691 57.3089H85.2568ZM83.9681 38.0449C80.1187 27.1065 71.1344 18.5874 59.9084 15.3807C61.0328 16.72 61.5977 17.4607 65.2365 22.2321 68.8218 28.9491 70.6633 38.0449H83.9681ZM47.75 57.3089H32.8263C32.6549 55.4301 32.5625 53.4401 32.5625 51.3329C32.5625 48.1813 32.7692 45.2561 33.1387 42.5445H47.75V57.3089ZM52.25 42.5445V57.3089H67.1737C67.3451 55.4301 67.4375 53.4401 67.4375 51.3329C67.4375 48.1813 67.2308 45.2561 66.8613 42.5445H52.25ZM47.75 14.145V38.0449H33.9359C35.6853 30.0942 38.8578 24.2839 41.9806 20.1891C44.048 17.4782 46.1083 15.5005 47.75 14.145ZM52.25 14.145C53.8917 15.5005 55.952 17.4782 58.0194 20.1891C61.1422 24.2839 64.3147 30.0942 66.0641 38.0449H52.25V14.145Z"/></svg>
+                                    <span>Прайс-лист</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="https://wa.me/77780990459?text=Здравствуйте. Меня интересует спортивная фармакология (я с сайта nefarma.cc)" target="_blank" rel="noopener" class="btn btn-whatsapp">
+                                    <svg role="img" viewBox="0 0 100 100" style="width: 24px; height: 24px;"><path d="M50.168 10C60.8239 10.004 70.8257 14.1522 78.346 21.6819C85.8676 29.2114 90.0066 39.2185 90 49.8636C89.9906 71.8252 72.1203 89.6956 50.1668 89.6956H50.1508C43.4852 89.6929 36.9338 88.0208 31.1162 84.8468L10 90.3853L15.6516 69.7437C12.1665 63.7042 10.3323 56.851 10.3349 49.8304C10.343 27.8676 28.2127 10.0022 50.168 10Z"/></svg>
+                                    <span>WhatsApp (Руслан)</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="https://instagram.com/nefarma.kz02" target="_blank" rel="noopener" class="btn btn-instagram">
+                                    <svg role="img" viewBox="0 0 100 100" style="width: 24px; height: 24px;"><path d="M66.9644 10H33.04C20.3227 10 10 20.3227 10 32.9573V67.1167C10 79.6816 20.3227 90 33.04 90H66.96C79.6816 90 90 79.6816 90 67.0384V32.9616C90.0044 20.3227 79.6816 10 66.9644 10ZM50.0022 63.6033C42.4659 63.6033 36.4011 57.5168 36.4011 50.0022C36.4011 42.4876 42.4659 36.4011 50.0022 36.4011C57.5386 36.4011 63.6033 42.4876 63.6033 50.0022C63.6033 57.5168 57.5386 63.6033 50.0022 63.6033ZM72.8854 31.2027C70.2079 31.2027 68.0789 29.0824 68.0789 26.4049C68.0789 23.7273 70.2035 21.6027 72.8854 21.6027C75.5586 21.6027 77.6833 23.7273 77.6833 26.4049C77.6833 29.0824 75.5586 31.2027 72.8854 31.2027Z"/></svg>
+                                    <span>Instagram</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="https://t.me/nefarma_kz" target="_blank" rel="noopener" class="btn btn-telegram-channel">
+                                <svg role="img" viewBox="0 0 100 100" style="width: 24px; height: 24px;"><path d="M83.1797 17.5886C83.1797 17.5886 90.5802 14.7028 89.9635 21.711C89.758 24.5968 87.9079 34.6968 86.4688 45.6214L81.5351 77.9827C81.5351 77.9827 81.124 82.7235 77.4237 83.548C73.7233 84.3724 68.173 80.6623 67.145 79.8378C66.3227 79.2195 51.7273 69.9438 46.5878 65.4092C45.1488 64.1724 43.5042 61.6989 46.7934 58.8132L68.3785 38.201C70.8454 35.7274 73.3122 29.956 63.0336 36.9642L34.2535 56.5459C34.2535 56.5459 30.9644 58.6071 24.7973 56.752L11.4351 52.6295C11.4351 52.6295 6.50135 49.5377 14.9298 46.4457C35.4871 36.7579 60.7724 26.864 83.1797 17.5886Z"/></svg>
+                                    <span>Telegram Канал</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="https://t.me/nefarma_kazakhstan" target="_blank" rel="noopener" class="btn btn-telegram">
+                                <svg role="img" viewBox="0 0 100 100" style="width: 24px; height: 24px;"><path d="M83.1797 17.5886C83.1797 17.5886 90.5802 14.7028 89.9635 21.711C89.758 24.5968 87.9079 34.6968 86.4688 45.6214L81.5351 77.9827C81.5351 77.9827 81.124 82.7235 77.4237 83.548C73.7233 84.3724 68.173 80.6623 67.145 79.8378C66.3227 79.2195 51.7273 69.9438 46.5878 65.4092C45.1488 64.1724 43.5042 61.6989 46.7934 58.8132L68.3785 38.201C70.8454 35.7274 73.3122 29.956 63.0336 36.9642L34.2535 56.5459C34.2535 56.5459 30.9644 58.6071 24.7973 56.752L11.4351 52.6295C11.4351 52.6295 6.50135 49.5377 14.9298 46.4457C35.4871 36.7579 60.7724 26.864 83.1797 17.5886Z"/></svg>
+                                    <span>Telegram (Руслан)</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="wiki.html" class="btn btn-wiki">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"></path></svg>
+                                    <span>Wiki</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
             </div>
-        </header>
+        </section>
 
-        <main class="main-content">
-            <section class="hero">
-                <div class="container">
-                    <h1 class="hero-title">СПОРТИВНАЯ FARMA ПО ВСЕМУ КАЗАХСТАНУ</h1>
-                    <p class="hero-subtitle">Индивидуальный подбор подхода под ваши цели: набор массы, рельеф, восстановление. <br>Все детали обсудим анонимно.</p>
-                </div>
-            </section>
-
-            <section class="cta-links">
-                <div class="container">
-                    <ul class="links-grid">
-                        <li>
-                            <a href="calc.html" class="btn btn-price">
-                            <svg role="img" viewBox="0 0 100 100" style="width: 24px; height: 24px;"><path fill-rule="evenodd" clip-rule="evenodd" d="M38.4023 17.4607C38.9672 16.72 39.5324 16.0273 40.0916 15.3807C28.8656 18.5874 19.8813 27.1065 16.0319 38.0449H29.3367C31.1782 28.9491 34.7635 22.2321 38.4023 17.4607ZM14.7725 42.5445C14.2662 44.9491 14 47.442 14 49.997C14 52.5024 14.256 54.9479 14.7432 57.3089H28.309C28.1482 55.4148 28.0625 53.4242 28.0625 51.3329C28.0625 48.2086 28.2537 45.2822 28.6 42.5445H14.7725ZM15.9828 61.8085C19.6716 72.4319 28.1971 80.7935 38.924 84.2581C38.7796 84.0974 38.635 83.9337 38.4906 83.7669C34.4372 79.0864 30.4929 72.0647 28.8552 61.8085H15.9828ZM52.25 85.9248V61.8085H66.5831C65.0108 70.8638 61.5075 76.8955 58.1076 80.8213C56.0478 83.1999 53.9971 84.8383 52.376 85.9168C52.334 85.9196 52.292 85.9222 52.25 85.9248ZM85.2568 57.3089C85.744 54.9479 86 52.5024 86 49.997C86 47.442 85.7338 44.9491 85.2275 42.5445H71.4C71.7463 45.2822 71.9375 48.2086 71.9375 51.3329C71.9375 53.4242 71.8518 55.4148 71.691 57.3089H85.2568ZM83.9681 38.0449C80.1187 27.1065 71.1344 18.5874 59.9084 15.3807C61.0328 16.72 61.5977 17.4607C65.2365 22.2321 68.8218 28.9491 70.6633 38.0449H83.9681ZM47.75 57.3089H32.8263C32.6549 55.4301 32.5625 53.4401 32.5625 51.3329C32.5625 48.1813 32.7692 45.2561 33.1387 42.5445H47.75V57.3089ZM52.25 42.5445V57.3089H67.1737C67.3451 55.4301 67.4375 53.4401 67.4375 51.3329C67.4375 48.1813 67.2308 45.2561 66.8613 42.5445H52.25ZM47.75 14.145V38.0449H33.9359C35.6853 30.0942 38.8578 24.2839 41.9806 20.1891C44.048 17.4782 46.1083 15.5005 47.75 14.145ZM52.25 14.145C53.8917 15.5005 55.952 17.4782 58.0194 20.1891C61.1422 24.2839 64.3147 30.0942 66.0641 38.0449H52.25V14.145Z"/></svg>
-                                <span>Прайс-лист</span>
-                            </a>
-                        </li>
-                        <li>
-                            <a href="https://wa.me/77780990459?text=Здравствуйте. Меня интересует спортивная фармакология (я с сайта nefarma.cc)" target="_blank" rel="noopener" class="btn btn-whatsapp">
-                                <svg role="img" viewBox="0 0 100 100" style="width: 24px; height: 24px;"><path d="M50.168 10C60.8239 10.004 70.8257 14.1522 78.346 21.6819C85.8676 29.2114 90.0066 39.2185 90 49.8636C89.9906 71.8252 72.1203 89.6956 50.1668 89.6956H50.1508C43.4852 89.6929 36.9338 88.0208 31.1162 84.8468L10 90.3853L15.6516 69.7437C12.1665 63.7042 10.3323 56.851 10.3349 49.8304C10.343 27.8676 28.2127 10.0022 50.168 10Z"/></svg>
-                                <span>WhatsApp (Руслан)</span>
-                            </a>
-                        </li>
-                        <li>
-                            <a href="https://instagram.com/nefarma.kz02" target="_blank" rel="noopener" class="btn btn-instagram">
-                                <svg role="img" viewBox="0 0 100 100" style="width: 24px; height: 24px;"><path d="M66.9644 10H33.04C20.3227 10 10 20.3227 10 32.9573V67.1167C10 79.6816 20.3227 90 33.04 90H66.96C79.6816 90 90 79.6816 90 67.0384V32.9616C90.0044 20.3227 79.6816 10 66.9644 10ZM50.0022 63.6033C42.4659 63.6033 36.4011 57.5168 36.4011 50.0022C36.4011 42.4876 42.4659 36.4011 50.0022 36.4011C57.5386 36.4011 63.6033 42.4876 63.6033 50.0022C63.6033 57.5168 57.5386 63.6033 50.0022 63.6033ZM72.8854 31.2027C70.2079 31.2027 68.0789 29.0824 68.0789 26.4049C68.0789 23.7273 70.2035 21.6027 72.8854 21.6027C75.5586 21.6027 77.6833 23.7273 77.6833 26.4049C77.6833 29.0824 75.5586 31.2027 72.8854 31.2027Z"/></svg>
-                                <span>Instagram</span>
-                            </a>
-                        </li>
-                        <li>
-                            <a href="https://t.me/nefarma_kz" target="_blank" rel="noopener" class="btn btn-telegram-channel">
-                            <svg role="img" viewBox="0 0 100 100" style="width: 24px; height: 24px;"><path d="M83.1797 17.5886C83.1797 17.5886 90.5802 14.7028 89.9635 21.711C89.758 24.5968 87.9079 34.6968 86.4688 45.6214L81.5351 77.9827C81.5351 77.9827 81.124 82.7235 77.4237 83.548C73.7233 84.3724 68.173 80.6623 67.145 79.8378C66.3227 79.2195 51.7273 69.9438 46.5878 65.4092C45.1488 64.1724 43.5042 61.6989 46.7934 58.8132L68.3785 38.201C70.8454 35.7274 73.3122 29.956 63.0336 36.9642L34.2535 56.5459C34.2535 56.5459 30.9644 58.6071 24.7973 56.752L11.4351 52.6295C11.4351 52.6295 6.50135 49.5377 14.9298 46.4457C35.4871 36.7579 60.7724 26.864 83.1797 17.5886Z"/></svg>
-                                <span>Telegram Канал</span>
-                            </a>
-                        </li>
-                        <li>
-                            <a href="https://t.me/nefarma_kazakhstan" target="_blank" rel="noopener" class="btn btn-telegram">
-                            <svg role="img" viewBox="0 0 100 100" style="width: 24px; height: 24px;"><path d="M83.1797 17.5886C83.1797 17.5886 90.5802 14.7028 89.9635 21.711C89.758 24.5968 87.9079 34.6968 86.4688 45.6214L81.5351 77.9827C81.5351 77.9827 81.124 82.7235 77.4237 83.548C73.7233 84.3724 68.173 80.6623 67.145 79.8378C66.3227 79.2195 51.7273 69.9438 46.5878 65.4092C45.1488 64.1724 43.5042 61.6989 46.7934 58.8132L68.3785 38.201C70.8454 35.7274 73.3122 29.956 63.0336 36.9642L34.2535 56.5459C34.2535 56.5459 30.9644 58.6071 24.7973 56.752L11.4351 52.6295C11.4351 52.6295 6.50135 49.5377 14.9298 46.4457C35.4871 36.7579 60.7724 26.864 83.1797 17.5886Z"/></svg>
-                                <span>Telegram (Руслан)</span>
-                            </a>
-                        </li>
-                        <li>
-                            <a href="wiki.html" class="btn btn-wiki">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"></path></svg>
-                                <span>Wiki</span>
-                            </a>
-                        </li>
-                    </ul>
-                </div>
-            </section>
-        </main>
-
-        <footer class="footer">
+        <section class="section features">
             <div class="container">
-                <p>© 2024 - <span id="current-year"></span> Nefarma Kazakhstan. Все права защищены.</p>
+                <h2 class="section-title">Наши преимущества</h2>
+                <div class="features-grid">
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+                            </svg>
+                        </div>
+                        <h3>100% Анонимность</h3>
+                        <p>Все консультации и покупки полностью конфиденциальны. Ваши данные защищены.</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <circle cx="12" cy="12" r="10"></circle>
+                                <polyline points="12 6 12 12 16 14"></polyline>
+                            </svg>
+                        </div>
+                        <h3>Быстрая доставка</h3>
+                        <p>Отправка в течение 24 часов после заказа. Доставка по всему Казахстану 1-3 дня.</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M20.24 12.24a6 6 0 0 0-8.49-8.49L5 10.5V19h8.5z"></path>
+                                <line x1="16" y1="8" x2="2" y2="22"></line>
+                                <line x1="17.5" y1="15" x2="9" y2="15"></line>
+                            </svg>
+                        </div>
+                        <h3>Оригинальные препараты</h3>
+                        <p>Только сертифицированные продукты от проверенных производителей.</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                                <circle cx="9" cy="7" r="4"></circle>
+                                <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+                                <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+                            </svg>
+                        </div>
+                        <h3>Персональный подход</h3>
+                        <p>Индивидуальные программы под ваши цели и особенности организма.</p>
+                    </div>
+                </div>
             </div>
-        </footer>
-        
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js" defer></script>
-        <script src="script.js" defer></script>
+        </section>
 
-    </body>
-    </html>
+        <section class="section faq">
+            <div class="container">
+                <h2 class="section-title">Частые вопросы</h2>
+                <div class="faq-list">
+                    <div class="faq-item">
+                        <button class="faq-question">Как происходит консультация?<span class="faq-icon">+</span></button>
+                        <div class="faq-answer">
+                            <p>Консультация проходит полностью анонимно через Telegram или WhatsApp. Вы описываете ваши цели, текущие параметры и опыт, после чего наш специалист подбирает индивидуальную программу с учетом всех особенностей.</p>
+                        </div>
+                    </div>
+                    <div class="faq-item">
+                        <button class="faq-question">Гарантируете ли вы качество продукции?<span class="faq-icon">+</span></button>
+                        <div class="faq-answer">
+                            <p>Да, мы работаем только с проверенными поставщиками и предоставляем сертификаты качества на всю продукцию. Каждая партия проходит тщательную проверку перед отправкой клиенту.</p>
+                        </div>
+                    </div>
+                    <div class="faq-item">
+                        <button class="faq-question">Как происходит оплата и доставка?<span class="faq-icon">+</span></button>
+                        <div class="faq-answer">
+                            <p>Мы предлагаем несколько вариантов оплаты: наличные при получении, перевод на карту или электронные кошельки. Доставка осуществляется по всему Казахстану курьерскими службами с соблюдением полной анонимности.</p>
+                        </div>
+                    </div>
+                    <div class="faq-item">
+                        <button class="faq-question">Можно ли получить программу для начинающих?<span class="faq-icon">+</span></button>
+                        <div class="faq-answer">
+                            <p>Конечно! Мы разрабатываем программы как для профессиональных спортсменов, так и для новичков. Для начинающих подбираются щадящие схемы с минимальными дозировками и подробными рекомендациями по тренировкам и питанию.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <div class="container">
+            <div class="cta-section">
+                <h3 class="cta-title">Готовы к трансформации?</h3>
+                <p class="cta-text">Свяжитесь с нами прямо сейчас для бесплатной консультации и начните свой путь к идеальной форме!</p>
+                <a href="https://t.me/nefarma_kazakhstan" class="cta-button">Начать сейчас</a>
+            </div>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <p>© 2024 - <span id="current-year"></span> Nefarma Kazakhstan. Все права защищены.</p>
+        </div>
+    </footer>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // Убеждаемся, что GSAP загрузился
+            if (typeof gsap === 'undefined') {
+                console.error("GSAP не загрузился! Анимации не будут работать.");
+                document.body.style.visibility = 'visible';
+                return;
+            }
+            
+            // Анимация появления
+            gsap.set('body', { visibility: 'visible' });
+            const tl = gsap.timeline({
+                defaults: {
+                    ease: "power4.out",
+                    duration: 1.2
+                }
+            });
+            
+            tl.from('.header', { 
+                y: -100, 
+                opacity: 0,
+                duration: 1
+            })
+            .from('.hero-title', { 
+                y: 50,
+                opacity: 0,
+                skewX: -10 
+            }, "-=0.8")
+            .from('.hero-subtitle', { 
+                y: 30,
+                opacity: 0 
+            }, "-=1")
+            .from('.links-grid li', {
+                y: 40,
+                opacity: 0,
+                stagger: 0.1,
+                ease: 'back.out(1.7)'
+            }, "-=0.8");
+
+            // Анимация при скролле для секций
+            if (typeof ScrollTrigger !== 'undefined') {
+                gsap.utils.toArray('.feature-card, .testimonial-card, .faq-item').forEach(item => {
+                    gsap.from(item, {
+                        scrollTrigger: {
+                            trigger: item,
+                            start: 'top 90%',
+                            toggleActions: 'play none none none'
+                        },
+                        y: 50,
+                        opacity: 0,
+                        duration: 0.8
+                    });
+                });
+            }
+
+            // Логика переключения темы
+            const themeSwitcher = document.querySelector('.theme-switcher');
+            const body = document.body;
+            const header = document.querySelector('.header');
+
+            const savedTheme = localStorage.getItem('theme');
+            if (savedTheme) {
+                body.classList.add(savedTheme);
+            }
+
+            themeSwitcher.addEventListener('click', () => {
+                body.classList.toggle('dark-mode');
+                
+                if (body.classList.contains('dark-mode')) {
+                    localStorage.setItem('theme', 'dark-mode');
+                } else {
+                    localStorage.removeItem('theme');
+                }
+            });
+
+            // Динамическое обновление года в футере
+            const currentYearSpan = document.getElementById('current-year');
+            if (currentYearSpan) {
+                currentYearSpan.textContent = new Date().getFullYear();
+            }
+
+            // Эффект при скролле для хедера
+            window.addEventListener('scroll', () => {
+                if (window.scrollY > 50) {
+                    header.classList.add('scrolled');
+                } else {
+                    header.classList.remove('scrolled');
+                }
+            });
+
+            // Аккордеон для FAQ
+            const faqItems = document.querySelectorAll('.faq-item');
+            faqItems.forEach(item => {
+                const question = item.querySelector('.faq-question');
+                question.addEventListener('click', () => {
+                    const isActive = item.classList.contains('active');
+                    
+                    // Закрываем все открытые элементы
+                    faqItems.forEach(el => {
+                        el.classList.remove('active');
+                    });
+                    
+                    // Открываем текущий, если он не был открыт
+                    if (!isActive) {
+                        item.classList.add('active');
+                    }
+                });
+            });
+        });
+    </script>
+
+</body>
+</html>

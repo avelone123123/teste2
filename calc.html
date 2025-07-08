@@ -8,6 +8,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="icon" type="image/x-icon" href="/favicon.ico">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
 
@@ -21,6 +22,7 @@
             --text-muted-color: #a0a0a0;
             --border-color: #444;
             --success-color: #28a745;
+            --warning-color: #ffc107;
             --highlight-bg: rgba(0, 170, 255, 0.1);
             --font-main: 'Inter', sans-serif;
             --border-radius: 8px;
@@ -47,6 +49,9 @@
             background-color: var(--bg-color);
             padding: 15px 0;
             margin-bottom: 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
         }
 
         .header .container {
@@ -54,8 +59,9 @@
             margin: 0 auto;
             padding: 0 15px;
             display: flex;
-            justify-content: center;
+            justify-content: space-between;
             align-items: center;
+            width: 100%;
         }
 
         .logo img {
@@ -77,21 +83,56 @@
         .filter-wrapper {
             margin: 15px 0;
             max-width: 100%;
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
         }
 
         .filter-input {
-            width: 100%;
-            padding: 10px;
+            flex-grow: 1;
+            padding: 12px 15px;
             background: var(--surface-color);
             color: var(--text-color);
             border: 1px solid var(--border-color);
-            border-radius: 6px;
+            border-radius: var(--border-radius);
             font-size: 16px;
             box-sizing: border-box;
+            min-width: 200px;
         }
 
         .filter-input::placeholder {
             color: var(--text-muted-color);
+        }
+
+        .filter-buttons {
+            display: flex;
+            gap: 8px;
+        }
+
+        .filter-btn {
+            background: var(--surface-color);
+            color: var(--text-color);
+            border: 1px solid var(--border-color);
+            border-radius: var(--border-radius);
+            padding: 8px 15px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .filter-btn:hover {
+            background: var(--primary-hover-color);
+            border-color: var(--primary-hover-color);
+            color: white;
+        }
+
+        .filter-btn.active {
+            background: var(--primary-color);
+            border-color: var(--primary-color);
+            color: white;
         }
 
         .table-wrapper {
@@ -113,6 +154,9 @@
             color: var(--text-muted-color);
             font-size: 12px;
             opacity: 0.8;
+            background: rgba(44, 44, 44, 0.8);
+            padding: 2px 6px;
+            border-radius: 4px;
         }
 
         #priceTable {
@@ -122,7 +166,7 @@
         }
 
         #priceTable th, #priceTable td {
-            padding: 10px 12px;
+            padding: 12px 15px;
             text-align: left;
             border-bottom: 1px solid var(--border-color);
             vertical-align: middle;
@@ -235,6 +279,7 @@
             font-weight: 600;
             border-radius: 4px;
             padding: 2px 4px;
+            transition: all 0.3s ease;
         }
         
         #priceTable th.price-highlight {
@@ -246,20 +291,24 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 6px;
+            gap: 8px;
         }
 
         .quantity-btn {
             background: var(--border-color);
             color: var(--text-color);
             border: none;
-            width: 32px;
-            height: 32px;
+            width: 40px;
+            height: 40px;
             border-radius: 50%;
-            font-size: 20px;
+            font-size: 24px;
             font-weight: bold;
             cursor: pointer;
             transition: background-color 0.2s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            line-height: 1;
         }
 
         .quantity-btn:hover {
@@ -268,7 +317,7 @@
         
         .quantity-input {
             width: 45px;
-            height: 34px;
+            height: 40px;
             text-align: center;
             background: var(--bg-color);
             color: var(--text-color);
@@ -287,19 +336,20 @@
         .summary-panel {
             background: var(--surface-color);
             border-radius: var(--border-radius);
-            padding: 15px;
+            padding: 20px;
             margin-top: 20px;
             box-shadow: var(--shadow);
             display: flex;
             justify-content: space-between;
             align-items: center;
             flex-wrap: wrap;
-            gap: 15px;
+            gap: 20px;
         }
 
         .totals {
             font-size: 14px;
-            line-height: 1.5;
+            line-height: 1.6;
+            flex-grow: 1;
         }
 
         .totals #tier {
@@ -320,24 +370,29 @@
         .kaspi-info {
             font-size: 12px;
             color: var(--text-muted-color);
+            margin-top: 5px;
         }
 
         .actions {
             display: flex;
-            gap: 10px;
+            gap: 15px;
             flex-wrap: wrap;
         }
 
         .action-button {
-            padding: 10px 20px;
-            font-size: 15px;
+            padding: 12px 20px;
+            font-size: 16px;
             font-weight: 600;
             border: none;
             border-radius: var(--border-radius);
             cursor: pointer;
             transition: background-color 0.2s ease;
             text-align: center;
-            min-width: 140px;
+            flex-grow: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
         }
 
         .whatsapp-btn {
@@ -352,36 +407,68 @@
         }
         .copy-btn:hover { background-color: var(--primary-hover-color); }
 
+        .clear-btn {
+            background-color: var(--warning-color);
+            color: #333;
+        }
+        .clear-btn:hover { background-color: #e0a800; }
+
         #loader {
             text-align: center;
             padding: 40px;
             font-size: 16px;
             color: var(--text-muted-color);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .loader-spinner {
+            width: 50px;
+            height: 50px;
+            border: 5px solid rgba(255,255,255,0.1);
+            border-radius: 50%;
+            border-top-color: var(--primary-color);
+            animation: spin 1s ease-in-out infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
         }
 
         .toast-notification {
             position: fixed;
-            bottom: 15px;
+            bottom: 20px;
             left: 50%;
             transform: translateX(-50%);
             background-color: var(--primary-color);
             color: white;
-            padding: 10px 20px;
+            padding: 12px 25px;
             border-radius: var(--border-radius);
             box-shadow: var(--shadow);
             z-index: 1000;
             opacity: 0;
             visibility: hidden;
-            transition: opacity 0.3s ease;
+            transition: opacity 0.3s ease, transform 0.3s ease;
+            transform: translateX(-50%) translateY(20px);
+            display: flex;
+            align-items: center;
+            gap: 10px;
         }
         
         .toast-notification.warning {
              background-color: var(--tag-low-stock-bg);
         }
 
+        .toast-notification.success {
+             background-color: var(--success-color);
+        }
+
         .toast-notification.show {
             opacity: 1;
             visibility: visible;
+            transform: translateX(-50%) translateY(0);
         }
         
         .scroll-top-btn {
@@ -409,15 +496,47 @@
         .scroll-top-btn.visible {
             display: block;
         }
+        
+        .summary-highlight {
+            animation: highlight 1.5s ease;
+        }
 
+        @keyframes highlight {
+            0% { background-color: rgba(0, 170, 255, 0.3); }
+            100% { background-color: transparent; }
+        }
+        
+        /* --- Адаптивность --- */
         @media (max-width: 768px) {
             body { padding: 10px; font-size: 14px; }
             .table-wrapper::before { display: block; }
-            #priceTable th, #priceTable td { padding: 8px 10px; }
-            .quantity-input { width: 40px; height: 32px; font-size: 14px; }
-            .summary-panel { flex-direction: column; align-items: stretch; }
-            .actions { width: 100%; flex-direction: column; }
-            .action-button { width: 100%; }
+            #priceTable th, #priceTable td { padding: 10px; }
+            
+            .summary-panel { 
+                flex-direction: column; 
+                align-items: stretch; 
+                text-align: center;
+                gap: 15px;
+            }
+            .actions { 
+                width: 100%; 
+                flex-direction: column; 
+                gap: 10px;
+            }
+            .action-button { 
+                width: 100%; 
+            }
+            .filter-wrapper {
+                flex-direction: column;
+            }
+            .filter-buttons {
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+            .filter-btn {
+                font-size: 12px;
+                padding: 6px 10px;
+            }
         }
     </style>
 </head>
@@ -428,12 +547,31 @@
             <a href="index.html" class="logo" aria-label="На главную Nefarma">
                 <img src="https://static.tildacdn.one/tild6461-6365-4266-b662-336533346434/whitewhite_3.png" alt="Nefarma Logo">
             </a>
+            <div class="contact-info">
+                <a href="tel:+77780990459" style="color: var(--text-color); text-decoration: none;">
+                    <i class="fas fa-phone"></i> +7 (778) 099-04-59
+                </a>
+            </div>
         </div>
     </header>
 
     <div class="calculator-container" id="app" style="display: none;">
         <div class="filter-wrapper">
-            <input type="text" class="filter-input" id="filterInput" placeholder="Поиск по названию..." />
+            <input type="text" class="filter-input" id="filterInput" placeholder="Поиск по названию или бренду..." />
+            <div class="filter-buttons">
+                <button class="filter-btn" id="filterHot" data-filter="hot">
+                    <i class="fas fa-fire"></i> Хиты
+                </button>
+                <button class="filter-btn" id="filterNew" data-filter="new">
+                    <i class="fas fa-star"></i> Новинки
+                </button>
+                <button class="filter-btn" id="filterLowStock" data-filter="low">
+                    <i class="fas fa-exclamation-triangle"></i> Мало
+                </button>
+                <button class="filter-btn" id="resetFilter">
+                    <i class="fas fa-times"></i> Сброс
+                </button>
+            </div>
         </div>
         <div class="table-wrapper">
             <table id="priceTable">
@@ -466,18 +604,28 @@
                 <div>Итоговая сумма: <span class="final-total" id="total">0 ₸</span></div>
             </div>
             <div class="actions">
-                <button class="action-button copy-btn" onclick="app.copyOrderLink()">Скопировать заказ</button>
-                <button class="action-button whatsapp-btn" onclick="app.sendToWhatsApp()">Заказ в WhatsApp</button>
+                <button class="action-button clear-btn" onclick="app.clearOrder()">
+                    <i class="fas fa-trash-alt"></i> Очистить
+                </button>
+                <button class="action-button copy-btn" onclick="app.copyOrderLink()">
+                    <i class="fas fa-copy"></i> Скопировать
+                </button>
+                <button class="action-button whatsapp-btn" onclick="app.sendToWhatsApp()">
+                    <i class="fab fa-whatsapp"></i> WhatsApp
+                </button>
             </div>
         </div>
     </div>
-    <div id="loader">Загрузка прайс-листа...</div>
+    <div id="loader">
+        <div class="loader-spinner"></div>
+        <div>Загрузка прайс-листа...</div>
+    </div>
     <div id="toast" class="toast-notification"></div>
-    <button class="scroll-top-btn" id="scrollTopBtn" title="Наверх">↑</button>
+    <button class="scroll-top-btn" id="scrollTopBtn" title="Наверх"><i class="fas fa-arrow-up"></i></button>
     <script>
     const app = {
         config: {
-            csvPath: "https://docs.google.com/spreadsheets/d/e/2PACX-1vRDyEkJ9XNV89qqGQhPsl4Fx8DC9tMyRpAt6SKX0IZKHmr8-a6qgLx6B0iCwnZu4wMx7O3qYMCnueFh/pub?gid=291189384&single=true&output=csv",
+            csvPath: "https://docs.google.com/spreadsheets/d/e/2PACX-1vTyYZYFbljun_-5qoXWafHGdIB06GdN7578E3gZwC7ksI3ZmqmBm2xhOJjZqq-5WlrNYy3KixOqf9NC/pub?gid=1324721312&single=true&output=csv",
             whatsAppPhone: "77780990459",
             priceTiers: {
                 tier1: { limit: 0, label: "до 60000 ₸" },
@@ -485,15 +633,15 @@
                 tier3: { limit: 100000, label: "от 100000 ₸" },
             },
             kaspiMultiplier: 1.1,
-            // ===== НОВОЕ: Настройки кэширования =====
-            cacheKey: 'priceListData_v1', // Ключ для хранения в localStorage
-            cacheDuration: 5 * 60 * 1000, // 5 минут в миллисекундах
+            cacheKey: 'priceListData_v1',
+            cacheDuration: 5 * 60 * 1000,
         },
         state: {
             products: [],
             quantities: {},
             filter: '',
             collapsedCategories: new Set(),
+            activeFilter: null,
         },
         elements: {
             appContainer: document.getElementById('app'),
@@ -506,6 +654,10 @@
             toastEl: document.getElementById("toast"),
             filterInput: document.getElementById("filterInput"),
             scrollTopBtn: document.getElementById("scrollTopBtn"),
+            filterHot: document.getElementById("filterHot"),
+            filterNew: document.getElementById("filterNew"),
+            filterLowStock: document.getElementById("filterLowStock"),
+            resetFilter: document.getElementById("resetFilter"),
         },
         init() {
             for (const key in this) {
@@ -518,20 +670,23 @@
             this.elements.tableBody.addEventListener('click', this.handleCategoryClick);
             window.addEventListener('scroll', this.handleScroll);
             this.elements.scrollTopBtn.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
+            
+            // Фильтры
+            this.elements.filterHot.addEventListener('click', () => this.toggleFilter('hot'));
+            this.elements.filterNew.addEventListener('click', () => this.toggleFilter('new'));
+            this.elements.filterLowStock.addEventListener('click', () => this.toggleFilter('low'));
+            this.elements.resetFilter.addEventListener('click', this.resetFilters);
         },
 
-        // ===== ИЗМЕНЕНО: Полностью переработанная функция загрузки данных =====
         async loadData() {
             const cachedItem = JSON.parse(localStorage.getItem(this.config.cacheKey));
             
-            // Если есть свежие данные в кэше, используем их
             if (cachedItem && (Date.now() - cachedItem.timestamp < this.config.cacheDuration)) {
-                console.log("Загрузка данных из кэша (кэш свежий).");
+                console.log("Загрузка данных из кэша.");
                 this.processData(cachedItem.products);
                 return;
             }
 
-            // Если кэш устарел или его нет, пытаемся загрузить новые данные
             console.log("Кэш устарел или отсутствует. Запрос новых данных...");
             try {
                 const response = await fetch(this.config.csvPath, { cache: "no-store" });
@@ -548,7 +703,6 @@
                         if (products.length === 0) {
                            throw new Error("Не удалось найти валидные данные в CSV.");
                         }
-                        // Сохраняем свежие данные в кэш
                         localStorage.setItem(this.config.cacheKey, JSON.stringify({
                             timestamp: Date.now(),
                             products: products
@@ -559,19 +713,25 @@
                 });
             } catch (error) {
                 console.error("Не удалось загрузить свежие данные:", error);
-                // Если загрузка провалилась, проверяем, есть ли хотя бы старые данные в кэше
+                const cachedItem = JSON.parse(localStorage.getItem(this.config.cacheKey));
                 if (cachedItem && cachedItem.products) {
                     console.log("Ошибка загрузки. Используется устаревшая версия прайса из кэша.");
                     this.showToast("Не удалось обновить прайс. Показана сохраненная версия.", 'warning');
                     this.processData(cachedItem.products);
                 } else {
-                    // Если нет ни свежих данных, ни кэша — показываем ошибку
-                    this.elements.loader.textContent = `Не удалось загрузить прайс-лист. Проверьте интернет-соединение и попробуйте обновить страницу.`;
+                    this.elements.loader.innerHTML = `
+                        <div style="color: #ff6b6b; max-width: 400px;">
+                            <i class="fas fa-exclamation-triangle" style="font-size: 24px; margin-bottom: 10px;"></i>
+                            <div>Не удалось загрузить прайс-лист. Проверьте интернет-соединение и попробуйте обновить страницу.</div>
+                            <button onclick="location.reload()" style="margin-top: 15px; background: var(--primary-color); color: white; border: none; padding: 10px 20px; border-radius: var(--border-radius); cursor: pointer;">
+                                <i class="fas fa-sync-alt"></i> Обновить страницу
+                            </button>
+                        </div>
+                    `;
                 }
             }
         },
 
-        // ===== НОВАЯ ФУНКЦИЯ: Парсинг данных из CSV =====
         parseProducts(data) {
              return data
                 .filter(row => row.Название && row["Цена1"])
@@ -588,10 +748,11 @@
                     isBestseller: String(row.бестселлер || '').trim().toLowerCase() === 'да',
                     isNew: String(row.новинка || '').trim().toLowerCase() === 'да',
                     isLowStock: String(row.мало || '').trim().toLowerCase() === 'да',
-                }));
+                    isAvailable: (row.наличие || '').trim().toLowerCase() !== 'нет' // Новое поле для наличия
+                }))
+                .filter(product => product.isAvailable); // Фильтрация недоступных товаров
         },
-
-        // ===== НОВАЯ ФУНКЦИЯ: Обработка данных и отображение на странице =====
+        
         processData(products) {
             this.state.products = products;
             this.restoreStateFromUrl();
@@ -608,7 +769,19 @@
             const filter = this.state.filter.toLowerCase();
 
             this.state.products.forEach(item => {
-                if (filter && !item.name.toLowerCase().includes(filter)) return;
+                // Применяем текстовый фильтр
+                if (filter && 
+                    !item.name.toLowerCase().includes(filter) && 
+                    !item.brand.toLowerCase().includes(filter)) {
+                    return;
+                }
+                
+                // Применяем активный фильтр (хиты/новинки/мало)
+                if (this.state.activeFilter) {
+                    if (this.state.activeFilter === 'hot' && !item.isBestseller) return;
+                    if (this.state.activeFilter === 'new' && !item.isNew) return;
+                    if (this.state.activeFilter === 'low' && !item.isLowStock) return;
+                }
 
                 if (item.category && item.category !== currentCategory) {
                     currentCategory = item.category;
@@ -627,9 +800,9 @@
                 
                 const tagsHtml = `
                     <div class="tags-container">
-                        ${item.isBestseller ? '<span class="tag tag-bestseller">🔥 HOT</span>' : ''}
-                        ${item.isNew ? '<span class="tag tag-new">✨ new</span>' : ''}
-                        ${item.isLowStock ? '<span class="tag tag-low-stock">⏳ мало</span>' : ''}
+                        ${item.isBestseller ? '<span class="tag tag-bestseller"><i class="fas fa-fire"></i> HOT</span>' : ''}
+                        ${item.isNew ? '<span class="tag tag-new"><i class="fas fa-star"></i> NEW</span>' : ''}
+                        ${item.isLowStock ? '<span class="tag tag-low-stock"><i class="fas fa-exclamation-triangle"></i> МАЛО</span>' : ''}
                     </div>
                 `;
 
@@ -639,9 +812,9 @@
                         ${tagsHtml}
                     </td>
                     <td class="col-brand">${item.brand}</td>
-                    <td class="col-price price-p1">${item.prices.p1.toLocaleString('ru-RU')}</td>
-                    <td class="col-price price-p2">${item.prices.p2.toLocaleString('ru-RU')}</td>
-                    <td class="col-price price-p3">${item.prices.p3.toLocaleString('ru-RU')}</td>
+                    <td class="col-price price-p1">${item.prices.p1.toLocaleString('ru-RU')} ₸</td>
+                    <td class="col-price price-p2">${item.prices.p2.toLocaleString('ru-RU')} ₸</td>
+                    <td class="col-price price-p3">${item.prices.p3.toLocaleString('ru-RU')} ₸</td>
                     <td class="col-qty">
                         <div class="quantity-control">
                             <button class="quantity-btn" data-action="decrease" data-id="${item.id}">-</button>
@@ -655,6 +828,19 @@
             });
             this.elements.tableBody.innerHTML = '';
             this.elements.tableBody.appendChild(fragment);
+            
+            // Если нет товаров после фильтрации
+            if (this.elements.tableBody.children.length === 0) {
+                this.elements.tableBody.innerHTML = `
+                    <tr>
+                        <td colspan="7" style="text-align: center; padding: 30px;">
+                            <i class="fas fa-search" style="font-size: 24px; margin-bottom: 10px; display: block;"></i>
+                            По вашему запросу ничего не найдено
+                        </td>
+                    </tr>
+                `;
+            }
+            
             this.elements.tableBody.addEventListener('click', this.handleQuantityButtonClick);
             this.elements.tableBody.addEventListener('input', this.handleQuantityInput);
             this.restoreQuantities();
@@ -681,6 +867,7 @@
             const max = parseInt(input.max, 10) || 99;
             let value = parseInt(input.value, 10) || 0;
             if (value > max) value = max;
+            if (value < 0) value = 0;
             input.value = Math.max(0, Math.floor(value));
             this.updateAndSave();
         },
@@ -746,15 +933,32 @@
                 const price = product.prices[`p${tier}`];
                 const subtotal = price * qty;
                 finalTotal += subtotal;
-                row.querySelector('.sum').textContent = `${subtotal.toLocaleString('ru-RU')} ₸`;
+                
+                const sumCell = row.querySelector('.sum');
+                sumCell.textContent = `${subtotal.toLocaleString('ru-RU')} ₸`;
                 row.querySelector(`.price-p${tier}`)?.classList.add('price-highlight');
+                
+                // Анимация изменения суммы
+                if (qty > 0) {
+                    sumCell.classList.add('summary-highlight');
+                    setTimeout(() => sumCell.classList.remove('summary-highlight'), 1500);
+                }
             });
+            
             const savings = baseTotal - finalTotal;
             this.elements.totalEl.textContent = `${finalTotal.toLocaleString('ru-RU')} ₸`;
             this.elements.savingsEl.textContent = `Экономия: ${savings.toLocaleString('ru-RU')} ₸`;
+            
+            // Анимация изменения итога
+            this.elements.totalEl.classList.add('summary-highlight');
+            setTimeout(() => this.elements.totalEl.classList.remove('summary-highlight'), 1500);
+            
             const kaspiTotal = Math.round(finalTotal * this.config.kaspiMultiplier);
             const kaspiMonthly = Math.round(kaspiTotal / 12);
-            this.elements.kaspiEl.textContent = `В рассрочку KASPI ≈ ${kaspiTotal.toLocaleString('ru-RU')} ₸ (${kaspiMonthly.toLocaleString('ru-RU')} ₸/мес)`;
+            this.elements.kaspiEl.innerHTML = `
+                В рассрочку KASPI ≈ <strong>${kaspiTotal.toLocaleString('ru-RU')} ₸</strong>
+                <span style="font-size: 0.9em;">(${kaspiMonthly.toLocaleString('ru-RU')} ₸/мес)</span>
+            `;
         },
         saveState() {
             const quantities = {};
@@ -855,18 +1059,64 @@
                 return;
             }
             navigator.clipboard.writeText(orderText).then(() => {
-                this.showToast("Текст заказа скопирован!");
+                this.showToast("Текст заказа скопирован!", 'success');
             }).catch(err => {
                 this.showToast("Не удалось скопировать текст");
                 console.error('Ошибка копирования: ', err);
             });
         },
+        clearOrder() {
+            if (confirm("Вы уверены, что хотите очистить весь заказ?")) {
+                this.state.quantities = {};
+                this.elements.tableBody.querySelectorAll('.quantity-input').forEach(input => {
+                    input.value = 0;
+                });
+                this.calculate();
+                this.saveState();
+                this.showToast("Заказ очищен", 'success');
+            }
+        },
+        toggleFilter(filterType) {
+            if (this.state.activeFilter === filterType) {
+                this.state.activeFilter = null;
+                this.elements[`filter${filterType.charAt(0).toUpperCase() + filterType.slice(1)}`].classList.remove('active');
+            } else {
+                this.state.activeFilter = filterType;
+                this.elements.filterHot.classList.toggle('active', filterType === 'hot');
+                this.elements.filterNew.classList.toggle('active', filterType === 'new');
+                this.elements.filterLowStock.classList.toggle('active', filterType === 'low');
+            }
+            this.renderTable();
+        },
+        resetFilters() {
+            this.state.activeFilter = null;
+            this.state.filter = '';
+            this.elements.filterInput.value = '';
+            this.elements.filterHot.classList.remove('active');
+            this.elements.filterNew.classList.remove('active');
+            this.elements.filterLowStock.classList.remove('active');
+            this.renderTable();
+        },
         showToast(message, type = 'normal') {
             this.elements.toastEl.textContent = message;
-            this.elements.toastEl.className = 'toast-notification'; // Reset classes
+            this.elements.toastEl.className = 'toast-notification';
+            
+            const icons = {
+                normal: '<i class="fas fa-info-circle"></i>',
+                warning: '<i class="fas fa-exclamation-triangle"></i>',
+                success: '<i class="fas fa-check-circle"></i>'
+            };
+            
             if (type === 'warning') {
                 this.elements.toastEl.classList.add('warning');
+                this.elements.toastEl.innerHTML = icons.warning + ' ' + message;
+            } else if (type === 'success') {
+                this.elements.toastEl.classList.add('success');
+                this.elements.toastEl.innerHTML = icons.success + ' ' + message;
+            } else {
+                this.elements.toastEl.innerHTML = icons.normal + ' ' + message;
             }
+            
             this.elements.toastEl.classList.add('show');
             setTimeout(() => {
                 this.elements.toastEl.classList.remove('show');
