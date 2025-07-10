@@ -1,0 +1,503 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="format-detection" content="telephone=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.5, user-scalable=yes" />
+    <title>Готовые курсы - Nefarma</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="icon" type="image/x-icon" href="/favicon.ico">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
+
+    <style>
+        :root {
+            --bg-color: #1a1a1a;
+            --surface-color: #2c2c2c;
+            --primary-color: #00aaff;
+            --primary-hover-color: #0088cc;
+            --text-color: #f0f0f0;
+            --text-muted-color: #a0a0a0;
+            --border-color: #444;
+            --success-color: #28a745;
+            --warning-color: #ffc107;
+            --highlight-bg: rgba(0, 170, 255, 0.1);
+            --font-main: 'Inter', sans-serif;
+            --border-radius: 8px;
+            --shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+            --tag-bestseller-bg: #e74c3c;
+            --tag-new-bg: #2a527a;
+            --tag-text-color: #ffffff;
+        }
+        body { font-family: var(--font-main); background-color: var(--bg-color); color: var(--text-color); margin: 0; padding: 15px; font-size: 16px; }
+        .header { background-color: var(--bg-color); padding: 15px 0; margin-bottom: 15px; display: flex; justify-content: space-between; align-items: center; }
+        .header .container { max-width: 1200px; margin: 0 auto; padding: 0 15px; display: flex; justify-content: space-between; align-items: center; width: 100%; }
+        .logo img { height: 40px; display: block; }
+        .calculator-container { max-width: 1200px; margin: auto; animation: fadeIn 0.3s ease-in-out; }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        .filter-wrapper { margin: 15px 0; display: flex; gap: 10px; flex-wrap: wrap; }
+        .filter-input { flex-grow: 1; padding: 12px 15px; background: var(--surface-color); color: var(--text-color); border: 1px solid var(--border-color); border-radius: var(--border-radius); font-size: 16px; min-width: 200px; }
+        .filter-input::placeholder { color: var(--text-muted-color); }
+        .courses-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 20px; margin-top: 20px; }
+        .course-card { background: var(--surface-color); border-radius: var(--border-radius); box-shadow: var(--shadow); display: flex; flex-direction: column; overflow: hidden; transition: transform 0.2s ease, box-shadow 0.2s ease; border: 2px solid transparent; }
+        .course-card:hover { transform: translateY(-5px); box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3); }
+        .course-card.selected { border-color: var(--primary-color); }
+        .course-header { padding: 15px 20px; }
+        .course-title { font-size: 18px; font-weight: 700; margin: 0 0 10px; display: flex; align-items: center; gap: 10px; }
+        .course-description { font-size: 14px; color: var(--text-muted-color); line-height: 1.5; }
+        .course-content { padding: 0 20px; flex-grow: 1; }
+        .course-products-title { font-weight: 600; font-size: 14px; margin-bottom: 8px; color: var(--primary-color); }
+        .course-products-list { list-style: none; padding: 0; margin: 0 0 15px; font-size: 13px; }
+        .course-products-list li { padding: 4px 0; display: flex; justify-content: space-between; }
+        .course-footer { background: rgba(0,0,0,0.2); padding: 15px 20px; margin-top: auto; display: flex; justify-content: space-between; align-items: center; }
+        .course-price .price-label { font-size: 12px; color: var(--text-muted-color); }
+        .course-price .price-value { font-size: 20px; font-weight: 700; color: var(--primary-color); }
+        .add-course-btn { background: var(--success-color); color: white; border: none; padding: 10px 20px; font-size: 14px; font-weight: 600; border-radius: var(--border-radius); cursor: pointer; transition: background-color 0.2s; display: flex; align-items: center; gap: 8px; }
+        .add-course-btn:hover { background-color: #218838; }
+        .add-course-btn.selected { background-color: var(--warning-color); color: #333;}
+        .tags-container { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 8px; }
+        .tag { font-size: 9px; font-weight: 600; padding: 3px 8px; border-radius: 10px; color: var(--tag-text-color); text-transform: uppercase; }
+        .tag-bestseller { background-color: var(--tag-bestseller-bg); }
+        .tag-new { background-color: var(--tag-new-bg); }
+        .summary-panel { background: var(--surface-color); border-radius: var(--border-radius); padding: 20px; margin-top: 20px; box-shadow: var(--shadow); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 20px; }
+        .totals { font-size: 14px; line-height: 1.6; flex-grow: 1; }
+        .totals #tier { font-weight: 600; color: var(--primary-color); }
+        .final-total { font-size: 24px; font-weight: 700; }
+        .savings { color: var(--success-color); font-weight: 600; }
+        .kaspi-info { font-size: 12px; color: var(--text-muted-color); margin-top: 5px; }
+        .actions { display: flex; gap: 15px; flex-wrap: wrap; }
+        .action-button { padding: 12px 20px; font-size: 16px; font-weight: 600; border: none; border-radius: var(--border-radius); cursor: pointer; transition: background-color 0.2s ease; text-align: center; flex-grow: 1; display: flex; align-items: center; justify-content: center; gap: 8px; }
+        .whatsapp-btn { background-color: var(--success-color); color: white; }
+        .whatsapp-btn:hover { background-color: #218838; }
+        .copy-btn { background-color: var(--primary-color); color: white; }
+        .copy-btn:hover { background-color: var(--primary-hover-color); }
+        .clear-btn { background-color: var(--warning-color); color: #333; }
+        .clear-btn:hover { background-color: #e0a800; }
+        #loader { text-align: center; padding: 40px; font-size: 16px; color: var(--text-muted-color); display: flex; flex-direction: column; align-items: center; gap: 20px; }
+        .loader-spinner { width: 50px; height: 50px; border: 5px solid rgba(255,255,255,0.1); border-radius: 50%; border-top-color: var(--primary-color); animation: spin 1s ease-in-out infinite; }
+        @keyframes spin { to { transform: rotate(360deg); } }
+        .toast-notification { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); background-color: var(--primary-color); color: white; padding: 12px 25px; border-radius: var(--border-radius); box-shadow: var(--shadow); z-index: 1000; opacity: 0; visibility: hidden; transition: opacity 0.3s ease, transform 0.3s ease; transform: translateX(-50%) translateY(20px); display: flex; align-items: center; gap: 10px; }
+        .toast-notification.success { background-color: var(--success-color); }
+        .toast-notification.show { opacity: 1; visibility: visible; transform: translateX(-50%) translateY(0); }
+        .summary-highlight { animation: highlight 1.5s ease; }
+        @keyframes highlight { 0% { background-color: rgba(0, 170, 255, 0.3); } 100% { background-color: transparent; } }
+        .cache-info { 
+            position: fixed; 
+            bottom: 10px; 
+            right: 10px; 
+            font-size: 11px; 
+            color: var(--text-muted-color); 
+            background: rgba(0,0,0,0.3); 
+            padding: 4px 8px; 
+            border-radius: 4px;
+        }
+        @media (max-width: 768px) {
+             .summary-panel { flex-direction: column; align-items: stretch; text-align: center; gap: 15px; }
+             .actions { width: 100%; flex-direction: column; gap: 10px; }
+        }
+    </style>
+</head>
+<body>
+
+    <header class="header">
+        <div class="container">
+            <a href="index.html" class="logo" aria-label="На главную Nefarma">
+                <img src="https://static.tildacdn.one/tild6461-6365-4266-b662-336533346434/whitewhite_3.png" alt="Nefarma Logo">
+            </a>
+            <div class="contact-info">
+                <a href="tel:+77780990459" style="color: var(--text-color); text-decoration: none;">
+                    <i class="fas fa-phone"></i> +7 (778) 099-04-59
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <div class="calculator-container" id="app" style="display: none;">
+        <div class="filter-wrapper">
+            <input type="text" class="filter-input" id="filterInput" placeholder="Поиск по названию курса..." />
+        </div>
+
+        <div class="courses-grid" id="coursesGrid">
+            </div>
+
+        <div class="summary-panel">
+            <div class="totals">
+                <div class="kaspi-info" id="kaspi"></div>
+                <div>Итоговая сумма: <span class="final-total" id="total">0 ₸</span></div>
+            </div>
+            <div class="actions">
+                <button class="action-button clear-btn" onclick="app.clearOrder()">
+                    <i class="fas fa-trash-alt"></i> Очистить
+                </button>
+                <button class="action-button copy-btn" onclick="app.copyOrderLink()">
+                    <i class="fas fa-copy"></i> Скопировать
+                </button>
+                <button class="action-button whatsapp-btn" onclick="app.sendToWhatsApp()">
+                    <i class="fab fa-whatsapp"></i> WhatsApp
+                </button>
+            </div>
+        </div>
+    </div>
+    <div id="loader">
+        <div class="loader-spinner"></div>
+        <div>Загрузка готовых курсов...</div>
+    </div>
+    <div id="toast" class="toast-notification"></div>
+    <div id="cacheInfo" class="cache-info"></div>
+    
+<script>
+    const app = {
+        config: {
+            csvPath: "https://docs.google.com/spreadsheets/d/e/2PACX-1vQzfIn5F6i31Pvg4VVbSr7xLYNEX8J_kaTx8pKDfaLAIzv60RMvd8islbGfcZc_hMohP0tidw2LCCGh/pub?gid=1258621821&single=true&output=csv",
+            whatsAppPhone: "77780990459",
+            kaspiMultiplier: 1.1,
+            cacheKey: 'coursesDataCache_v1',
+            cacheDuration: 5 * 60 * 1000 // 5 минут в миллисекундах
+        },
+        state: {
+            courses: [],
+            selectedCourses: new Set(),
+            filter: '',
+            usingCachedData: false,
+            lastCacheUpdate: null
+        },
+        elements: {
+            appContainer: document.getElementById('app'),
+            loader: document.getElementById('loader'),
+            coursesGrid: document.getElementById('coursesGrid'),
+            totalEl: document.getElementById("total"),
+            kaspiEl: document.getElementById("kaspi"),
+            toastEl: document.getElementById("toast"),
+            filterInput: document.getElementById("filterInput"),
+            cacheInfoEl: document.getElementById("cacheInfo")
+        },
+        init() {
+            for (const key in this) {
+                if (typeof this[key] === 'function' && key !== 'init') {
+                    this[key] = this[key].bind(this);
+                }
+            }
+            this.loadData(); 
+            this.elements.filterInput.addEventListener('input', (e) => {
+                this.state.filter = e.target.value;
+                this.renderCourses();
+            });
+            this.elements.coursesGrid.addEventListener('click', this.handleCardClick);
+        },
+
+        async fetchCSV(url) {
+            try {
+                const response = await fetch(url, { cache: "no-store" });
+                if (!response.ok) throw new Error(`Ошибка сети: ${response.status}`);
+                return await response.text();
+            } catch (error) {
+                console.error("Ошибка при загрузке CSV:", error);
+                throw error;
+            }
+        },
+
+        async loadData() {
+            try {
+                // Проверяем кэш
+                const cachedData = this.getCachedData();
+                
+                if (cachedData && this.isCacheValid(cachedData)) {
+                    console.log("Используются кэшированные данные");
+                    this.state.courses = cachedData.data;
+                    this.state.usingCachedData = true;
+                    this.state.lastCacheUpdate = cachedData.timestamp;
+                    this.renderCourses();
+                    this.calculate();
+                    this.elements.loader.style.display = 'none';
+                    this.elements.appContainer.style.display = 'block';
+                    this.updateCacheInfo();
+                }
+                
+                // Всегда пытаемся загрузить свежие данные
+                console.log("Загрузка свежих данных...");
+                const csvText = await this.fetchCSV(this.config.csvPath);
+                
+                return new Promise((resolve, reject) => {
+                    Papa.parse(csvText, {
+                        header: true,
+                        skipEmptyLines: true,
+                        complete: results => {
+                            try {
+                                const coursesData = results.data;
+                                
+                                this.state.courses = coursesData
+                                    .filter(row => row.course_id && row.course_name && row.product_ids)
+                                    .map(course => this.processCourse(course));
+                                
+                                // Сохраняем в кэш
+                                this.saveDataToCache(this.state.courses);
+                                
+                                this.state.usingCachedData = false;
+                                this.state.lastCacheUpdate = Date.now();
+                                
+                                this.renderCourses();
+                                this.calculate();
+                                this.elements.loader.style.display = 'none';
+                                this.elements.appContainer.style.display = 'block';
+                                this.updateCacheInfo();
+                                resolve();
+                            } catch (parseError) {
+                                console.error("Ошибка обработки данных:", parseError);
+                                reject(parseError);
+                            }
+                        },
+                        error: err => reject(new Error("Ошибка обработки CSV: " + err.message)),
+                    });
+                });
+                
+            } catch (error) {
+                console.error("Не удалось загрузить данные:", error);
+                
+                // Если есть кэш - используем его
+                const cachedData = this.getCachedData();
+                if (cachedData) {
+                    console.log("Используем кэшированные данные из-за ошибки загрузки");
+                    this.state.courses = cachedData.data;
+                    this.state.usingCachedData = true;
+                    this.state.lastCacheUpdate = cachedData.timestamp;
+                    this.renderCourses();
+                    this.calculate();
+                    this.elements.loader.style.display = 'none';
+                    this.elements.appContainer.style.display = 'block';
+                    this.updateCacheInfo();
+                    this.showToast("Используются кэшированные данные", 'success');
+                } else {
+                    this.elements.loader.innerHTML = `Ошибка загрузки данных. Проверьте подключение к интернету.`;
+                    this.showToast("Ошибка загрузки данных", 'error');
+                }
+            }
+        },
+
+        getCachedData() {
+            const cache = localStorage.getItem(this.config.cacheKey);
+            if (!cache) return null;
+            
+            try {
+                return JSON.parse(cache);
+            } catch (e) {
+                console.error("Ошибка чтения кэша", e);
+                return null;
+            }
+        },
+
+        isCacheValid(cachedData) {
+            const cacheAge = Date.now() - cachedData.timestamp;
+            return cacheAge < this.config.cacheDuration;
+        },
+
+        saveDataToCache(data) {
+            const cache = {
+                timestamp: Date.now(),
+                data: data
+            };
+            
+            try {
+                localStorage.setItem(this.config.cacheKey, JSON.stringify(cache));
+                console.log("Данные сохранены в кэш");
+            } catch (e) {
+                console.error("Ошибка сохранения в кэш", e);
+            }
+        },
+
+        updateCacheInfo() {
+            if (!this.state.lastCacheUpdate) return;
+            
+            const cacheAge = Date.now() - this.state.lastCacheUpdate;
+            const minutes = Math.floor(cacheAge / 60000);
+            const seconds = Math.floor((cacheAge % 60000) / 1000);
+            
+            let statusText = `Данные обновлены ${minutes} мин ${seconds} сек назад`;
+            if (this.state.usingCachedData) {
+                statusText += " (кэш)";
+            }
+            
+            this.elements.cacheInfoEl.textContent = statusText;
+            
+            // Обновляем информацию каждую минуту
+            setTimeout(() => this.updateCacheInfo(), 60000);
+        },
+
+        processCourse(course) {
+            const productNames = course.product_ids.split(',').map(name => name.trim());
+            
+            // Обработка цены: удаляем пробелы и заменяем запятые на точки
+            const priceStr = (course.price || '0').toString().replace(/\s+/g, '').replace(',', '.');
+            const price = parseFloat(priceStr) || 0;
+
+            return {
+                id: course.course_id,
+                name: course.course_name,
+                description: course.description || '',
+                includedProducts: productNames.map(name => ({ name })),
+                price: price
+            };
+        },
+
+        renderCourses() {
+            const fragment = document.createDocumentFragment();
+            const filter = this.state.filter.toLowerCase();
+            
+            this.state.courses
+                .filter(course => course.name.toLowerCase().includes(filter))
+                .forEach(course => {
+                    const card = document.createElement('div');
+                    card.className = 'course-card';
+                    card.dataset.id = course.id;
+                    if (this.state.selectedCourses.has(course.id)) {
+                        card.classList.add('selected');
+                    }
+
+                    const productsHtml = course.includedProducts.map(p => `<li>${p.name}</li>`).join('');
+
+                    card.innerHTML = `
+                        <div class="course-header">
+                            <h3 class="course-title">${course.name}</h3>
+                            <p class="course-description">${course.description}</p>
+                        </div>
+                        <div class="course-content">
+                            <h4 class="course-products-title">Состав курса:</h4>
+                            <ul class="course-products-list">${productsHtml || '<li>Состав не указан</li>'}</ul>
+                        </div>
+                        <div class="course-footer">
+                            <div class="course-price">
+                                <span class="price-label">Цена</span>
+                                <div class="price-value">${course.price.toLocaleString('ru-RU')} ₸</div>
+                            </div>
+                            <button class="add-course-btn" data-id="${course.id}">
+                                ${this.state.selectedCourses.has(course.id) 
+                                    ? '<i class="fas fa-times"></i> Убрать' 
+                                    : '<i class="fas fa-plus"></i> Добавить'}
+                            </button>
+                        </div>
+                    `;
+                    fragment.appendChild(card);
+                });
+
+            this.elements.coursesGrid.innerHTML = '';
+            this.elements.coursesGrid.appendChild(fragment);
+        },
+
+        handleCardClick(event) {
+            const button = event.target.closest('.add-course-btn');
+            if (!button) return;
+            const courseId = button.dataset.id;
+            
+            if (this.state.selectedCourses.has(courseId)) {
+                this.state.selectedCourses.delete(courseId);
+            } else {
+                this.state.selectedCourses.add(courseId);
+            }
+            
+            this.renderCourses();
+            this.calculate();
+        },
+
+        calculate() {
+            let total = 0;
+            this.state.selectedCourses.forEach(courseId => {
+                const course = this.state.courses.find(c => c.id === courseId);
+                if (course) {
+                    total += course.price;
+                }
+            });
+            
+            this.elements.totalEl.textContent = `${total.toLocaleString('ru-RU')} ₸`;
+            this.elements.totalEl.classList.add('summary-highlight');
+            setTimeout(() => this.elements.totalEl.classList.remove('summary-highlight'), 1500);
+            
+            const kaspiTotal = Math.round(total * this.config.kaspiMultiplier);
+            const kaspiMonthly = Math.round(kaspiTotal / 12);
+            this.elements.kaspiEl.innerHTML = `
+                В рассрочку KASPI ≈ <strong>${kaspiTotal.toLocaleString('ru-RU')} ₸</strong>
+                <span style="font-size: 0.9em;">(${kaspiMonthly.toLocaleString('ru-RU')} ₸/мес)</span>
+            `;
+        },
+        
+        generateOrderData() {
+            if (this.state.selectedCourses.size === 0) {
+                return { orderText: "", hasItems: false };
+            }
+            
+            let total = 0;
+            let orderText = "*Мой заказ (Готовые курсы):*\n\n";
+
+            this.state.selectedCourses.forEach(courseId => {
+                const course = this.state.courses.find(c => c.id === courseId);
+                if (course) {
+                    total += course.price;
+                    orderText += `*Курс: ${course.name}* — ${course.price.toLocaleString('ru-RU')} ₸\n`;
+                    course.includedProducts.forEach(p => {
+                        orderText += `  - ${p.name}\n`;
+                    });
+                    orderText += '\n';
+                }
+            });
+            
+            const kaspiTotal = Math.round(total * this.config.kaspiMultiplier);
+            const kaspiMonthly = Math.round(kaspiTotal / 12);
+
+            orderText += `*Итого без рассрочки: ${total.toLocaleString("ru-RU")} ₸*\n`;
+            orderText += `Сумма через рассрочку KASPI 0-0-12: ${kaspiTotal.toLocaleString("ru-RU")} ₸ (≈ ${kaspiMonthly.toLocaleString("ru-RU")} ₸/мес)`;
+            
+            return { orderText, hasItems: true };
+        },
+        
+        sendToWhatsApp() {
+            const { orderText, hasItems } = this.generateOrderData();
+            if (!hasItems) {
+                this.showToast("Сначала добавьте курсы в заказ");
+                return;
+            }
+            const encodedText = encodeURIComponent(orderText);
+            const url = `https://wa.me/${this.config.whatsAppPhone}?text=${encodedText}`;
+            window.open(url, "_blank");
+        },
+
+        copyOrderLink() {
+            const { orderText, hasItems } = this.generateOrderData();
+            if (!hasItems) {
+                this.showToast("Сначала добавьте курсы в заказ");
+                return;
+            }
+            navigator.clipboard.writeText(orderText).then(() => {
+                this.showToast("Текст заказа скопирован!", 'success');
+            }).catch(err => {
+                this.showToast("Не удалось скопировать текст");
+            });
+        },
+
+        clearOrder() {
+            if (this.state.selectedCourses.size > 0 && confirm("Вы уверены, что хотите очистить весь заказ?")) {
+                this.state.selectedCourses.clear();
+                this.renderCourses();
+                this.calculate();
+                this.showToast("Заказ очищен", 'success');
+            }
+        },
+
+        showToast(message, type = 'normal') {
+            const icon = type === 'success' ? '<i class="fas fa-check-circle"></i>' : 
+                       type === 'error' ? '<i class="fas fa-exclamation-circle"></i>' : 
+                       '<i class="fas fa-info-circle"></i>';
+                       
+            this.elements.toastEl.className = 'toast-notification';
+            if (type === 'success') this.elements.toastEl.classList.add('success');
+            if (type === 'error') this.elements.toastEl.style.backgroundColor = '#dc3545';
+            this.elements.toastEl.innerHTML = `${icon} ${message}`;
+            this.elements.toastEl.classList.add('show');
+            setTimeout(() => {
+                this.elements.toastEl.classList.remove('show');
+            }, 3000);
+        }
+    };
+    app.init();
+</script>
+</body>
+</html>

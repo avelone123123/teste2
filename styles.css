@@ -211,6 +211,7 @@ body.dark-mode .icon-sun { display: none; }
 .btn-telegram-channel { background: linear-gradient(45deg, #0088CC, #00A0E9); }
 .btn-instagram { background: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%); }
 .btn-price { background-color: var(--price-color); }
+.btn-courses { background-color: var(--whatsapp-color); }
 .btn-wiki {
     background: var(--wiki-color-light);
     color: #fff;
