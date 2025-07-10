@@ -18,6 +18,8 @@
             --surface-color: #2c2c2c;
             --primary-color: #00aaff;
             --primary-hover-color: #0088cc;
+            --secondary-color: #6c757d;
+            --secondary-hover-color: #5a6268;
             --text-color: #f0f0f0;
             --text-muted-color: #a0a0a0;
             --border-color: #444;
@@ -27,9 +29,6 @@
             --font-main: 'Inter', sans-serif;
             --border-radius: 8px;
             --shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
-            --tag-bestseller-bg: #e74c3c;
-            --tag-new-bg: #2a527a;
-            --tag-text-color: #ffffff;
         }
         body { font-family: var(--font-main); background-color: var(--bg-color); color: var(--text-color); margin: 0; padding: 15px; font-size: 16px; }
         .header { background-color: var(--bg-color); padding: 15px 0; margin-bottom: 15px; display: flex; justify-content: space-between; align-items: center; }
@@ -51,52 +50,43 @@
         .course-products-title { font-weight: 600; font-size: 14px; margin-bottom: 8px; color: var(--primary-color); }
         .course-products-list { list-style: none; padding: 0; margin: 0 0 15px; font-size: 13px; }
         .course-products-list li { padding: 4px 0; display: flex; justify-content: space-between; }
-        .course-footer { background: rgba(0,0,0,0.2); padding: 15px 20px; margin-top: auto; display: flex; justify-content: space-between; align-items: center; }
+        .course-footer { background: rgba(0,0,0,0.2); padding: 15px 20px; margin-top: auto; }
+        .price-section { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;}
         .course-price .price-label { font-size: 12px; color: var(--text-muted-color); }
         .course-price .price-value { font-size: 20px; font-weight: 700; color: var(--primary-color); }
-        .add-course-btn { background: var(--success-color); color: white; border: none; padding: 10px 20px; font-size: 14px; font-weight: 600; border-radius: var(--border-radius); cursor: pointer; transition: background-color 0.2s; display: flex; align-items: center; gap: 8px; }
+        .button-group { display: flex; gap: 10px; }
+        .card-button { color: white; border: none; padding: 10px 15px; font-size: 14px; font-weight: 600; border-radius: var(--border-radius); cursor: pointer; transition: background-color 0.2s; display: flex; align-items: center; justify-content: center; gap: 8px; flex-grow: 1; }
+        .add-course-btn { background-color: var(--success-color); }
         .add-course-btn:hover { background-color: #218838; }
         .add-course-btn.selected { background-color: var(--warning-color); color: #333;}
-        .tags-container { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 8px; }
-        .tag { font-size: 9px; font-weight: 600; padding: 3px 8px; border-radius: 10px; color: var(--tag-text-color); text-transform: uppercase; }
-        .tag-bestseller { background-color: var(--tag-bestseller-bg); }
-        .tag-new { background-color: var(--tag-new-bg); }
+        .details-btn { background-color: var(--secondary-color); }
+        .details-btn:hover { background-color: var(--secondary-hover-color); }
         .summary-panel { background: var(--surface-color); border-radius: var(--border-radius); padding: 20px; margin-top: 20px; box-shadow: var(--shadow); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 20px; }
         .totals { font-size: 14px; line-height: 1.6; flex-grow: 1; }
-        .totals #tier { font-weight: 600; color: var(--primary-color); }
         .final-total { font-size: 24px; font-weight: 700; }
-        .savings { color: var(--success-color); font-weight: 600; }
         .kaspi-info { font-size: 12px; color: var(--text-muted-color); margin-top: 5px; }
         .actions { display: flex; gap: 15px; flex-wrap: wrap; }
         .action-button { padding: 12px 20px; font-size: 16px; font-weight: 600; border: none; border-radius: var(--border-radius); cursor: pointer; transition: background-color 0.2s ease; text-align: center; flex-grow: 1; display: flex; align-items: center; justify-content: center; gap: 8px; }
         .whatsapp-btn { background-color: var(--success-color); color: white; }
-        .whatsapp-btn:hover { background-color: #218838; }
         .copy-btn { background-color: var(--primary-color); color: white; }
-        .copy-btn:hover { background-color: var(--primary-hover-color); }
         .clear-btn { background-color: var(--warning-color); color: #333; }
-        .clear-btn:hover { background-color: #e0a800; }
         #loader { text-align: center; padding: 40px; font-size: 16px; color: var(--text-muted-color); display: flex; flex-direction: column; align-items: center; gap: 20px; }
         .loader-spinner { width: 50px; height: 50px; border: 5px solid rgba(255,255,255,0.1); border-radius: 50%; border-top-color: var(--primary-color); animation: spin 1s ease-in-out infinite; }
         @keyframes spin { to { transform: rotate(360deg); } }
-        .toast-notification { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); background-color: var(--primary-color); color: white; padding: 12px 25px; border-radius: var(--border-radius); box-shadow: var(--shadow); z-index: 1000; opacity: 0; visibility: hidden; transition: opacity 0.3s ease, transform 0.3s ease; transform: translateX(-50%) translateY(20px); display: flex; align-items: center; gap: 10px; }
-        .toast-notification.success { background-color: var(--success-color); }
+        .toast-notification { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); background-color: var(--primary-color); color: white; padding: 12px 25px; border-radius: var(--border-radius); box-shadow: var(--shadow); z-index: 1001; opacity: 0; visibility: hidden; transition: opacity 0.3s ease, transform 0.3s ease; transform: translateX(-50%) translateY(20px); display: flex; align-items: center; gap: 10px; }
         .toast-notification.show { opacity: 1; visibility: visible; transform: translateX(-50%) translateY(0); }
-        .summary-highlight { animation: highlight 1.5s ease; }
-        @keyframes highlight { 0% { background-color: rgba(0, 170, 255, 0.3); } 100% { background-color: transparent; } }
-        .cache-info { 
-            position: fixed; 
-            bottom: 10px; 
-            right: 10px; 
-            font-size: 11px; 
-            color: var(--text-muted-color); 
-            background: rgba(0,0,0,0.3); 
-            padding: 4px 8px; 
-            border-radius: 4px;
-        }
-        @media (max-width: 768px) {
-             .summary-panel { flex-direction: column; align-items: stretch; text-align: center; gap: 15px; }
-             .actions { width: 100%; flex-direction: column; gap: 10px; }
-        }
+        .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.8); z-index: 1000; display: none; justify-content: center; align-items: center; padding: 20px; }
+        .modal-content { background: var(--surface-color); color: var(--text-color); border-radius: var(--border-radius); max-width: 800px; width: 100%; max-height: 90vh; overflow-y: auto; padding: 30px; position: relative; animation: slideIn 0.3s ease-out; }
+        @keyframes slideIn { from { transform: translateY(-50px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+        .modal-close { position: absolute; top: 15px; right: 20px; font-size: 24px; color: var(--text-muted-color); cursor: pointer; transition: color 0.2s; }
+        .modal-close:hover { color: var(--text-color); }
+        .modal-title { font-size: 24px; font-weight: 700; color: var(--primary-color); margin-top: 0; margin-bottom: 20px; }
+        .modal-section { margin-bottom: 20px; }
+        .modal-section h4 { font-size: 16px; font-weight: 600; border-bottom: 1px solid var(--border-color); padding-bottom: 8px; margin-bottom: 10px; }
+        .modal-section p, .modal-section ul { font-size: 14px; line-height: 1.6; color: var(--text-muted-color); margin: 0; }
+        .modal-section ul { list-style: inside; padding-left: 5px; }
+        .cache-info { position: fixed; bottom: 10px; right: 10px; font-size: 11px; color: var(--text-muted-color); background: rgba(0,0,0,0.3); padding: 4px 8px; border-radius: 4px; z-index: 1000; }
+        @media (max-width: 768px) { .summary-panel { flex-direction: column; align-items: stretch; text-align: center; } .actions { width: 100%; flex-direction: column; } }
     </style>
 </head>
 <body>
@@ -118,43 +108,44 @@
         <div class="filter-wrapper">
             <input type="text" class="filter-input" id="filterInput" placeholder="Поиск по названию курса..." />
         </div>
-
-        <div class="courses-grid" id="coursesGrid">
-            </div>
-
+        <div class="courses-grid" id="coursesGrid"></div>
         <div class="summary-panel">
             <div class="totals">
                 <div class="kaspi-info" id="kaspi"></div>
                 <div>Итоговая сумма: <span class="final-total" id="total">0 ₸</span></div>
             </div>
             <div class="actions">
-                <button class="action-button clear-btn" onclick="app.clearOrder()">
-                    <i class="fas fa-trash-alt"></i> Очистить
-                </button>
-                <button class="action-button copy-btn" onclick="app.copyOrderLink()">
-                    <i class="fas fa-copy"></i> Скопировать
-                </button>
-                <button class="action-button whatsapp-btn" onclick="app.sendToWhatsApp()">
-                    <i class="fab fa-whatsapp"></i> WhatsApp
-                </button>
+                <button class="action-button clear-btn" onclick="app.clearOrder()"><i class="fas fa-trash-alt"></i> Очистить</button>
+                <button class="action-button copy-btn" onclick="app.copyOrderLink()"><i class="fas fa-copy"></i> Скопировать</button>
+                <button class="action-button whatsapp-btn" onclick="app.sendToWhatsApp()"><i class="fab fa-whatsapp"></i> WhatsApp</button>
             </div>
         </div>
     </div>
+    
     <div id="loader">
         <div class="loader-spinner"></div>
         <div>Загрузка готовых курсов...</div>
     </div>
+    
     <div id="toast" class="toast-notification"></div>
     <div id="cacheInfo" class="cache-info"></div>
+
+    <div id="courseModal" class="modal-overlay">
+        <div class="modal-content">
+            <span class="modal-close" id="modalClose">&times;</span>
+            <h2 id="modalTitle" class="modal-title"></h2>
+            <div id="modalBody"></div>
+        </div>
+    </div>
     
 <script>
     const app = {
         config: {
-            csvPath: "https://docs.google.com/spreadsheets/d/e/2PACX-1vQzfIn5F6i31Pvg4VVbSr7xLYNEX8J_kaTx8pKDfaLAIzv60RMvd8islbGfcZc_hMohP0tidw2LCCGh/pub?gid=1258621821&single=true&output=csv",
+            csvPath: "https://docs.google.com/spreadsheets/d/e/2PACX-1vR4cVTTPoWzmvetqsFrXQ1_f21IGMYkqQ6-ciF6GUcl0IZGN8f_3gThbLW24cUtfMEyb1AeHK7QHcYX/pub?gid=1079824243&single=true&output=csv",
             whatsAppPhone: "77780990459",
             kaspiMultiplier: 1.1,
-            cacheKey: 'coursesDataCache_v1',
-            cacheDuration: 5 * 60 * 1000 // 5 минут в миллисекундах
+            cacheKey: 'coursesDataCache_v2', // Обновил ключ кэша на всякий случай
+            cacheDuration: 5 * 60 * 1000 // 5 минут
         },
         state: {
             courses: [],
@@ -171,103 +162,73 @@
             kaspiEl: document.getElementById("kaspi"),
             toastEl: document.getElementById("toast"),
             filterInput: document.getElementById("filterInput"),
+            modal: document.getElementById('courseModal'),
+            modalTitle: document.getElementById('modalTitle'),
+            modalBody: document.getElementById('modalBody'),
+            modalClose: document.getElementById('modalClose'),
             cacheInfoEl: document.getElementById("cacheInfo")
         },
         init() {
-            for (const key in this) {
-                if (typeof this[key] === 'function' && key !== 'init') {
-                    this[key] = this[key].bind(this);
-                }
-            }
             this.loadData(); 
             this.elements.filterInput.addEventListener('input', (e) => {
                 this.state.filter = e.target.value;
                 this.renderCourses();
             });
-            this.elements.coursesGrid.addEventListener('click', this.handleCardClick);
-        },
-
-        async fetchCSV(url) {
-            try {
-                const response = await fetch(url, { cache: "no-store" });
-                if (!response.ok) throw new Error(`Ошибка сети: ${response.status}`);
-                return await response.text();
-            } catch (error) {
-                console.error("Ошибка при загрузке CSV:", error);
-                throw error;
-            }
+            this.elements.coursesGrid.addEventListener('click', this.handleCardClick.bind(this));
+            this.elements.modalClose.addEventListener('click', this.hideDetails.bind(this));
+            this.elements.modal.addEventListener('click', (e) => {
+                if (e.target === this.elements.modal) this.hideDetails();
+            });
         },
 
         async loadData() {
             try {
-                // Проверяем кэш
+                // 1. Попробовать загрузить из кэша для быстрого отображения
                 const cachedData = this.getCachedData();
-                
                 if (cachedData && this.isCacheValid(cachedData)) {
-                    console.log("Используются кэшированные данные");
+                    console.log("Используются кэшированные данные для первоначальной загрузки.");
                     this.state.courses = cachedData.data;
                     this.state.usingCachedData = true;
                     this.state.lastCacheUpdate = cachedData.timestamp;
-                    this.renderCourses();
-                    this.calculate();
-                    this.elements.loader.style.display = 'none';
-                    this.elements.appContainer.style.display = 'block';
-                    this.updateCacheInfo();
+                    this.displayApp();
                 }
+
+                // 2. Всегда пытаться загрузить свежие данные из сети
+                console.log("Загрузка свежих данных из сети...");
+                const response = await fetch(this.config.csvPath, { cache: "no-store" });
+                if (!response.ok) throw new Error(`Ошибка сети: ${response.status}`);
+                const csvText = await response.text();
                 
-                // Всегда пытаемся загрузить свежие данные
-                console.log("Загрузка свежих данных...");
-                const csvText = await this.fetchCSV(this.config.csvPath);
-                
-                return new Promise((resolve, reject) => {
-                    Papa.parse(csvText, {
-                        header: true,
-                        skipEmptyLines: true,
-                        complete: results => {
-                            try {
-                                const coursesData = results.data;
-                                
-                                this.state.courses = coursesData
-                                    .filter(row => row.course_id && row.course_name && row.product_ids)
-                                    .map(course => this.processCourse(course));
-                                
-                                // Сохраняем в кэш
-                                this.saveDataToCache(this.state.courses);
-                                
-                                this.state.usingCachedData = false;
-                                this.state.lastCacheUpdate = Date.now();
-                                
-                                this.renderCourses();
-                                this.calculate();
-                                this.elements.loader.style.display = 'none';
-                                this.elements.appContainer.style.display = 'block';
-                                this.updateCacheInfo();
-                                resolve();
-                            } catch (parseError) {
-                                console.error("Ошибка обработки данных:", parseError);
-                                reject(parseError);
-                            }
-                        },
-                        error: err => reject(new Error("Ошибка обработки CSV: " + err.message)),
-                    });
+                Papa.parse(csvText, {
+                    header: true,
+                    skipEmptyLines: true,
+                    complete: (results) => {
+                        console.log("Свежие данные успешно загружены и обработаны.");
+                        const freshCourses = results.data
+                            .filter(row => row.course_id && row.course_name)
+                            .map(course => this.processCourse(course));
+                        
+                        this.state.courses = freshCourses;
+                        this.saveDataToCache(freshCourses);
+                        this.state.usingCachedData = false;
+                        this.state.lastCacheUpdate = Date.now();
+                        this.displayApp();
+                    },
+                    error: (err) => { throw new Error("Ошибка обработки CSV: " + err.message); }
                 });
-                
+
             } catch (error) {
-                console.error("Не удалось загрузить данные:", error);
-                
-                // Если есть кэш - используем его
+                console.error("Не удалось загрузить свежие данные:", error);
                 const cachedData = this.getCachedData();
                 if (cachedData) {
-                    console.log("Используем кэшированные данные из-за ошибки загрузки");
-                    this.state.courses = cachedData.data;
-                    this.state.usingCachedData = true;
-                    this.state.lastCacheUpdate = cachedData.timestamp;
-                    this.renderCourses();
-                    this.calculate();
-                    this.elements.loader.style.display = 'none';
-                    this.elements.appContainer.style.display = 'block';
-                    this.updateCacheInfo();
-                    this.showToast("Используются кэшированные данные", 'success');
+                    console.log("Ошибка загрузки. Используются данные из кэша.");
+                    this.showToast("Не удалось обновить, показаны сохраненные данные", 'warning');
+                    if (!this.state.courses.length) {
+                       this.state.courses = cachedData.data;
+                       this.state.usingCachedData = true;
+                       this.state.lastCacheUpdate = cachedData.timestamp;
+                       this.displayApp();
+                    }
                 } else {
                     this.elements.loader.innerHTML = `Ошибка загрузки данных. Проверьте подключение к интернету.`;
                     this.showToast("Ошибка загрузки данных", 'error');
@@ -275,68 +236,61 @@
             }
         },
 
+        displayApp() {
+            this.elements.loader.style.display = 'none';
+            this.elements.appContainer.style.display = 'block';
+            this.renderCourses();
+            this.calculate();
+            this.updateCacheInfo();
+            // Запускаем таймер для обновления информации о кэше
+            setInterval(this.updateCacheInfo.bind(this), 60000);
+        },
+
         getCachedData() {
             const cache = localStorage.getItem(this.config.cacheKey);
             if (!cache) return null;
-            
-            try {
-                return JSON.parse(cache);
-            } catch (e) {
-                console.error("Ошибка чтения кэша", e);
-                return null;
-            }
+            try { return JSON.parse(cache); } catch (e) { return null; }
         },
 
         isCacheValid(cachedData) {
-            const cacheAge = Date.now() - cachedData.timestamp;
-            return cacheAge < this.config.cacheDuration;
+            return (Date.now() - cachedData.timestamp) < this.config.cacheDuration;
         },
 
         saveDataToCache(data) {
-            const cache = {
-                timestamp: Date.now(),
-                data: data
-            };
-            
+            const cache = { timestamp: Date.now(), data: data };
             try {
                 localStorage.setItem(this.config.cacheKey, JSON.stringify(cache));
-                console.log("Данные сохранены в кэш");
+                console.log("Данные сохранены в кэш.");
             } catch (e) {
                 console.error("Ошибка сохранения в кэш", e);
             }
         },
 
         updateCacheInfo() {
-            if (!this.state.lastCacheUpdate) return;
-            
+            if (!this.state.lastCacheUpdate) {
+                this.elements.cacheInfoEl.style.display = 'none';
+                return;
+            }
+            this.elements.cacheInfoEl.style.display = 'block';
             const cacheAge = Date.now() - this.state.lastCacheUpdate;
             const minutes = Math.floor(cacheAge / 60000);
-            const seconds = Math.floor((cacheAge % 60000) / 1000);
-            
-            let statusText = `Данные обновлены ${minutes} мин ${seconds} сек назад`;
-            if (this.state.usingCachedData) {
-                statusText += " (кэш)";
-            }
-            
-            this.elements.cacheInfoEl.textContent = statusText;
-            
-            // Обновляем информацию каждую минуту
-            setTimeout(() => this.updateCacheInfo(), 60000);
+            const status = this.state.usingCachedData ? " (кэш)" : "";
+            this.elements.cacheInfoEl.textContent = `Обновлено ${minutes} мин. назад${status}`;
         },
 
         processCourse(course) {
-            const productNames = course.product_ids.split(',').map(name => name.trim());
-            
-            // Обработка цены: удаляем пробелы и заменяем запятые на точки
             const priceStr = (course.price || '0').toString().replace(/\s+/g, '').replace(',', '.');
-            const price = parseFloat(priceStr) || 0;
-
             return {
                 id: course.course_id,
                 name: course.course_name,
                 description: course.description || '',
-                includedProducts: productNames.map(name => ({ name })),
-                price: price
+                includedProducts: (course.product_ids || '').split(',').map(name => name.trim()),
+                price: parseFloat(priceStr) || 0,
+                goal: course.goal || 'Не указана',
+                dosage: course.dosage || 'Не указана',
+                result: course.result || 'Не указан',
+                side_effects: course.side_effects || 'Не указаны',
+                recommendations: course.recommendations || 'Не указаны'
             };
         },
 
@@ -350,11 +304,10 @@
                     const card = document.createElement('div');
                     card.className = 'course-card';
                     card.dataset.id = course.id;
-                    if (this.state.selectedCourses.has(course.id)) {
-                        card.classList.add('selected');
-                    }
+                    if (this.state.selectedCourses.has(course.id)) card.classList.add('selected');
 
-                    const productsHtml = course.includedProducts.map(p => `<li>${p.name}</li>`).join('');
+                    const productsHtml = course.includedProducts.map(p => `<li>${p}</li>`).join('');
+                    const isSelected = this.state.selectedCourses.has(course.id);
 
                     card.innerHTML = `
                         <div class="course-header">
@@ -366,17 +319,17 @@
                             <ul class="course-products-list">${productsHtml || '<li>Состав не указан</li>'}</ul>
                         </div>
                         <div class="course-footer">
-                            <div class="course-price">
-                                <span class="price-label">Цена</span>
-                                <div class="price-value">${course.price.toLocaleString('ru-RU')} ₸</div>
+                            <div class="price-section">
+                                <div class="course-price">
+                                    <span class="price-label">Цена</span>
+                                    <div class="price-value">${course.price.toLocaleString('ru-RU')} ₸</div>
+                                </div>
                             </div>
-                            <button class="add-course-btn" data-id="${course.id}">
-                                ${this.state.selectedCourses.has(course.id) 
-                                    ? '<i class="fas fa-times"></i> Убрать' 
-                                    : '<i class="fas fa-plus"></i> Добавить'}
-                            </button>
-                        </div>
-                    `;
+                            <div class="button-group">
+                                <button class="card-button details-btn" data-action="details" data-id="${course.id}"><i class="fas fa-info-circle"></i> Подробнее</button>
+                                <button class="card-button add-course-btn ${isSelected ? 'selected' : ''}" data-action="add" data-id="${course.id}">${isSelected ? '<i class="fas fa-times"></i> Убрать' : '<i class="fas fa-plus"></i> Добавить'}</button>
+                            </div>
+                        </div>`;
                     fragment.appendChild(card);
                 });
 
@@ -385,92 +338,73 @@
         },
 
         handleCardClick(event) {
-            const button = event.target.closest('.add-course-btn');
+            const button = event.target.closest('.card-button');
             if (!button) return;
-            const courseId = button.dataset.id;
-            
-            if (this.state.selectedCourses.has(courseId)) {
-                this.state.selectedCourses.delete(courseId);
-            } else {
-                this.state.selectedCourses.add(courseId);
+            const courseId = button.dataset.id, action = button.dataset.action;
+
+            if (action === 'add') {
+                if (this.state.selectedCourses.has(courseId)) this.state.selectedCourses.delete(courseId);
+                else this.state.selectedCourses.add(courseId);
+                this.renderCourses();
+                this.calculate();
+            } else if (action === 'details') {
+                this.showDetails(courseId);
             }
-            
-            this.renderCourses();
-            this.calculate();
+        },
+        
+        showDetails(courseId) {
+            const course = this.state.courses.find(c => c.id === courseId);
+            if (!course) return;
+            this.elements.modalTitle.textContent = course.name;
+            const formatText = (text) => text.replace(/\n/g, '<br>');
+            this.elements.modalBody.innerHTML = `
+                <div class="modal-section"><h4><i class="fas fa-bullseye"></i> Цель курса</h4><p>${formatText(course.goal)}</p></div>
+                <div class="modal-section"><h4><i class="fas fa-pills"></i> Список препаратов</h4><ul>${course.includedProducts.map(p => `<li>${p}</li>`).join('')}</ul></div>
+                <div class="modal-section"><h4><i class="fas fa-syringe"></i> Дозировка и приём</h4><p>${formatText(course.dosage)}</p></div>
+                <div class="modal-section"><h4><i class="fas fa-star"></i> Ожидаемый результат</h4><p>${formatText(course.result)}</p></div>
+                <div class="modal-section"><h4><i class="fas fa-exclamation-triangle"></i> Побочные эффекты</h4><p>${formatText(course.side_effects)}</p></div>
+                <div class="modal-section"><h4><i class="fas fa-lightbulb"></i> Советы и рекомендации</h4><p>${formatText(course.recommendations)}</p></div>`;
+            this.elements.modal.style.display = 'flex';
+            document.body.style.overflow = 'hidden';
+        },
+
+        hideDetails() {
+            this.elements.modal.style.display = 'none';
+            document.body.style.overflow = 'auto';
         },
 
         calculate() {
-            let total = 0;
-            this.state.selectedCourses.forEach(courseId => {
-                const course = this.state.courses.find(c => c.id === courseId);
-                if (course) {
-                    total += course.price;
-                }
-            });
-            
+            const total = [...this.state.selectedCourses].reduce((sum, id) => sum + (this.state.courses.find(c=>c.id===id)?.price || 0), 0);
             this.elements.totalEl.textContent = `${total.toLocaleString('ru-RU')} ₸`;
-            this.elements.totalEl.classList.add('summary-highlight');
-            setTimeout(() => this.elements.totalEl.classList.remove('summary-highlight'), 1500);
-            
-            const kaspiTotal = Math.round(total * this.config.kaspiMultiplier);
-            const kaspiMonthly = Math.round(kaspiTotal / 12);
-            this.elements.kaspiEl.innerHTML = `
-                В рассрочку KASPI ≈ <strong>${kaspiTotal.toLocaleString('ru-RU')} ₸</strong>
-                <span style="font-size: 0.9em;">(${kaspiMonthly.toLocaleString('ru-RU')} ₸/мес)</span>
-            `;
+            const kaspiTotal = Math.round(total * this.config.kaspiMultiplier), kaspiMonthly = Math.round(kaspiTotal / 12);
+            this.elements.kaspiEl.innerHTML = total > 0 ? `В рассрочку KASPI ≈ <strong>${kaspiTotal.toLocaleString('ru-RU')} ₸</strong> <span style="font-size: 0.9em;">(${kaspiMonthly.toLocaleString('ru-RU')} ₸/мес)</span>` : '';
         },
         
         generateOrderData() {
-            if (this.state.selectedCourses.size === 0) {
-                return { orderText: "", hasItems: false };
-            }
-            
-            let total = 0;
-            let orderText = "*Мой заказ (Готовые курсы):*\n\n";
-
-            this.state.selectedCourses.forEach(courseId => {
-                const course = this.state.courses.find(c => c.id === courseId);
+            if (this.state.selectedCourses.size === 0) return { orderText: "", hasItems: false };
+            let total = 0, orderText = "*Мой заказ (Готовые курсы):*\n\n";
+            this.state.selectedCourses.forEach(id => {
+                const course = this.state.courses.find(c => c.id === id);
                 if (course) {
                     total += course.price;
                     orderText += `*Курс: ${course.name}* — ${course.price.toLocaleString('ru-RU')} ₸\n`;
-                    course.includedProducts.forEach(p => {
-                        orderText += `  - ${p.name}\n`;
-                    });
-                    orderText += '\n';
                 }
             });
-            
-            const kaspiTotal = Math.round(total * this.config.kaspiMultiplier);
-            const kaspiMonthly = Math.round(kaspiTotal / 12);
-
-            orderText += `*Итого без рассрочки: ${total.toLocaleString("ru-RU")} ₸*\n`;
-            orderText += `Сумма через рассрочку KASPI 0-0-12: ${kaspiTotal.toLocaleString("ru-RU")} ₸ (≈ ${kaspiMonthly.toLocaleString("ru-RU")} ₸/мес)`;
-            
+            const kaspiTotal = Math.round(total * this.config.kaspiMultiplier), kaspiMonthly = Math.round(kaspiTotal / 12);
+            orderText += `\n*Итого без рассрочки: ${total.toLocaleString("ru-RU")} ₸*\nСумма через рассрочку KASPI 0-0-12: ${kaspiTotal.toLocaleString("ru-RU")} ₸ (≈ ${kaspiMonthly.toLocaleString("ru-RU")} ₸/мес)`;
             return { orderText, hasItems: true };
         },
         
         sendToWhatsApp() {
             const { orderText, hasItems } = this.generateOrderData();
-            if (!hasItems) {
-                this.showToast("Сначала добавьте курсы в заказ");
-                return;
-            }
-            const encodedText = encodeURIComponent(orderText);
-            const url = `https://wa.me/${this.config.whatsAppPhone}?text=${encodedText}`;
-            window.open(url, "_blank");
+            if (!hasItems) { this.showToast("Сначала добавьте курсы в заказ"); return; }
+            window.open(`https://wa.me/${this.config.whatsAppPhone}?text=${encodeURIComponent(orderText)}`, "_blank");
         },
 
         copyOrderLink() {
             const { orderText, hasItems } = this.generateOrderData();
-            if (!hasItems) {
-                this.showToast("Сначала добавьте курсы в заказ");
-                return;
-            }
-            navigator.clipboard.writeText(orderText).then(() => {
-                this.showToast("Текст заказа скопирован!", 'success');
-            }).catch(err => {
-                this.showToast("Не удалось скопировать текст");
-            });
+            if (!hasItems) { this.showToast("Сначала добавьте курсы в заказ"); return; }
+            navigator.clipboard.writeText(orderText).then(() => this.showToast("Текст заказа скопирован!", 'success'), () => this.showToast("Не удалось скопировать текст"));
         },
 
         clearOrder() {
@@ -483,18 +417,14 @@
         },
 
         showToast(message, type = 'normal') {
-            const icon = type === 'success' ? '<i class="fas fa-check-circle"></i>' : 
-                       type === 'error' ? '<i class="fas fa-exclamation-circle"></i>' : 
-                       '<i class="fas fa-info-circle"></i>';
-                       
             this.elements.toastEl.className = 'toast-notification';
-            if (type === 'success') this.elements.toastEl.classList.add('success');
-            if (type === 'error') this.elements.toastEl.style.backgroundColor = '#dc3545';
+            let icon = '<i class="fas fa-info-circle"></i>';
+            if (type === 'success') { icon = '<i class="fas fa-check-circle"></i>'; this.elements.toastEl.style.backgroundColor = 'var(--success-color)'; }
+            else if (type === 'error') { icon = '<i class="fas fa-exclamation-circle"></i>'; this.elements.toastEl.style.backgroundColor = '#dc3545'; }
+            else if (type === 'warning') { icon = '<i class="fas fa-exclamation-triangle"></i>'; this.elements.toastEl.style.backgroundColor = '#ffc107'; this.elements.toastEl.style.color = '#333'; }
             this.elements.toastEl.innerHTML = `${icon} ${message}`;
             this.elements.toastEl.classList.add('show');
-            setTimeout(() => {
-                this.elements.toastEl.classList.remove('show');
-            }, 3000);
+            setTimeout(() => this.elements.toastEl.classList.remove('show'), 3000);
         }
     };
     app.init();
