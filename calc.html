@@ -5,13 +5,16 @@
     <meta name="format-detection" content="telephone=no">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.5, user-scalable=yes" />
     <title>Прайс-лист и Калькулятор заказа</title>
+    <meta name="description" content="Актуальный прайс-лист и удобный калькулятор для заказа продукции Nefarma. Рассчитайте стоимость вашего заказа с учетом скидок.">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <noscript><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"></noscript>
+    
     <link rel="icon" type="image/x-icon" href="/favicon.ico">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
-
+    
     <style>
         :root {
             --bg-color: #1a1a1a;
@@ -497,6 +500,8 @@
             flex-direction: column;
             align-items: center;
             gap: 20px;
+            /* ИСПРАВЛЕНИЕ: Предотвращение смещения макета */
+            min-height: 200px;
         }
 
         .loader-spinner {
@@ -623,7 +628,7 @@
     <header class="header">
         <div class="container">
             <a href="index.html" class="logo" aria-label="На главную Nefarma">
-                <img src="https://static.tildacdn.one/tild6461-6365-4266-b662-336533346434/whitewhite_3.png" alt="Nefarma Logo">
+                <img src="https://static.tildacdn.one/tild6461-6365-4266-b662-336533346434/whitewhite_3.png" alt="Nefarma Logo" width="164" height="40" style="height: 40px; width: auto;">
             </a>
             <div class="contact-info">
                 <a href="tel:+77780990459" style="color: var(--text-color); text-decoration: none;">
@@ -634,7 +639,6 @@
     </header>
 
     <div class="calculator-container" id="app" style="display: none;">
-        <!-- Секция готовых курсов -->
         <div class="courses-section">
             <h2>Готовые курсы</h2>
             <div id="coursesContainer" class="courses-container"></div>
@@ -706,6 +710,9 @@
     </div>
     <div id="toast" class="toast-notification"></div>
     <button class="scroll-top-btn" id="scrollTopBtn" title="Наверх"><i class="fas fa-arrow-up"></i></button>
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js" defer></script>
+    
     <script>
     const app = {
         config: {
