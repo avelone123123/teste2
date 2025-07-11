@@ -167,7 +167,7 @@
 <script>
     const app = {
         config: {
-            csvPath: "https://docs.google.com/spreadsheets/d/e/2PACX-1vR4cVTTPoWzmvetqsFrXQ1_f21IGMYkqQ6-ciF6GUcl0IZGN8f_3gThbLW24cUtfMEyb1AeHK7QHcYX/pub?gid=1079824243&single=true&output=csv",
+            csvPath: "https://docs.google.com/spreadsheets/d/e/2PACX-1vT8x24laMfOP72DvCGYlqMR93PKzcGKu0vgXvMDjC6Q4AoHsXcnzsH2Plg18LGIgg-ikn6ThG0zL_4R/pub?gid=154927457&single=true&output=csv",
             whatsAppPhone: "77780990459",
             kaspiMultiplier: 1.1,
             cacheKey: 'coursesDataCache_v3',
@@ -303,7 +303,8 @@
                 id: course.course_id,
                 name: course.course_name,
                 description: course.description || '',
-                includedProducts: (course.product_ids || '').split(',').map(name => name.trim()),
+                // MODIFIED LINE: Changed course.product_ids to course.product_info
+                includedProducts: (course.product_info || '').split(',').map(name => name.trim()),
                 price: parseFloat(priceStr) || 0,
                 goal: course.goal || 'Не указана',
                 dosage: course.dosage || 'Не указана',
