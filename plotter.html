@@ -1,0 +1,1211 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.5, user-scalable=yes" />
+    <title>Планировщик курсов | Nefarma</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://code.highcharts.com/highcharts.js"></script>
+    <script src="https://code.highcharts.com/modules/exporting.js"></script>
+    <script src="https://code.highcharts.com/modules/export-data.js"></script>
+    <script src="https://code.highcharts.com/modules/accessibility.js"></script>
+
+    <style>
+        :root {
+            --bg-color: #121212;
+            --surface-color: #1e1e1e;
+            --primary-color: #00aaff;
+            --primary-hover-color: #0088cc;
+            --secondary-color: #7c4dff;
+            --text-color: #e0e0e0;
+            --text-muted-color: #a0a0a0;
+            --border-color: #333;
+            --danger-color: #ff4d4d;
+            --danger-hover-color: #cc0000;
+            --success-color: #28a745;
+            --warning-bg-color: rgba(255, 193, 7, 0.1);
+            --warning-border-color: #ffc107;
+            --card-shadow: 0 10px 20px rgba(0,0,0,0.25);
+            --transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+        }
+        html { scroll-behavior: smooth; }
+        body {
+            background-color: var(--bg-color);
+            background-image: radial-gradient(circle at 1px 1px, rgba(255,255,255,0.05) 1px, transparent 0);
+            background-size: 25px 25px;
+            color: var(--text-color);
+            font-family: 'Inter', sans-serif;
+            margin: 0;
+            padding: 0;
+            line-height: 1.6;
+        }
+        .header {
+            background-color: rgba(30, 30, 30, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 0.8rem 1.5rem;
+            display: flex;
+            align-items: center;
+            border-bottom: 1px solid var(--border-color);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+            flex-wrap: wrap;
+        }
+        .header .logo img {
+            height: 40px;
+            vertical-align: middle;
+            filter: drop-shadow(0 0 5px rgba(0,170,255,0.5));
+        }
+        .mobile-menu-btn {
+            display: none;
+            background: transparent;
+            border: none;
+            color: var(--text-color);
+            font-size: 1.5rem;
+            margin-left: auto;
+            cursor: pointer;
+        }
+        .nav-links {
+            display: flex;
+            gap: 1rem;
+            margin-left: auto;
+            transition: var(--transition);
+        }
+        .container {
+            padding: 1.5rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        h1, h2, h3 {
+            color: var(--text-color);
+            text-align: center;
+            margin-bottom: 1rem;
+            font-weight: 700;
+        }
+        h1 {
+            font-size: 2.2rem;
+            margin-top: 1rem;
+            background: linear-gradient(90deg, var(--primary-color), #7c4dff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0 2px 10px rgba(0,170,255,0.2);
+        }
+        h2 {
+            font-size: 1.8rem;
+            border-bottom: 3px solid var(--primary-color);
+            display: inline-block;
+            padding-bottom: 0.5rem;
+            margin-bottom: 1.5rem;
+            padding: 0 1rem 0.6rem;
+            position: relative;
+        }
+        .section-title {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.8rem;
+            margin-bottom: 1.5rem;
+            flex-wrap: wrap;
+        }
+        .section-title svg {
+            width: 30px;
+            height: 30px;
+            fill: var(--primary-color);
+        }
+        .form-control, .button {
+            background-color: var(--surface-color);
+            color: var(--text-color);
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            padding: 0.9rem 1.1rem;
+            font-size: 1rem;
+            margin-bottom: 1rem;
+            width: 100%;
+            box-sizing: border-box;
+            transition: var(--transition);
+        }
+        .form-control:focus {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(0, 170, 255, 0.3);
+            outline: none;
+        }
+        .button {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: #fff;
+            cursor: pointer;
+            width: auto;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.8rem;
+            font-weight: 600;
+            padding: 0.9rem 1.6rem;
+            border: none;
+            box-shadow: 0 4px 15px rgba(0,170,255,0.25);
+            text-decoration: none;
+        }
+        .button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(0,170,255,0.4);
+        }
+        .button:active { transform: translateY(0); }
+        .button.danger {
+            background: linear-gradient(135deg, var(--danger-color), #ff2a2a);
+            box-shadow: 0 4px 15px rgba(255,77,77,0.25);
+        }
+        .button.danger:hover {
+            box-shadow: 0 6px 20px rgba(255,77,77,0.4);
+        }
+        label {
+            display: block;
+            margin-bottom: 0.6rem;
+            color: var(--text-muted-color);
+            font-size: 0.95rem;
+            font-weight: 500;
+        }
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 1.2rem;
+        }
+        .single-compound-div {
+            background-color: rgba(255,255,255,0.04);
+            padding: 1.5rem;
+            border-radius: 14px;
+            border: 1px solid var(--border-color);
+            margin-bottom: 1.2rem;
+            box-shadow: var(--card-shadow);
+            transition: var(--transition);
+            position: relative;
+            overflow: hidden;
+        }
+        .single-compound-div::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 5px;
+            height: 100%;
+            background: linear-gradient(to bottom, var(--primary-color), var(--secondary-color));
+        }
+        .compound-info {
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            margin-bottom: 1.2rem;
+            flex-wrap: wrap;
+        }
+        .compound-name {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: var(--primary-color);
+            flex-grow: 1;
+        }
+        .half-life-info {
+            background: rgba(0,170,255,0.1);
+            border: 1px solid rgba(0,170,255,0.3);
+            border-radius: 8px;
+            padding: 0.4rem 0.8rem;
+            font-size: 0.85rem;
+            color: var(--primary-color);
+            white-space: nowrap;
+        }
+        .compound-color {
+            width: 35px;
+            height: 35px;
+            border-radius: 8px;
+            cursor: pointer;
+            border: 2px solid var(--border-color);
+        }
+        #chart-container {
+            width: 100%;
+            height: 400px;
+            margin-top: 1.5rem;
+            border-radius: 14px;
+            background: var(--surface-color);
+            border: 1px solid var(--border-color);
+            box-shadow: var(--card-shadow);
+            overflow: hidden;
+        }
+        .info-section {
+            background: linear-gradient(145deg, rgba(30,30,30,0.9), rgba(40,40,40,0.8));
+            padding: 1.8rem;
+            border-radius: 14px;
+            margin-top: 3rem;
+            border: 1px solid var(--border-color);
+            box-shadow: var(--card-shadow);
+            position: relative;
+            overflow: hidden;
+        }
+        .info-section::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(0,170,255,0.1) 0%, transparent 70%);
+            z-index: -1;
+        }
+        .disclaimer {
+            background: linear-gradient(145deg, rgba(255,193,7,0.15), rgba(255,152,0,0.1));
+            border: 1px solid var(--warning-border-color);
+            color: #ffd54f;
+            padding: 1.5rem;
+            border-radius: 14px;
+            text-align: center;
+            margin: 2.5rem 0;
+            box-shadow: 0 5px 15px rgba(255,193,7,0.15);
+            position: relative;
+            overflow: hidden;
+        }
+        .disclaimer::before {
+            content: '⚠️';
+            position: absolute;
+            top: 10px;
+            left: 15px;
+            font-size: 1.8rem;
+            opacity: 0.2;
+        }
+        .disclaimer strong {
+            color: #fff;
+            font-weight: 700;
+        }
+        .protocols-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.8rem;
+            margin-top: 1.5rem;
+        }
+        .protocol-card {
+            background: linear-gradient(145deg, rgba(40,40,40,0.8), rgba(30,30,30,0.9));
+            border-radius: 14px;
+            padding: 1.8rem;
+            border: 1px solid var(--border-color);
+            transition: var(--transition);
+            position: relative;
+            overflow: hidden;
+            box-shadow: var(--card-shadow);
+        }
+        .protocol-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 5px;
+            background: linear-gradient(to right, var(--primary-color), var(--secondary-color));
+        }
+        .protocol-card h3 {
+            color: var(--primary-color);
+            margin-top: 0;
+            font-size: 1.6rem;
+            margin-bottom: 1.2rem;
+        }
+        .protocol-card ul {
+            padding-left: 1.2rem;
+            list-style: none;
+            margin-bottom: 1.8rem;
+        }
+        .protocol-card li {
+            margin-bottom: 0.8rem;
+            position: relative;
+            padding-left: 1.5rem;
+        }
+        .protocol-card li::before {
+            content: '•';
+            color: var(--primary-color);
+            font-size: 1.5rem;
+            position: absolute;
+            left: 0;
+            top: -5px;
+        }
+        .protocol-card a.protocol-link {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.8rem;
+            padding: 0.9rem;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            text-align: center;
+            border-radius: 10px;
+            text-decoration: none;
+            transition: var(--transition);
+            cursor: pointer;
+            font-weight: 600;
+            box-shadow: 0 4px 15px rgba(0,170,255,0.25);
+            border: none;
+            font-size: 0.95rem;
+        }
+        .faq-item {
+            margin-bottom: 1.8rem;
+            background: rgba(255,255,255,0.03);
+            padding: 1.5rem;
+            border-radius: 14px;
+            border: 1px solid var(--border-color);
+            transition: var(--transition);
+        }
+        .faq-item h4 {
+            margin: 0 0 0.8rem 0;
+            color: var(--primary-color);
+            font-size: 1.3rem;
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+        }
+        .faq-item h4 i {
+            color: var(--secondary-color);
+            font-size: 1.1rem;
+        }
+        .faq-item p {
+            margin: 0;
+            color: var(--text-muted-color);
+            padding-left: 2rem;
+            font-size: 0.95rem;
+        }
+        footer {
+            text-align: center;
+            padding: 2rem 1.5rem;
+            margin-top: 3rem;
+            border-top: 1px solid var(--border-color);
+            color: var(--text-muted-color);
+            background: rgba(20,20,20,0.8);
+            position: relative;
+            font-size: 0.9rem;
+        }
+        footer::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 1px;
+            background: linear-gradient(to right, transparent, var(--primary-color), transparent);
+        }
+        .icon {
+            width: 26px;
+            height: 26px;
+            vertical-align: middle;
+            margin-right: 8px;
+        }
+        .button-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1.2rem;
+            margin-top: 1.5rem;
+            justify-content: center;
+        }
+        .button-row .button {
+            flex: 1;
+            min-width: 200px;
+            text-align: center;
+        }
+        .chart-controls {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 0.8rem;
+            margin: 1rem 0;
+            padding: 0 0.5rem;
+        }
+        .chart-controls button {
+            background: rgba(255,255,255,0.1);
+            border: 1px solid var(--border-color);
+            color: var(--text-muted-color);
+            border-radius: 8px;
+            padding: 0.6rem 1rem;
+            cursor: pointer;
+            transition: var(--transition);
+            font-size: 0.85rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .chart-controls button:hover {
+            background: var(--primary-color);
+            color: white;
+        }
+        .step-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 1.5rem;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+        .step-card {
+            background: rgba(0,170,255,0.05);
+            border-radius: 12px;
+            padding: 1.2rem;
+            border: 1px solid rgba(0,170,255,0.2);
+        }
+        .step-number {
+            font-size: 2rem;
+            color: var(--primary-color);
+            text-align: center;
+            margin-bottom: 0.8rem;
+            font-weight: 700;
+        }
+        .step-card h3 {
+            color: var(--primary-color);
+            text-align: center;
+            margin-top: 0;
+            margin-bottom: 0.8rem;
+            font-size: 1.2rem;
+        }
+        .step-card p {
+            text-align: center;
+            margin-bottom: 0;
+            font-size: 0.9rem;
+        }
+
+        /* Мобильная адаптация */
+        @media (max-width: 768px) {
+            .container { padding: 1rem; }
+            .header { padding: 0.7rem 1rem; }
+            h1 { font-size: 1.8rem; margin-top: 0.5rem; }
+            h2 { font-size: 1.5rem; padding: 0 0.8rem 0.5rem; }
+            .section-title { font-size: 1.5rem; gap: 0.5rem; }
+            .section-title svg { width: 24px; height: 24px; }
+            .mobile-menu-btn { display: block; }
+            .nav-links {
+                display: none;
+                flex-direction: column;
+                width: 100%;
+                padding: 1rem 0 0.5rem;
+                gap: 0.8rem;
+            }
+            .nav-links.show {
+                display: flex;
+            }
+            .nav-links .button {
+                width: 100%;
+                text-align: center;
+                padding: 0.8rem;
+                font-size: 0.9rem;
+            }
+            .form-grid { grid-template-columns: 1fr; gap: 1rem; }
+            .protocols-grid { grid-template-columns: 1fr; }
+            .button-row { flex-direction: column; gap: 1rem; }
+            .button-row .button { width: 100%; min-width: auto; }
+            .single-compound-div { padding: 1.2rem; }
+            .info-section { padding: 1.5rem; margin-top: 2rem; }
+            #chart-container { height: 350px; }
+            .step-cards { grid-template-columns: 1fr; }
+            .faq-item { padding: 1.2rem; }
+            .faq-item h4 { font-size: 1.2rem; }
+            .faq-item p { padding-left: 1.5rem; }
+            .disclaimer { padding: 1.2rem; font-size: 0.9rem; }
+            .compound-info { gap: 0.6rem; }
+            .compound-name { font-size: 1.1rem; }
+            .half-life-info { font-size: 0.8rem; padding: 0.3rem 0.6rem; }
+            .compound-color { width: 30px; height: 30px; }
+            .protocol-card { padding: 1.5rem; }
+            .protocol-card h3 { font-size: 1.4rem; }
+            .protocol-card ul { margin-bottom: 1.5rem; }
+            footer { padding: 1.5rem 1rem; font-size: 0.8rem; }
+            .chart-controls { gap: 0.5rem; }
+            .chart-controls button { padding: 0.5rem 0.8rem; font-size: 0.8rem; }
+        }
+
+        @media (max-width: 480px) {
+            h1 { font-size: 1.6rem; }
+            h2 { font-size: 1.3rem; }
+            .button { padding: 0.8rem 1.2rem; font-size: 0.9rem; }
+            .form-control, .button { padding: 0.8rem; }
+            #chart-container { height: 300px; }
+            .protocol-card { padding: 1.2rem; }
+            .step-card { padding: 1rem; }
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <a href="index.html" class="logo">
+            <img src="https://thb.tildacdn.one/tild6461-6365-4266-b662-336533346434/-/resize/504x/whitewhite_3.png" alt="Nefarma Logo">
+        </a>
+        <button class="mobile-menu-btn" id="mobile-menu">
+            <i class="fas fa-bars"></i>
+        </button>
+        <div class="nav-links" id="nav-links">
+            <a href="calc.html" class="button" style="font-size: 0.9rem;">
+                <i class="fas fa-calculator"></i> Калькулятор
+            </a>
+            <a href="#examples" class="button" style="font-size: 0.9rem;">
+                <i class="fas fa-list"></i> Примеры
+            </a>
+            <a href="#faq" class="button" style="font-size: 0.9rem;">
+                <i class="fas fa-question-circle"></i> FAQ
+            </a>
+        </div>
+    </header>
+
+    <div class="container">
+        <h1>Планировщик курсов</h1>
+        <p style="text-align: center; max-width: 800px; margin: 0 auto 1.5rem; font-size: 1rem; color: var(--text-muted-color);">
+            Инструмент для визуализации концентрации препаратов в крови с течением времени
+        </p>
+
+        <div class="info-section">
+            <h2 class="section-title">
+                <svg class="icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M12 16V12" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M12 8H12.01" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                Как это работает?
+            </h2>
+            <div class="step-cards">
+                <div class="step-card">
+                    <div class="step-number">1</div>
+                    <h3>Выберите длительность</h3>
+                    <p>Укажите продолжительность курса в неделях</p>
+                </div>
+                <div class="step-card">
+                    <div class="step-number">2</div>
+                    <h3>Добавьте препараты</h3>
+                    <p>Выберите препараты и их формы из списка</p>
+                </div>
+                <div class="step-card">
+                    <div class="step-number">3</div>
+                    <h3>Настройте параметры</h3>
+                    <p>Укажите дозировку и частоту приема</p>
+                </div>
+                <div class="step-card">
+                    <div class="step-number">4</div>
+                    <h3>Анализируйте график</h3>
+                    <p>Изучите динамику концентрации препаратов</p>
+                </div>
+            </div>
+        </div>
+
+        <form id="main-form" action="javascript:void(0);" style="margin-top: 2.5rem;" id="calculator">
+            <h2 class="section-title">
+                <svg class="icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M9 7H15M9 11H15M9 15H13M5 3H19C19.5523 3 20 3.44772 20 4V20C20 20.5523 19.5523 21 19 21H5C4.44772 21 4 20.5523 4 20V4C4 3.44772 4.44772 3 5 3Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                Конструктор курса
+            </h2>
+
+            <div class="form-grid">
+                <div>
+                    <label for="length"><strong>Длительность курса (недели)</strong></label>
+                    <input type="number" id="length" class="form-control" value="8" min="1" max="52">
+                </div>
+            </div>
+
+            <div id="all-compounds-div"></div>
+
+            <div class="button-row">
+                <button class="button" id="plot-button">
+                    <i class="fas fa-chart-line"></i> Построить график
+                </button>
+                <button class="button" id="add-compound-button">
+                    <i class="fas fa-plus-circle"></i> Добавить препарат
+                </button>
+                <button class="button danger" id="reset-compound-button">
+                    <i class="fas fa-trash-alt"></i> Сбросить все
+                </button>
+            </div>
+        </form>
+
+        <div id="chart-container"></div>
+        <div class="chart-controls">
+            <button id="export-png"><i class="fas fa-download"></i> PNG</button>
+            <button id="export-jpeg"><i class="fas fa-download"></i> JPEG</button>
+            <button id="export-svg"><i class="fas fa-download"></i> SVG</button>
+        </div>
+
+        <div class="disclaimer">
+            <strong>ВАЖНО:</strong> Вся информация на этой странице носит исключительно ознакомительный характер. Это не медицинская рекомендация. Перед применением любых препаратов обязательно проконсультируйтесь с квалифицированным врачом.
+        </div>
+
+        <section class="protocols-section" id="examples">
+            <h2 class="section-title">
+                <svg class="icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M14 2H6C5.46957 2 4.96086 2.21071 4.58579 2.58579C4.21071 2.96086 4 3.46957 4 4V20C4 20.5304 4.21071 21.0391 4.58579 21.4142C4.96086 21.7893 5.46957 22 6 22H18C18.5304 22 19.0391 21.7893 19.4142 21.4142C19.7893 21.0391 20 20.5304 20 20V8L14 2Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M14 2V8H20" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M16 13H8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M16 17H8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M10 9H8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                Примеры курсов
+            </h2>
+            <div class="protocols-grid">
+                <div class="protocol-card">
+                    <h3>Набор массы для начинающих</h3>
+                    <ul>
+                        <li>Тестостерон Пропионат: 100 мг через день</li>
+                        <li>Туринабол: 40 мг ежедневно</li>
+                        <li>Длительность: 8 недель</li>
+                    </ul>
+                    <a href="#" class="protocol-link" data-protocol="mass_beginner">
+                        <i class="fas fa-play-circle"></i> Применить
+                    </a>
+                </div>
+                <div class="protocol-card">
+                    <h3>Набор массы продвинутый</h3>
+                    <ul>
+                        <li>Тестостерон Микс: 500 мг в неделю</li>
+                        <li>Нандролон Деканоат: 250 мг в неделю</li>
+                        <li>Длительность: 12 недель</li>
+                    </ul>
+                    <a href="#" class="protocol-link" data-protocol="mass_advanced">
+                        <i class="fas fa-play-circle"></i> Применить
+                    </a>
+                </div>
+                <div class="protocol-card">
+                    <h3>Сушка продвинутая</h3>
+                    <ul>
+                        <li>Cut Mix S200: 200 мг через день</li>
+                        <li>Станозолол: 50 мг ежедневно</li>
+                        <li>Длительность: 8 недель</li>
+                    </ul>
+                    <a href="#" class="protocol-link" data-protocol="cut_advanced">
+                        <i class="fas fa-play-circle"></i> Применить
+                    </a>
+                </div>
+                <div class="protocol-card">
+                    <h3>Качественная сушка</h3>
+                    <ul>
+                        <li>Тестостерон Энантат: 300 мг каждые 4 дня</li>
+                        <li>Мастерон Энантат: 400 мг в неделю</li>
+                        <li>Длительность: 10 недель</li>
+                    </ul>
+                    <a href="#" class="protocol-link" data-protocol="cut_quality">
+                        <i class="fas fa-play-circle"></i> Применить
+                    </a>
+                </div>
+                <div class="protocol-card">
+                    <h3>Терапия (HRT)</h3>
+                    <ul>
+                        <li>Тестостерон Энантат: 125 мг каждые 5 дней</li>
+                        <li>Длительность: 12 недель</li>
+                    </ul>
+                    <a href="#" class="protocol-link" data-protocol="hrt_classic">
+                        <i class="fas fa-play-circle"></i> Применить
+                    </a>
+                </div>
+                <div class="protocol-card">
+                    <h3>Оральный курс массы</h3>
+                    <ul>
+                        <li>Метандиенон: 30 мг ежедневно</li>
+                        <li>Длительность: 6 недель</li>
+                    </ul>
+                    <a href="#" class="protocol-link" data-protocol="mass_oral">
+                        <i class="fas fa-play-circle"></i> Применить
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <div class="info-section" style="margin-top: 3rem;" id="faq">
+             <h2 class="section-title">
+                <svg class="icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M9.09 9C9.04 8.44 9.04 7.84 9.14 7.27C9.24 6.7 9.4 6.16 9.61 5.67C9.82 5.18 10.08 4.73 10.39 4.34C10.7 3.95 11.05 3.62 11.45 3.35C11.85 3.08 12.28 2.89 12.75 2.78C13.22 2.67 13.71 2.64 14.2 2.7C14.69 2.76 15.16 2.9 15.61 3.12C16.06 3.34 16.47 3.64 16.84 4.01C17.21 4.38 17.52 4.82 17.77 5.3C18.02 5.78 18.2 6.3 18.27 6.85C18.34 7.4 18.34 7.95 18.27 8.5C18.2 9.05 18.06 9.58 17.85 10.08C17.64 10.58 17.37 11.04 17.04 11.46C16.71 11.88 16.33 12.25 15.9 12.56C15.47 12.87 15 13.12 14.5 13.3C14 13.48 13.47 13.58 12.93 13.6C12.39 13.62 11.85 13.56 11.33 13.42C10.81 13.28 10.31 13.06 9.85 12.78C9.39 12.5 8.98 12.16 8.62 11.78C8.26 11.4 7.96 10.97 7.72 10.5C7.48 10.03 7.31 9.53 7.21 9.01" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M12 13.6V22" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                Часто задаваемые вопросы
+            </h2>
+            <div class="faq-item">
+                <h4><i class="fas fa-question-circle"></i> Насколько точны эти графики?</h4>
+                <p>Графики основаны на усредненных данных о периоде полураспада веществ. Индивидуальная реакция организма может отличаться из-за множества факторов (метаболизм, вес, состояние здоровья).</p>
+            </div>
+            <div class="faq-item">
+                <h4><i class="fas fa-question-circle"></i> Что означают "условные единицы"?</h4>
+                <p>Это относительный показатель для визуализации динамики концентрации. Он не равен конкретным значениям в анализах крови, но точно отражает тенденцию изменения концентрации.</p>
+            </div>
+             <div class="faq-item">
+                <h4><i class="fas fa-question-circle"></i> Почему моего препарата нет в списке?</h4>
+                <p>В калькулятор добавлены наиболее распространенные препараты. Если вам нужно добавить новые позиции, предоставьте их список с указанием действующего вещества и формы.</p>
+            </div>
+            <div class="faq-item">
+                <h4><i class="fas fa-question-circle"></i> Как учитывается период полувыведения?</h4>
+                <p>Расчеты основаны на фармакокинетической модели первого порядка. Каждый день концентрация уменьшается в 2^(1/halfLife) раз. При добавлении новой дозы концентрация увеличивается на величину дозировки.</p>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <p>&copy; 2024 Nefarma. Все права защищены. Информация предоставляется "как есть".</p>
+    </footer>
+
+    <script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const compounds = {
+            "Тестостерон": {
+                "propionate": { name: "Пропионат", halfLife: 1.5, color: "#00aaff" },
+                "phenylpropionate": { name: "Фенилпропионат", halfLife: 2.5, color: "#7c4dff" },
+                "enanthate": { name: "Энантат", halfLife: 4.5, color: "#00c853" },
+                "mix": { name: "Микс (Сустанон)", halfLife: 7.0, color: "#ff4081" },
+            },
+            "Нандролон": {
+                "phenylpropionate": { name: "Фенилпропионат", halfLife: 2.7, color: "#ff9100" },
+                "decanoate": { name: "Деканоат", halfLife: 8.0, color: "#651fff" },
+                "mix": { name: "Микс (Фенил+Дека)", halfLife: 6.0, color: "#e040fb" }
+            },
+            "Болденон": {
+                "undecylenate": { name: "Ундесиленат", halfLife: 14.0, color: "#18ffff" }
+            },
+            "Мастерон (Дростанолон)": {
+                "propionate": { name: "Пропионат", halfLife: 2.0, color: "#ff1744" },
+                "enanthate": { name: "Энантат", halfLife: 4.5, color: "#f50057" }
+            },
+            "Тренболон": {
+                "acetate": { name: "Ацетат", halfLife: 1.0, color: "#76ff03" }
+            },
+            "CUT MIX S200": {
+                "mix": { name: "Тест.Фенил/Трен.Ацетат/Маст.Проп", halfLife: 1.8, color: "#ffea00" }
+            },
+            "Метандиенон (Оральный)": { "oral": { name: "Таблетки", halfLife: 0.2, color: "#18ffff" } },
+            "Станозолол (Оральный)": { "oral": { name: "Таблетки", halfLife: 0.375, color: "#69f0ae" } },
+            "Туринабол (Оральный)": { "oral": { name: "Таблетки", halfLife: 0.67, color: "#b388ff" } },
+            "Оксандролон (Оральный)": { "oral": { name: "Таблетки", halfLife: 0.5, color: "#ff8a80" } },
+        };
+
+        const protocols = {
+            mass_beginner: {
+                name: "Набор массы для начинающих",
+                length: 8,
+                compounds: [
+                    { compound: "Тестостерон", form: "propionate", dose: 100, schedule: 2 },
+                    { compound: "Туринабол (Оральный)", form: "oral", dose: 40, schedule: 1 }
+                ]
+            },
+            mass_advanced: {
+                name: "Набор массы продвинутый",
+                length: 12,
+                compounds: [
+                    { compound: "Тестостерон", form: "mix", dose: 500, schedule: 7 },
+                    { compound: "Нандролон", form: "decanoate", dose: 250, schedule: 7 }
+                ]
+            },
+            mass_oral: {
+                name: "Оральный курс массы",
+                length: 6,
+                compounds: [
+                    { compound: "Метандиенон (Оральный)", form: "oral", dose: 30, schedule: 1 }
+                ]
+            },
+            cut_advanced: {
+                name: "Сушка продвинутая",
+                length: 8,
+                compounds: [
+                    { compound: "CUT MIX S200", form: "mix", dose: 200, schedule: 2 },
+                    { compound: "Станозолол (Оральный)", form: "oral", dose: 50, schedule: 1 }
+                ]
+            },
+            cut_quality: {
+                name: "Качественная сушка",
+                length: 10,
+                compounds: [
+                    { compound: "Тестостерон", form: "enanthate", dose: 300, schedule: 4 },
+                    { compound: "Мастерон (Дростанолон)", form: "enanthate", dose: 400, schedule: 7 }
+                ]
+            },
+            hrt_classic: {
+                name: "Терапия (HRT)",
+                length: 12,
+                compounds: [
+                    { compound: "Тестостерон", form: "enanthate", dose: 125, schedule: 5 }
+                ]
+            }
+        };
+
+        const allCompoundsDiv = document.getElementById('all-compounds-div');
+        const plotButton = document.getElementById('plot-button');
+        const mobileMenuBtn = document.getElementById('mobile-menu');
+        const navLinks = document.getElementById('nav-links');
+        let chart = null;
+
+        // Mobile menu toggle
+        mobileMenuBtn.addEventListener('click', () => {
+            navLinks.classList.toggle('show');
+            mobileMenuBtn.innerHTML = navLinks.classList.contains('show') ?
+                '<i class="fas fa-times"></i>' : '<i class="fas fa-bars"></i>';
+        });
+
+        // Close mobile menu when clicking on links
+        document.querySelectorAll('.nav-links a').forEach(link => {
+            link.addEventListener('click', () => {
+                navLinks.classList.remove('show');
+                mobileMenuBtn.innerHTML = '<i class="fas fa-bars"></i>';
+            });
+        });
+
+        function addCompound(data = {}) {
+            const compoundId = `compound_${Date.now()}_${Math.random()}`;
+            const compoundDiv = document.createElement('div');
+            compoundDiv.className = 'single-compound-div';
+            compoundDiv.id = compoundId;
+
+            const defaultColor = data.color || "#" + Math.floor(Math.random()*16777215).toString(16);
+
+            compoundDiv.innerHTML = `
+                <div class="compound-info">
+                    <div class="compound-name">Препарат #${document.querySelectorAll('.single-compound-div').length + 1}</div>
+                    <div class="half-life-info">T½: <span class="half-life-value">-</span> дней</div>
+                    <div class="compound-color" style="background-color: ${defaultColor};"></div>
+                </div>
+                <div class="form-grid">
+                    <div>
+                        <label>Препарат</label>
+                        <select class="compound form-control"></select>
+                    </div>
+                    <div>
+                        <label>Форма</label>
+                        <select class="compound-form form-control"></select>
+                    </div>
+                    <div>
+                        <label>Доза (мг)</label>
+                        <input type="number" class="dose form-control" value="${data.dose || 100}" min="1">
+                    </div>
+                    <div>
+                        <label>Частота приема (дни)</label>
+                        <input type="number" class="schedule form-control" value="${data.schedule || 7}" min="1">
+                    </div>
+                </div>
+                <button type="button" class="button danger" onclick="document.getElementById('${compoundId}').remove()" style="font-size: 0.9rem; padding: 0.7rem; margin-top: 1rem;">
+                    <i class="fas fa-trash-alt"></i> Удалить препарат
+                </button>
+            `;
+            allCompoundsDiv.appendChild(compoundDiv);
+
+            const compoundSelect = compoundDiv.querySelector('.compound');
+            Object.keys(compounds).forEach(cName => {
+                const option = document.createElement('option');
+                option.value = cName;
+                option.textContent = cName;
+                compoundSelect.appendChild(option);
+            });
+
+            compoundSelect.addEventListener('change', () => updateFormOptions(compoundDiv));
+
+            if (data.compound) {
+                compoundSelect.value = data.compound;
+            }
+
+            updateFormOptions(compoundDiv, data.form);
+
+            // Add color picker functionality
+            const colorBox = compoundDiv.querySelector('.compound-color');
+            colorBox.addEventListener('click', function() {
+                const colorPicker = document.createElement('input');
+                colorPicker.type = 'color';
+                colorPicker.value = this.style.backgroundColor || defaultColor;
+                colorPicker.style.position = 'absolute';
+                colorPicker.style.opacity = '0';
+                colorPicker.addEventListener('input', function() {
+                    colorBox.style.backgroundColor = this.value;
+                });
+                document.body.appendChild(colorPicker);
+                colorPicker.click();
+                document.body.removeChild(colorPicker);
+            });
+        }
+
+        function updateFormOptions(compoundDiv, selectedFormKey) {
+            const compoundSelect = compoundDiv.querySelector('.compound');
+            const formSelect = compoundDiv.querySelector('.compound-form');
+            const halfLifeSpan = compoundDiv.querySelector('.half-life-value');
+            const selectedCompound = compoundSelect.value;
+            const forms = compounds[selectedCompound];
+
+            formSelect.innerHTML = '';
+            for (const formKey in forms) {
+                const option = document.createElement('option');
+                option.value = formKey;
+                option.textContent = forms[formKey].name;
+                formSelect.appendChild(option);
+            }
+            if (selectedFormKey) {
+                formSelect.value = selectedFormKey;
+            }
+
+            // Update half-life info
+            const selectedForm = formSelect.value;
+            if (selectedForm && forms[selectedForm]) {
+                halfLifeSpan.textContent = forms[selectedForm].halfLife;
+            }
+
+            // Update color if available
+            if (selectedForm && forms[selectedForm] && forms[selectedForm].color) {
+                const colorBox = compoundDiv.querySelector('.compound-color');
+                colorBox.style.backgroundColor = forms[selectedForm].color;
+            }
+
+            // Add event listener for form change
+            formSelect.addEventListener('change', function() {
+                const selectedForm = this.value;
+                if (forms[selectedForm]) {
+                    halfLifeSpan.textContent = forms[selectedForm].halfLife;
+                    const colorBox = compoundDiv.querySelector('.compound-color');
+                    if (forms[selectedForm].color) {
+                        colorBox.style.backgroundColor = forms[selectedForm].color;
+                    }
+                }
+            });
+        }
+
+        function resetForm() {
+            allCompoundsDiv.innerHTML = '';
+            document.getElementById('length').value = 8;
+            addCompound();
+            clearChart();
+        }
+
+        document.getElementById('add-compound-button').addEventListener('click', () => addCompound());
+        document.getElementById('reset-compound-button').addEventListener('click', resetForm);
+
+        plotButton.addEventListener('click', plotGraph);
+
+        document.querySelectorAll('.protocol-link').forEach(link => {
+            link.addEventListener('click', (e) => {
+                e.preventDefault();
+                const protocolId = e.target.closest('a').dataset.protocol;
+                if (protocols[protocolId]) {
+                    loadProtocol(protocols[protocolId]);
+                    navLinks.classList.remove('show');
+                    mobileMenuBtn.innerHTML = '<i class="fas fa-bars"></i>';
+                }
+            });
+        });
+
+        function loadProtocol(protocol) {
+            allCompoundsDiv.innerHTML = '';
+            document.getElementById('length').value = protocol.length;
+            protocol.compounds.forEach(comp => addCompound(comp));
+            plotGraph();
+
+            // Scroll to chart
+            setTimeout(() => {
+                document.getElementById('chart-container').scrollIntoView({
+                    behavior: 'smooth',
+                    block: 'start'
+                });
+            }, 300);
+        }
+
+        function plotGraph() {
+            const cycleLength = parseInt(document.getElementById('length').value) * 7;
+            const series = [];
+
+            document.querySelectorAll('.single-compound-div').forEach(div => {
+                const dose = parseFloat(div.querySelector('.dose').value);
+                const schedule = parseInt(div.querySelector('.schedule').value);
+                const compoundKey = div.querySelector('.compound').value;
+                const formKey = div.querySelector('.compound-form').value;
+                const colorBox = div.querySelector('.compound-color');
+                const color = colorBox ? colorBox.style.backgroundColor : "#00aaff";
+
+                if (!dose || !schedule || !compoundKey || !formKey) return;
+
+                const compoundInfo = compounds[compoundKey][formKey];
+                const halfLife = compoundInfo.halfLife;
+                const seriesName = `${compoundKey} (${compoundInfo.name})`;
+
+                const data = [];
+                let concentration = 0;
+                for (let day = 0; day <= cycleLength; day++) {
+                    if (day > 0 && day % schedule === 0) {
+                        concentration += dose;
+                    }
+                    concentration = concentration * Math.pow(0.5, 1 / halfLife);
+                    data.push([day, Math.round(concentration)]);
+                }
+                series.push({
+                    name: seriesName,
+                    data: data,
+                    type: 'spline',
+                    color: color,
+                    lineWidth: 3,
+                    marker: {
+                        enabled: false
+                    },
+                    tooltip: {
+                        valueDecimals: 0
+                    }
+                });
+            });
+
+            drawChart(series);
+        }
+
+        function drawChart(series) {
+            chart = Highcharts.chart('chart-container', {
+                chart: {
+                    backgroundColor: 'transparent',
+                    style: { fontFamily: 'Inter, sans-serif' },
+                    plotBorderWidth: 0,
+                    animation: true
+                },
+                title: {
+                    text: 'Динамика концентрации препаратов',
+                    style: {
+                        color: 'var(--text-color)',
+                        fontSize: '1.4rem',
+                        fontWeight: '600'
+                    },
+                    margin: 25
+                },
+                xAxis: {
+                    title: {
+                        text: 'Дни',
+                        style: {
+                            color: 'var(--text-muted-color)',
+                            fontSize: '1rem'
+                        }
+                    },
+                    labels: {
+                        style: {
+                            color: 'var(--text-muted-color)',
+                            fontSize: '0.9rem'
+                        }
+                    },
+                    gridLineColor: 'rgba(255,255,255,0.05)',
+                    lineColor: 'var(--border-color)',
+                    tickColor: 'var(--border-color)'
+                },
+                yAxis: {
+                    title: {
+                        text: 'Концентрация (усл. ед.)',
+                        style: {
+                            color: 'var(--text-muted-color)',
+                            fontSize: '1rem'
+                        }
+                    },
+                    labels: {
+                        style: {
+                            color: 'var(--text-muted-color)',
+                            fontSize: '0.9rem'
+                        }
+                    },
+                    gridLineColor: 'rgba(255,255,255,0.05)',
+                    lineColor: 'var(--border-color)',
+                    tickColor: 'var(--border-color)'
+                },
+                legend: {
+                    itemStyle: {
+                        color: 'var(--text-color)',
+                        fontSize: '0.95rem',
+                        fontWeight: '500'
+                    },
+                    itemHoverStyle: {
+                        color: 'var(--primary-color)'
+                    },
+                    itemMarginBottom: 10,
+                    layout: 'horizontal',
+                    align: 'center',
+                    verticalAlign: 'top',
+                    floating: false,
+                    backgroundColor: 'transparent',
+                    borderWidth: 0,
+                    padding: 15
+                },
+                tooltip: {
+                    backgroundColor: 'rgba(30,30,30,0.95)',
+                    borderColor: 'var(--primary-color)',
+                    borderRadius: 10,
+                    style: {
+                        color: '#F0F0F0',
+                        fontSize: '1rem',
+                        padding: '12px'
+                    },
+                    shared: true,
+                    crosshairs: true,
+                    pointFormat: '<span style="color:{point.color}">●</span> {series.name}: <b>{point.y}</b><br/>'
+                },
+                plotOptions: {
+                    series: {
+                        marker: {
+                            enabled: false
+                        },
+                        states: {
+                            hover: {
+                                halo: {
+                                    size: 8,
+                                    opacity: 0.25
+                                },
+                                lineWidthPlus: 1
+                            }
+                        }
+                    }
+                },
+                series: series,
+                credits: { enabled: false },
+                exporting: {
+                    enabled: false
+                },
+                responsive: {
+                    rules: [{
+                        condition: {
+                            maxWidth: 768
+                        },
+                        chartOptions: {
+                            legend: {
+                                layout: 'horizontal',
+                                align: 'center',
+                                verticalAlign: 'bottom',
+                                itemMarginBottom: 5,
+                                padding: 10
+                            },
+                            title: {
+                                style: {
+                                    fontSize: '1.2rem'
+                                }
+                            }
+                        }
+                    }]
+                }
+            });
+        }
+
+        function clearChart() {
+            if (chart) {
+                chart.destroy();
+            }
+            Highcharts.chart('chart-container', {
+                chart: {
+                    backgroundColor: 'transparent',
+                    style: { fontFamily: 'Inter, sans-serif' }
+                },
+                title: {
+                    text: 'Добавьте препараты и нажмите "Построить график"',
+                    style: {
+                        color: 'var(--text-muted-color)',
+                        fontSize: '1.3rem',
+                        fontWeight: 'normal'
+                    },
+                    verticalAlign: 'middle',
+                    y: 100
+                },
+                credits: { enabled: false },
+                series: []
+            });
+        }
+
+        // Export buttons functionality
+        document.getElementById('export-png').addEventListener('click', function() {
+            if (chart) {
+                chart.exportChart({
+                    type: 'image/png',
+                    filename: 'nefarma-курс-концентрация'
+                });
+            }
+        });
+
+        document.getElementById('export-jpeg').addEventListener('click', function() {
+            if (chart) {
+                chart.exportChart({
+                    type: 'image/jpeg',
+                    filename: 'nefarma-курс-концентрация'
+                });
+            }
+        });
+
+        document.getElementById('export-svg').addEventListener('click', function() {
+            if (chart) {
+                chart.exportChart({
+                    type: 'image/svg+xml',
+                    filename: 'nefarma-курс-концентрация'
+                });
+            }
+        });
+
+        // Initialize
+        addCompound();
+        clearChart();
+    });
+    </script>
+</body>
+</html>
