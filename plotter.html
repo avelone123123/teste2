@@ -160,6 +160,13 @@
         .button.danger:hover {
             box-shadow: 0 6px 20px rgba(255,77,77,0.4);
         }
+        .button.success {
+            background: linear-gradient(135deg, var(--success-color), #20c997);
+            box-shadow: 0 4px 15px rgba(40,167,69,0.25);
+        }
+        .button.success:hover {
+             box-shadow: 0 6px 20px rgba(40,167,69,0.4);
+        }
         label {
             display: block;
             margin-bottom: 0.6rem;
@@ -463,6 +470,131 @@
             margin-bottom: 0;
             font-size: 0.9rem;
         }
+        
+        /* New Analysis Section Styles */
+        .analysis-section {
+            background: linear-gradient(145deg, rgba(40,40,40,0.8), rgba(30,30,30,0.9));
+            padding: 1.8rem;
+            border-radius: 14px;
+            margin-top: 2rem;
+            border: 1px solid var(--border-color);
+            box-shadow: var(--card-shadow);
+        }
+        .analysis-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 1.5rem;
+        }
+        .analysis-card {
+            background: rgba(255,255,255,0.04);
+            padding: 1.2rem;
+            border-radius: 12px;
+            text-align: center;
+            border: 1px solid var(--border-color);
+            position: relative; /* Needed for tooltip positioning */
+        }
+        .analysis-card .value {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--primary-color);
+            margin-bottom: 0.5rem;
+        }
+        .analysis-card .label {
+            font-size: 0.9rem;
+            color: var(--text-muted-color);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+        }
+        .analysis-card .unit {
+            font-size: 0.8rem;
+            color: var(--text-muted-color);
+        }
+        .info-icon {
+            color: var(--text-muted-color);
+            cursor: help;
+            font-size: 0.9em;
+        }
+        .tooltip {
+            visibility: hidden;
+            width: 220px;
+            background-color: #2a2a2a;
+            color: #fff;
+            text-align: left;
+            border-radius: 6px;
+            padding: 10px;
+            position: absolute;
+            z-index: 1;
+            bottom: 125%;
+            left: 50%;
+            margin-left: -110px;
+            opacity: 0;
+            transition: opacity 0.3s;
+            font-size: 0.85rem;
+            line-height: 1.4;
+            border: 1px solid var(--primary-color);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+        }
+        .tooltip::after {
+            content: "";
+            position: absolute;
+            top: 100%;
+            left: 50%;
+            margin-left: -5px;
+            border-width: 5px;
+            border-style: solid;
+            border-color: var(--primary-color) transparent transparent transparent;
+        }
+        .analysis-card:hover .tooltip {
+            visibility: visible;
+            opacity: 1;
+        }
+
+
+        /* Saved Courses Section */
+        .saved-courses-section {
+            margin-top: 3rem;
+        }
+        #saved-courses-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+        }
+        .saved-course-card {
+            background: rgba(255,255,255,0.03);
+            padding: 1.5rem;
+            border-radius: 14px;
+            border: 1px solid var(--border-color);
+            transition: var(--transition);
+            position: relative;
+        }
+        .saved-course-card h4 {
+            margin: 0 0 1rem 0;
+            color: var(--primary-color);
+            font-size: 1.2rem;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 0.8rem;
+        }
+        .saved-course-card ul {
+            padding-left: 1rem;
+            list-style: none;
+            color: var(--text-muted-color);
+            font-size: 0.9rem;
+            margin-bottom: 1.5rem;
+        }
+        .saved-course-card li {
+            margin-bottom: 0.5rem;
+        }
+        .saved-course-buttons {
+            display: flex;
+            gap: 1rem;
+        }
+        .saved-course-buttons .button {
+            width: 100%;
+            padding: 0.7rem;
+            font-size: 0.9rem;
+        }
 
         /* Мобильная адаптация */
         @media (max-width: 768px) {
@@ -511,6 +643,9 @@
             footer { padding: 1.5rem 1rem; font-size: 0.8rem; }
             .chart-controls { gap: 0.5rem; }
             .chart-controls button { padding: 0.5rem 0.8rem; font-size: 0.8rem; }
+            .analysis-grid { grid-template-columns: 1fr 1fr; } /* 2 columns on mobile */
+            .analysis-card .value { font-size: 1.5rem; }
+            #saved-courses-container { grid-template-columns: 1fr; }
         }
 
         @media (max-width: 480px) {
@@ -521,6 +656,7 @@
             #chart-container { height: 300px; }
             .protocol-card { padding: 1.2rem; }
             .step-card { padding: 1rem; }
+            .analysis-grid { grid-template-columns: 1fr; } /* 1 column on small mobile */
         }
     </style>
 </head>
@@ -548,7 +684,7 @@
     <div class="container">
         <h1>Планировщик курсов</h1>
         <p style="text-align: center; max-width: 800px; margin: 0 auto 1.5rem; font-size: 1rem; color: var(--text-muted-color);">
-            Инструмент для визуализации концентрации препаратов в крови с течением времени
+            Инструмент для визуализации и анализа концентрации препаратов в крови
         </p>
 
         <div class="info-section">
@@ -575,7 +711,7 @@
                 <div class="step-card">
                     <div class="step-number">4</div>
                     <h3>Анализируйте график</h3>
-                    <p>Изучите динамику концентрации препаратов</p>
+                    <p>Изучите динамику концентрации и анализ курса</p>
                 </div>
             </div>
         </div>
@@ -591,6 +727,10 @@
                     <label for="length"><strong>Длительность курса (недели)</strong></label>
                     <input type="number" id="length" class="form-control" value="8" min="1" max="52">
                 </div>
+                 <div>
+                    <label for="course-name"><strong>Название курса (для сохранения)</strong></label>
+                    <input type="text" id="course-name" class="form-control" placeholder="Например, Мой первый курс">
+                </div>
             </div>
 
             <div id="all-compounds-div"></div>
@@ -601,6 +741,9 @@
                 </button>
                 <button class="button" id="add-compound-button">
                     <i class="fas fa-plus-circle"></i> Добавить препарат
+                </button>
+                 <button class="button success" id="save-course-button">
+                    <i class="fas fa-save"></i> Сохранить курс
                 </button>
                 <button class="button danger" id="reset-compound-button">
                     <i class="fas fa-trash-alt"></i> Сбросить все
@@ -614,10 +757,65 @@
             <button id="export-jpeg"><i class="fas fa-download"></i> JPEG</button>
             <button id="export-svg"><i class="fas fa-download"></i> SVG</button>
         </div>
+        
+        <section class="analysis-section" id="analysis-results" style="display: none;">
+             <h2 class="section-title" style="margin-bottom: 1.5rem;">
+                <svg class="icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1v12Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M4 21v-5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                Анализ курса
+            </h2>
+            <div class="analysis-grid">
+                <div class="analysis-card">
+                    <div class="value" id="peak-concentration">0</div>
+                    <div class="label">
+                        Пиковая концентрация
+                        <i class="fas fa-info-circle info-icon"></i>
+                        <span class="tooltip">Это наивысшая суммарная концентрация всех препаратов в крови. Высокие пики могут увеличивать риск побочных эффектов. Значение показано в условных единицах, а не в мг/мл.</span>
+                    </div>
+                    <div class="unit">усл. ед.</div>
+                </div>
+                <div class="analysis-card">
+                    <div class="value" id="average-concentration">0</div>
+                    <div class="label">
+                        Средняя концентрация
+                        <i class="fas fa-info-circle info-icon"></i>
+                        <span class="tooltip">Это средний уровень концентрации препаратов на протяжении всего курса. Он показывает общий "анаболический фон". Более высокий показатель не всегда означает лучший результат.</span>
+                    </div>
+                    <div class="unit">усл. ед.</div>
+                </div>
+                <div class="analysis-card">
+                    <div class="value" id="lowest-concentration">0</div>
+                    <div class="label">
+                        Самый низкий уровень
+                        <i class="fas fa-info-circle info-icon"></i>
+                         <span class="tooltip">Это самая низкая точка концентрации, обычно перед следующей инъекцией. Большие "провалы" между пиками могут снижать эффективность курса. Цель — поддерживать стабильный уровень.</span>
+                    </div>
+                    <div class="unit">усл. ед.</div>
+                </div>
+                <div class="analysis-card">
+                    <div class="value" id="pct-start">0</div>
+                    <div class="label">
+                        Начало ПКТ
+                        <i class="fas fa-info-circle info-icon"></i>
+                        <span class="tooltip">Это РЕКОМЕНДУЕМЫЙ срок в днях после ПОСЛЕДНЕЙ инъекции, когда можно начинать ПКТ. Расчет основан на периоде полураспада самого "долгого" эфира. <strong>Это не медицинский совет! Обязательно проконсультируйтесь с врачом.</strong></span>
+                    </div>
+                    <div class="unit">дней после курса</div>
+                </div>
+            </div>
+        </section>
+
 
         <div class="disclaimer">
             <strong>ВАЖНО:</strong> Вся информация на этой странице носит исключительно ознакомительный характер. Это не медицинская рекомендация. Перед применением любых препаратов обязательно проконсультируйтесь с квалифицированным врачом.
         </div>
+        
+        <section class="saved-courses-section" id="saved-courses">
+            <h2 class="section-title">
+                <svg class="icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M19 21l-7-5-7 5V5a2 2 0 012-2h10a2 2 0 012 2v16z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+                Сохраненные курсы
+            </h2>
+            <div id="saved-courses-container">
+                </div>
+        </section>
 
         <section class="protocols-section" id="examples">
             <h2 class="section-title">
@@ -703,7 +901,7 @@
             </div>
             <div class="faq-item">
                 <h4><i class="fas fa-question-circle"></i> Что означают "условные единицы"?</h4>
-                <p>Это относительный показатель для визуализации динамики концентрации. Он не равен конкретным значениям в анализах крови, но точно отражает тенденцию изменения концентрации.</p>
+                <p>Это относительный показатель для визуализации динамики концентрации. Он не равен конкретным значениям в анализах крови (нг/дл или нмоль/л), но точно отражает тенденцию изменения концентрации.</p>
             </div>
              <div class="faq-item">
                 <h4><i class="fas fa-question-circle"></i> Почему моего препарата нет в списке?</h4>
@@ -806,6 +1004,8 @@
         const plotButton = document.getElementById('plot-button');
         const mobileMenuBtn = document.getElementById('mobile-menu');
         const navLinks = document.getElementById('nav-links');
+        const saveCourseButton = document.getElementById('save-course-button');
+        const savedCoursesContainer = document.getElementById('saved-courses-container');
         let chart = null;
 
         // Mobile menu toggle
@@ -829,7 +1029,7 @@
             compoundDiv.className = 'single-compound-div';
             compoundDiv.id = compoundId;
 
-            const defaultColor = data.color || "#" + Math.floor(Math.random()*16777215).toString(16);
+            const defaultColor = data.color || "#" + Math.floor(Math.random()*16777215).toString(16).padStart(6, '0');
 
             compoundDiv.innerHTML = `
                 <div class="compound-info">
@@ -877,7 +1077,6 @@
 
             updateFormOptions(compoundDiv, data.form);
 
-            // Add color picker functionality
             const colorBox = compoundDiv.querySelector('.compound-color');
             colorBox.addEventListener('click', function() {
                 const colorPicker = document.createElement('input');
@@ -912,42 +1111,34 @@
                 formSelect.value = selectedFormKey;
             }
 
-            // Update half-life info
-            const selectedForm = formSelect.value;
-            if (selectedForm && forms[selectedForm]) {
-                halfLifeSpan.textContent = forms[selectedForm].halfLife;
-            }
-
-            // Update color if available
-            if (selectedForm && forms[selectedForm] && forms[selectedForm].color) {
-                const colorBox = compoundDiv.querySelector('.compound-color');
-                colorBox.style.backgroundColor = forms[selectedForm].color;
-            }
-
-            // Add event listener for form change
-            formSelect.addEventListener('change', function() {
-                const selectedForm = this.value;
-                if (forms[selectedForm]) {
+            const updateInfo = () => {
+                const selectedForm = formSelect.value;
+                 if (selectedForm && forms[selectedForm]) {
                     halfLifeSpan.textContent = forms[selectedForm].halfLife;
                     const colorBox = compoundDiv.querySelector('.compound-color');
                     if (forms[selectedForm].color) {
-                        colorBox.style.backgroundColor = forms[selectedForm].color;
+                         colorBox.style.backgroundColor = forms[selectedForm].color;
                     }
                 }
-            });
+            };
+
+            formSelect.addEventListener('change', updateInfo);
+            updateInfo(); // Initial call
         }
 
         function resetForm() {
             allCompoundsDiv.innerHTML = '';
             document.getElementById('length').value = 8;
+            document.getElementById('course-name').value = '';
             addCompound();
             clearChart();
+            document.getElementById('analysis-results').style.display = 'none';
         }
 
         document.getElementById('add-compound-button').addEventListener('click', () => addCompound());
         document.getElementById('reset-compound-button').addEventListener('click', resetForm);
-
         plotButton.addEventListener('click', plotGraph);
+        saveCourseButton.addEventListener('click', saveCourse);
 
         document.querySelectorAll('.protocol-link').forEach(link => {
             link.addEventListener('click', (e) => {
@@ -960,14 +1151,15 @@
                 }
             });
         });
-
+        
         function loadProtocol(protocol) {
-            allCompoundsDiv.innerHTML = '';
+            resetForm(); // Clear existing form before loading
+            allCompoundsDiv.innerHTML = ''; // Ensure it's empty
             document.getElementById('length').value = protocol.length;
+            document.getElementById('course-name').value = protocol.name;
             protocol.compounds.forEach(comp => addCompound(comp));
             plotGraph();
 
-            // Scroll to chart
             setTimeout(() => {
                 document.getElementById('chart-container').scrollIntoView({
                     behavior: 'smooth',
@@ -979,8 +1171,17 @@
         function plotGraph() {
             const cycleLength = parseInt(document.getElementById('length').value) * 7;
             const series = [];
+            const allHalfLives = [];
+            
+            const compoundDivs = document.querySelectorAll('.single-compound-div');
+            if (compoundDivs.length === 0) {
+                clearChart();
+                return;
+            }
 
-            document.querySelectorAll('.single-compound-div').forEach(div => {
+            let totalConcentrations = new Array(cycleLength + 1).fill(0);
+
+            compoundDivs.forEach(div => {
                 const dose = parseFloat(div.querySelector('.dose').value);
                 const schedule = parseInt(div.querySelector('.schedule').value);
                 const compoundKey = div.querySelector('.compound').value;
@@ -992,16 +1193,20 @@
 
                 const compoundInfo = compounds[compoundKey][formKey];
                 const halfLife = compoundInfo.halfLife;
-                const seriesName = `${compoundKey} (${compoundInfo.name})`;
+                allHalfLives.push(halfLife);
 
+                const seriesName = `${compoundKey} (${compoundInfo.name})`;
                 const data = [];
                 let concentration = 0;
+
                 for (let day = 0; day <= cycleLength; day++) {
                     if (day > 0 && day % schedule === 0) {
                         concentration += dose;
                     }
-                    concentration = concentration * Math.pow(0.5, 1 / halfLife);
                     data.push([day, Math.round(concentration)]);
+                    totalConcentrations[day] += concentration;
+                    
+                    concentration = concentration * Math.pow(0.5, 1 / halfLife);
                 }
                 series.push({
                     name: seriesName,
@@ -1009,16 +1214,38 @@
                     type: 'spline',
                     color: color,
                     lineWidth: 3,
-                    marker: {
-                        enabled: false
-                    },
-                    tooltip: {
-                        valueDecimals: 0
-                    }
+                    marker: { enabled: false },
+                    tooltip: { valueDecimals: 0 }
                 });
             });
 
-            drawChart(series);
+            if(series.length > 0) {
+                calculateAndDisplayAnalysis(totalConcentrations, allHalfLives, cycleLength);
+                drawChart(series);
+            } else {
+                 clearChart();
+                 document.getElementById('analysis-results').style.display = 'none';
+            }
+        }
+        
+        function calculateAndDisplayAnalysis(totalConcentrations, halfLives, cycleLength) {
+            // Filter out the initial zero before any injections
+            const relevantConcentrations = totalConcentrations.slice(1);
+
+            const peak = Math.max(...relevantConcentrations);
+            const average = relevantConcentrations.reduce((a, b) => a + b, 0) / relevantConcentrations.length;
+            const lowest = Math.min(...relevantConcentrations.filter(c => c > 0)); // Find min greater than 0
+
+            // PCT calculation: 3 to 5 times the longest half-life
+            const longestHalfLife = Math.max(...halfLives);
+            const pctStart = Math.round(longestHalfLife * 3.5); // Using an average multiplier
+
+            document.getElementById('peak-concentration').textContent = Math.round(peak);
+            document.getElementById('average-concentration').textContent = Math.round(average);
+            document.getElementById('lowest-concentration').textContent = Math.round(lowest);
+            document.getElementById('pct-start').textContent = pctStart;
+
+            document.getElementById('analysis-results').style.display = 'block';
         }
 
         function drawChart(series) {
@@ -1046,12 +1273,7 @@
                             fontSize: '1rem'
                         }
                     },
-                    labels: {
-                        style: {
-                            color: 'var(--text-muted-color)',
-                            fontSize: '0.9rem'
-                        }
-                    },
+                    labels: { style: { color: 'var(--text-muted-color)' } },
                     gridLineColor: 'rgba(255,255,255,0.05)',
                     lineColor: 'var(--border-color)',
                     tickColor: 'var(--border-color)'
@@ -1064,86 +1286,42 @@
                             fontSize: '1rem'
                         }
                     },
-                    labels: {
-                        style: {
-                            color: 'var(--text-muted-color)',
-                            fontSize: '0.9rem'
-                        }
-                    },
+                    labels: { style: { color: 'var(--text-muted-color)' } },
                     gridLineColor: 'rgba(255,255,255,0.05)',
                     lineColor: 'var(--border-color)',
                     tickColor: 'var(--border-color)'
                 },
                 legend: {
-                    itemStyle: {
-                        color: 'var(--text-color)',
-                        fontSize: '0.95rem',
-                        fontWeight: '500'
-                    },
-                    itemHoverStyle: {
-                        color: 'var(--primary-color)'
-                    },
+                    itemStyle: { color: 'var(--text-color)', fontWeight: '500' },
+                    itemHoverStyle: { color: 'var(--primary-color)' },
                     itemMarginBottom: 10,
-                    layout: 'horizontal',
                     align: 'center',
-                    verticalAlign: 'top',
-                    floating: false,
-                    backgroundColor: 'transparent',
-                    borderWidth: 0,
+                    verticalAlign: 'bottom',
                     padding: 15
                 },
                 tooltip: {
                     backgroundColor: 'rgba(30,30,30,0.95)',
                     borderColor: 'var(--primary-color)',
                     borderRadius: 10,
-                    style: {
-                        color: '#F0F0F0',
-                        fontSize: '1rem',
-                        padding: '12px'
-                    },
+                    style: { color: '#F0F0F0', padding: '12px' },
                     shared: true,
                     crosshairs: true,
                     pointFormat: '<span style="color:{point.color}">●</span> {series.name}: <b>{point.y}</b><br/>'
                 },
                 plotOptions: {
                     series: {
-                        marker: {
-                            enabled: false
-                        },
-                        states: {
-                            hover: {
-                                halo: {
-                                    size: 8,
-                                    opacity: 0.25
-                                },
-                                lineWidthPlus: 1
-                            }
-                        }
+                        marker: { enabled: false },
+                        states: { hover: { halo: { size: 8, opacity: 0.25 }, lineWidthPlus: 1 } }
                     }
                 },
                 series: series,
                 credits: { enabled: false },
-                exporting: {
-                    enabled: false
-                },
+                exporting: { enabled: false },
                 responsive: {
                     rules: [{
-                        condition: {
-                            maxWidth: 768
-                        },
+                        condition: { maxWidth: 768 },
                         chartOptions: {
-                            legend: {
-                                layout: 'horizontal',
-                                align: 'center',
-                                verticalAlign: 'bottom',
-                                itemMarginBottom: 5,
-                                padding: 10
-                            },
-                            title: {
-                                style: {
-                                    fontSize: '1.2rem'
-                                }
-                            }
+                           title: { style: { fontSize: '1.2rem' } }
                         }
                     }]
                 }
@@ -1151,60 +1329,122 @@
         }
 
         function clearChart() {
-            if (chart) {
-                chart.destroy();
+            if (chart) { chart.destroy(); chart = null; }
+            document.getElementById('chart-container').innerHTML = '';
+             document.getElementById('analysis-results').style.display = 'none';
+        }
+        
+        // --- Local Storage Functions ---
+
+        function saveCourse() {
+            const courseName = document.getElementById('course-name').value.trim();
+            if (!courseName) {
+                alert('Пожалуйста, введите название курса перед сохранением.');
+                return;
             }
-            Highcharts.chart('chart-container', {
-                chart: {
-                    backgroundColor: 'transparent',
-                    style: { fontFamily: 'Inter, sans-serif' }
-                },
-                title: {
-                    text: 'Добавьте препараты и нажмите "Построить график"',
-                    style: {
-                        color: 'var(--text-muted-color)',
-                        fontSize: '1.3rem',
-                        fontWeight: 'normal'
-                    },
-                    verticalAlign: 'middle',
-                    y: 100
-                },
-                credits: { enabled: false },
-                series: []
+
+            const courseData = {
+                id: `course_${Date.now()}`,
+                name: courseName,
+                length: document.getElementById('length').value,
+                compounds: []
+            };
+
+            document.querySelectorAll('.single-compound-div').forEach(div => {
+                const compound = {
+                    compound: div.querySelector('.compound').value,
+                    form: div.querySelector('.compound-form').value,
+                    dose: div.querySelector('.dose').value,
+                    schedule: div.querySelector('.schedule').value,
+                    color: div.querySelector('.compound-color').style.backgroundColor
+                };
+                courseData.compounds.push(compound);
             });
+
+            if (courseData.compounds.length === 0) {
+                 alert('Нельзя сохранить пустой курс. Добавьте хотя бы один препарат.');
+                return;
+            }
+
+            let savedCourses = JSON.parse(localStorage.getItem('nefarma_courses')) || [];
+            savedCourses.push(courseData);
+            localStorage.setItem('nefarma_courses', JSON.stringify(savedCourses));
+            
+            alert(`Курс "${courseName}" успешно сохранен!`);
+            displaySavedCourses();
         }
 
+        function loadSavedCourse(courseId) {
+            let savedCourses = JSON.parse(localStorage.getItem('nefarma_courses')) || [];
+            const courseToLoad = savedCourses.find(c => c.id === courseId);
+
+            if (courseToLoad) {
+                resetForm();
+                allCompoundsDiv.innerHTML = '';
+                document.getElementById('length').value = courseToLoad.length;
+                document.getElementById('course-name').value = courseToLoad.name;
+                courseToLoad.compounds.forEach(comp => addCompound(comp));
+                plotGraph();
+                 document.getElementById('calculator').scrollIntoView({ behavior: 'smooth' });
+            }
+        }
+
+        function deleteSavedCourse(courseId) {
+            if (!confirm('Вы уверены, что хотите удалить этот сохраненный курс?')) return;
+            
+            let savedCourses = JSON.parse(localStorage.getItem('nefarma_courses')) || [];
+            const updatedCourses = savedCourses.filter(c => c.id !== courseId);
+            localStorage.setItem('nefarma_courses', JSON.stringify(updatedCourses));
+            displaySavedCourses();
+        }
+
+        function displaySavedCourses() {
+            savedCoursesContainer.innerHTML = '';
+            let savedCourses = JSON.parse(localStorage.getItem('nefarma_courses')) || [];
+            
+            if (savedCourses.length === 0) {
+                savedCoursesContainer.innerHTML = `<p style="color: var(--text-muted-color); text-align: center;">У вас пока нет сохраненных курсов.</p>`;
+                return;
+            }
+
+            savedCourses.forEach(course => {
+                const card = document.createElement('div');
+                card.className = 'saved-course-card';
+                
+                let compoundsList = '';
+                course.compounds.forEach(c => {
+                    const compInfo = compounds[c.compound] ? compounds[c.compound][c.form] : null;
+                    const compName = compInfo ? `${c.compound} (${compInfo.name})` : 'Неизвестный препарат';
+                    compoundsList += `<li>${compName}: ${c.dose}мг / ${c.schedule}д</li>`;
+                });
+
+                card.innerHTML = `
+                    <h4>${course.name}</h4>
+                    <ul>
+                        <li>Длительность: ${course.length} нед.</li>
+                        ${compoundsList}
+                    </ul>
+                    <div class="saved-course-buttons">
+                        <button class="button" onclick="window.loadSavedCourse('${course.id}')"><i class="fas fa-upload"></i> Загрузить</button>
+                        <button class="button danger" onclick="window.deleteSavedCourse('${course.id}')"><i class="fas fa-trash"></i> Удалить</button>
+                    </div>
+                `;
+                savedCoursesContainer.appendChild(card);
+            });
+        }
+        
+        // Make functions globally accessible for inline onclick handlers
+        window.loadSavedCourse = loadSavedCourse;
+        window.deleteSavedCourse = deleteSavedCourse;
+
         // Export buttons functionality
-        document.getElementById('export-png').addEventListener('click', function() {
-            if (chart) {
-                chart.exportChart({
-                    type: 'image/png',
-                    filename: 'nefarma-курс-концентрация'
-                });
-            }
-        });
-
-        document.getElementById('export-jpeg').addEventListener('click', function() {
-            if (chart) {
-                chart.exportChart({
-                    type: 'image/jpeg',
-                    filename: 'nefarma-курс-концентрация'
-                });
-            }
-        });
-
-        document.getElementById('export-svg').addEventListener('click', function() {
-            if (chart) {
-                chart.exportChart({
-                    type: 'image/svg+xml',
-                    filename: 'nefarma-курс-концентрация'
-                });
-            }
-        });
+        document.getElementById('export-png').addEventListener('click', function() { if (chart) chart.exportChart({ type: 'image/png', filename: 'nefarma-курс-концентрация' }); });
+        document.getElementById('export-jpeg').addEventListener('click', function() { if (chart) chart.exportChart({ type: 'image/jpeg', filename: 'nefarma-курс-концентрация' }); });
+        document.getElementById('export-svg').addEventListener('click', function() { if (chart) chart.exportChart({ type: 'image/svg+xml', filename: 'nefarma-курс-концентрация' }); });
 
         // Initialize
-        addCompound();
-        clearChart();
+        resetForm(); // Start with a clean slate
+        displaySavedCourses(); // Load any saved courses on page load
     });
     </script>
 </body>
