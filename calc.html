@@ -235,28 +235,28 @@
             width: 35%;
             display: flex;
             flex-direction: column;
-            gap: 8px;
+            gap: 5px; 
             align-items: flex-start;
         }
         
         .tags-container {
             display: flex;
-            gap: 6px;
+            gap: 5px;
             flex-wrap: wrap;
         }
         
+        /* *** ИЗМЕНЕНИЕ ЗДЕСЬ: Увеличен размер тегов *** */
         .tag {
-            font-size: 9px;
+            font-size: 9px; /* Увеличен размер шрифта */
             font-weight: 600;
-            padding: 3px 8px;
-            border-radius: 10px;
+            padding: 2px 7px; /* Увеличены внутренние отступы */
+            border-radius: 9px;
             color: var(--tag-text-color);
             text-transform: uppercase;
-            letter-spacing: 0.5px;
+            letter-spacing: 0.4px;
             display: inline-flex;
             align-items: center;
-            gap: 4px;
-            box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.1), 0 1px 3px rgba(0,0,0,0.3);
+            box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.1), 0 1px 2px rgba(0,0,0,0.2);
         }
 
         .tag-bestseller { background-color: var(--tag-bestseller-bg); }
@@ -593,16 +593,13 @@
             <input type="text" class="filter-input" id="filterInput" placeholder="Поиск по названию или бренду..." />
             <div class="filter-buttons">
                 <button class="filter-btn" id="filterHot" data-filter="hot">
-                    <svg class="icon" viewBox="0 0 384 512"><path d="M153.6 29.8c-12.3-33.4-50.5-44.1-79.3-25.1S1.5 61.9 22.8 91.2c21.3 29.3 60.1 35.2 84.8 13.9L159 81.3l-28.5 49.3c-11.3 19.6-5.3 44.5 14.3 55.8s44.5 5.3 55.8-14.3L241.2 98l-12-20.8c-13.8-23.9-44.2-31.5-67.6-17.7L153.6 29.8zM211 224l-30.2 52.3c-11.3 19.6-5.3 44.5 14.3 55.8s44.5 5.3 55.8-14.3L288.5 269l-14.9-25.8c-13.8-23.9-44.2-31.5-67.6-17.7L211 224zM128 384c-17.7 0-32 14.3-32 32s14.3 32 32 32s32-14.3 32-32s-14.3-32-32-32zm160 0c-17.7 0-32 14.3-32 32s14.3 32 32 32s32-14.3 32-32s-14.3-32-32-32z"/></svg>
-                    Хиты
+                    🔥 HOT
                 </button>
                 <button class="filter-btn" id="filterNew" data-filter="new">
-                    <svg class="icon" viewBox="0 0 576 512"><path d="M288 385.3l-124.3 65.4 23.7-138.4-100.6-98 138.7-20.2L288 64l62.5 124.1 138.7 20.2-100.6 98 23.7 138.4L288 385.3z"/></svg>
-                    Новинки
+                    ✨ NEW
                 </button>
                 <button class="filter-btn" id="filterLowStock" data-filter="low">
-                    <svg class="icon" viewBox="0 0 576 512"><path d="M569.5 448H6.5C.4 448-2.5 454.9 1.5 459.9l280 280c4 4 11 4 15 0l280-280c4-5 1.1-11.9-5-11.9zM288 352c-17.7 0-32-14.3-32-32V192c0-17.7 14.3-32 32-32s32 14.3 32 32v128c0 17.7-14.3 32-32 32z"/></svg>
-                    Мало
+                    ⏳ Мало
                 </button>
                 <button class="filter-btn" id="resetFilter">
                     <svg class="icon" style="margin-right:0;" viewBox="0 0 384 512"><path d="M342.6 150.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L192 210.7 86.6 105.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3L146.7 256 41.4 361.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0L192 301.3 297.4 406.6c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L237.3 256 342.6 150.6z"/></svg>
@@ -841,11 +838,11 @@
                 row.dataset.category = currentCategory;
                 if (this.state.collapsedCategories.has(currentCategory)) row.classList.add('hidden');
                 
-                 const tagsHtml = `
+                const tagsHtml = `
                     <div class="tags-container">
-                        ${item.isBestseller ? `<span class="tag tag-bestseller"><svg class="icon" viewBox="0 0 384 512"><path fill="currentColor" d="M153.6 29.8c-12.3-33.4-50.5-44.1-79.3-25.1S1.5 61.9 22.8 91.2c21.3 29.3 60.1 35.2 84.8 13.9L159 81.3l-28.5 49.3c-11.3 19.6-5.3 44.5 14.3 55.8s44.5 5.3 55.8-14.3L241.2 98l-12-20.8c-13.8-23.9-44.2-31.5-67.6-17.7L153.6 29.8zM211 224l-30.2 52.3c-11.3 19.6-5.3 44.5 14.3 55.8s44.5 5.3 55.8-14.3L288.5 269l-14.9-25.8c-13.8-23.9-44.2-31.5-67.6-17.7L211 224zM128 384c-17.7 0-32 14.3-32 32s14.3 32 32 32s32-14.3 32-32s-14.3-32-32-32zm160 0c-17.7 0-32 14.3-32 32s14.3 32 32 32s32-14.3 32-32s-14.3-32-32-32z"/></svg> HOT</span>` : ''}
-                        ${item.isNew ? `<span class="tag tag-new"><svg class="icon" viewBox="0 0 576 512"><path fill="currentColor" d="M288 385.3l-124.3 65.4 23.7-138.4-100.6-98 138.7-20.2L288 64l62.5 124.1 138.7 20.2-100.6 98 23.7 138.4L288 385.3z"/></svg> NEW</span>` : ''}
-                        ${item.isLowStock ? `<span class="tag tag-low-stock"><svg class="icon" viewBox="0 0 576 512"><path fill="currentColor" d="M569.5 448H6.5C.4 448-2.5 454.9 1.5 459.9l280 280c4 4 11 4 15 0l280-280c4-5 1.1-11.9-5-11.9zM288 352c-17.7 0-32-14.3-32-32V192c0-17.7 14.3-32 32-32s32 14.3 32 32v128c0 17.7-14.3 32-32 32z"/></svg> МАЛО</span>` : ''}
+                        ${item.isBestseller ? `<span class="tag tag-bestseller">🔥 HOT</span>` : ''}
+                        ${item.isNew ? `<span class="tag tag-new">✨ NEW</span>` : ''}
+                        ${item.isLowStock ? `<span class="tag tag-low-stock">⏳ Мало</span>` : ''}
                     </div>
                 `;
 
