@@ -8,13 +8,8 @@
     
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link rel="preconnect" href="https://cdnjs.cloudflare.com">
-
-    <link rel="preload" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'">
-    <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"></noscript>
     
-    <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
-    <noscript><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"></noscript>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap">
     
     <link rel="icon" type="image/x-icon" href="/favicon.ico">
     
@@ -40,6 +35,18 @@
             --tag-text-color: #ffffff;
         }
 
+        /* Helper for icons */
+        .icon {
+            display: inline-block;
+            width: 1em;
+            height: 1em;
+            stroke-width: 0;
+            stroke: currentColor;
+            fill: currentColor;
+            vertical-align: middle;
+            margin-right: 8px;
+        }
+
         body {
             font-family: var(--font-main);
             background-color: var(--bg-color);
@@ -51,7 +58,6 @@
             font-size: 16px;
         }
         
-        /* Класс для скрытия элементов от зрячих пользователей, но доступности для скрин-ридеров */
         .visually-hidden {
             position: absolute;
             width: 1px;
@@ -84,7 +90,7 @@
 
         .logo img {
             height: 40px;
-            width: auto; /* Позволяет сохранять пропорции */
+            width: auto;
             display: block;
         }
 
@@ -573,8 +579,9 @@
                 decoding="async">
             </a>
             <div class="contact-info">
-                <a href="tel:+77780990459" style="color: var(--text-color); text-decoration: none;">
-                    <i class="fas fa-phone"></i> +7 (778) 099-04-59
+                <a href="tel:+77780990459" style="color: var(--text-color); text-decoration: none; display: inline-flex; align-items: center;">
+                    <svg class="icon" viewBox="0 0 512 512"><path d="M497.39 361.82l-108.6-108.6c-25-25-65.5-25-90.5 0l-42.4 42.4c-11.5 11.5-30.8 12.3-43.2 2.7C150.29 248.8 113.16 198.24 88.58 141.5c-13.6-31.3-4.8-69.8 21.6-96.2l42.4-42.4c25-25 25-65.5 0-90.5L43.98 4.61C19 20.58-5.37 43.83 1.25 76.53c13.7 78.8 54.38 153.33 108.5 207.4c54.12 54.12 128.6 94.8 207.4 108.5c32.7 6.62 55.95-17.73 71.93-42.7z"/></svg>
+                    +7 (778) 099-04-59
                 </a>
             </div>
         </div>
@@ -586,16 +593,20 @@
             <input type="text" class="filter-input" id="filterInput" placeholder="Поиск по названию или бренду..." />
             <div class="filter-buttons">
                 <button class="filter-btn" id="filterHot" data-filter="hot">
-                    <i class="fas fa-fire"></i> Хиты
+                    <svg class="icon" viewBox="0 0 384 512"><path d="M153.6 29.8c-12.3-33.4-50.5-44.1-79.3-25.1S1.5 61.9 22.8 91.2c21.3 29.3 60.1 35.2 84.8 13.9L159 81.3l-28.5 49.3c-11.3 19.6-5.3 44.5 14.3 55.8s44.5 5.3 55.8-14.3L241.2 98l-12-20.8c-13.8-23.9-44.2-31.5-67.6-17.7L153.6 29.8zM211 224l-30.2 52.3c-11.3 19.6-5.3 44.5 14.3 55.8s44.5 5.3 55.8-14.3L288.5 269l-14.9-25.8c-13.8-23.9-44.2-31.5-67.6-17.7L211 224zM128 384c-17.7 0-32 14.3-32 32s14.3 32 32 32s32-14.3 32-32s-14.3-32-32-32zm160 0c-17.7 0-32 14.3-32 32s14.3 32 32 32s32-14.3 32-32s-14.3-32-32-32z"/></svg>
+                    Хиты
                 </button>
                 <button class="filter-btn" id="filterNew" data-filter="new">
-                    <i class="fas fa-star"></i> Новинки
+                    <svg class="icon" viewBox="0 0 576 512"><path d="M288 385.3l-124.3 65.4 23.7-138.4-100.6-98 138.7-20.2L288 64l62.5 124.1 138.7 20.2-100.6 98 23.7 138.4L288 385.3z"/></svg>
+                    Новинки
                 </button>
                 <button class="filter-btn" id="filterLowStock" data-filter="low">
-                    <i class="fas fa-exclamation-triangle"></i> Мало
+                    <svg class="icon" viewBox="0 0 576 512"><path d="M569.5 448H6.5C.4 448-2.5 454.9 1.5 459.9l280 280c4 4 11 4 15 0l280-280c4-5 1.1-11.9-5-11.9zM288 352c-17.7 0-32-14.3-32-32V192c0-17.7 14.3-32 32-32s32 14.3 32 32v128c0 17.7-14.3 32-32 32z"/></svg>
+                    Мало
                 </button>
                 <button class="filter-btn" id="resetFilter">
-                    <i class="fas fa-times"></i> Сброс
+                    <svg class="icon" style="margin-right:0;" viewBox="0 0 384 512"><path d="M342.6 150.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L192 210.7 86.6 105.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3L146.7 256 41.4 361.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0L192 301.3 297.4 406.6c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L237.3 256 342.6 150.6z"/></svg>
+                    Сброс
                 </button>
             </div>
         </div>
@@ -631,13 +642,16 @@
             </div>
             <div class="actions">
                 <button class="action-button clear-btn" onclick="app.clearOrder()">
-                    <i class="fas fa-trash-alt"></i> Очистить
+                    <svg class="icon" viewBox="0 0 448 512"><path d="M135.2 17.7L128 32H32C14.3 32 0 46.3 0 64s14.3 32 32 32h384c17.7 0 32-14.3 32-32s-14.3-32-32-32h-96l-7.2-14.3C307.4 6.8 296.3 0 284.2 0H163.8c-12.1 0-23.2 6.8-28.6 17.7zM416 128H32l21.2 339c1.6 25.3 22.6 45 47.9 45h245.8c25.3 0 46.3-19.7 47.9-45L416 128z"/></svg>
+                     Очистить
                 </button>
                 <button class="action-button copy-btn" onclick="app.copyOrderLink()">
-                    <i class="fas fa-copy"></i> Скопировать
+                    <svg class="icon" viewBox="0 0 448 512"><path d="M384 336H192c-8.8 0-16-7.2-16-16V64c0-8.8 7.2-16 16-16l140.1 0L400 115.9V320c0 8.8-7.2 16-16 16zM192 384H384c35.3 0 64-28.7 64-64V115.9c0-12.7-5.1-24.9-14.1-33.9L366.1 14.1c-9-9-21.2-14.1-33.9-14.1H192c-35.3 0-64 28.7-64 64V320c0 35.3 28.7 64 64 64zM64 128c-35.3 0-64 28.7-64 64V448c0 35.3 28.7 64 64 64H256c35.3 0 64-28.7 64-64V416H272v32c0 8.8-7.2 16-16 16H64c-8.8 0-16-7.2-16-16V192c0-8.8 7.2-16 16-16H96V128H64z"/></svg>
+                    Скопировать
                 </button>
                 <button class="action-button whatsapp-btn" onclick="app.sendToWhatsApp()">
-                    <i class="fab fa-whatsapp"></i> WhatsApp
+                    <svg class="icon" viewBox="0 0 448 512"><path fill="#FFF" d="M380.9 97.1C339 55.1 283.2 32 223.9 32c-122.4 0-222 99.6-222 222 0 39.1 10.2 77.3 29.6 111L0 480l117.7-30.9c32.4 17.7 68.9 27 106.1 27h.1c122.3 0 224.1-99.6 224.1-222 0-59.3-25.2-115-67.1-157zm-157 341.6c-33.8 0-65.7-8.9-94-25.4l-6.7-4-69.8 18.3L72 359.2l-4.4-7c-18.5-29.4-28.2-63.3-28.2-98.2 0-101.7 82.8-184.5 184.6-184.5 49.3 0 95.6 19.2 130.4 54.1 34.8 34.9 56.2 81.2 56.1 130.5 0 101.8-84.9 184.6-186.6 184.6zm101.2-138.2c-5.5-2.8-32.8-16.2-37.9-18-5.1-1.9-8.8-2.8-12.5 2.8-3.7 5.6-14.3 18-17.6 21.8-3.2 3.7-6.5 4.2-12 1.4-32.6-16.3-54-29.1-75.5-66-5.7-9.8 5.7-9.1 16.3-30.3 1.8-3.7.9-6.9-.5-9.7-1.4-2.8-12.5-30.1-17.1-41.2-4.5-10.8-9.1-9.3-12.5-9.5-3.2-.2-6.9-.2-10.6-.2-3.7 0-9.7 1.4-14.8 6.9-5.1 5.6-19.4 19-19.4 46.3 0 27.3 19.9 53.7 22.6 57.4 2.8 3.7 39.1 59.7 94.8 83.8 35.2 15.2 49 16.5 66.6 13.9 10.7-1.6 32.8-13.4 37.4-26.4 4.6-13 4.6-24.1 3.2-26.4-1.3-2.5-5-3.9-10.5-6.6z"/></svg>
+                    WhatsApp
                 </button>
             </div>
         </div>
@@ -647,12 +661,13 @@
         <div>Загрузка прайс-листа...</div>
     </div>
     <div id="toast" class="toast-notification"></div>
-    <button class="scroll-top-btn" id="scrollTopBtn" title="Наверх"><i class="fas fa-arrow-up"></i></button>
+    <button class="scroll-top-btn" id="scrollTopBtn" title="Наверх">
+        <svg class="icon" style="margin:0;" viewBox="0 0 448 512"><path fill="#FFF" d="M246.6 41.4c-12.5-12.5-32.8-12.5-45.3 0l-160 160c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0L224 109.3V480c0 17.7 14.3 32 32 32s32-14.3 32-32V109.3l137.4 137.4c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3l-160-160z"/></svg>
+    </button>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js" defer></script>
     
     <script>
-    // Весь ваш JavaScript-код остается без изменений
     const app = {
         config: {
             csvPath: "https://docs.google.com/spreadsheets/d/e/2PACX-1vRX6c66tG6qBDrcCrkRsGaoG7o-OjwLgyggjnaY2oyZJ2pkcASi5HCSCt8q8A4cxHVGtq1MyaxEE45Q/pub?gid=1898551688&single=true&output=csv",
@@ -701,7 +716,6 @@
             window.addEventListener('scroll', this.handleScroll);
             this.elements.scrollTopBtn.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
             
-            // Фильтры
             this.elements.filterHot.addEventListener('click', () => this.toggleFilter('hot'));
             this.elements.filterNew.addEventListener('click', () => this.toggleFilter('new'));
             this.elements.filterLowStock.addEventListener('click', () => this.toggleFilter('low'));
@@ -750,11 +764,12 @@
                     this.processData(cachedItem.products);
                 } else {
                     this.elements.loader.innerHTML = `
-                        <div style="color: #ff6b6b; max-width: 400px;">
-                            <i class="fas fa-exclamation-triangle" style="font-size: 24px; margin-bottom: 10px;"></i>
+                        <div style="color: #ff6b6b; max-width: 400px; display:flex; flex-direction:column; align-items:center; gap: 10px;">
+                             <svg class="icon" style="font-size: 24px;" viewBox="0 0 512 512"><path fill="currentColor" d="M256 32c14.2 0 27.3 7.5 34.5 19.8l216 368c7.3 12.4 7.3 27.7 .2 40.1S486.3 480 472 480H40c-14.3 0-27.6-7.7-34.7-20.1s-7-27.8 .2-40.1l216-368C228.7 39.5 241.8 32 256 32zm0 128c-13.3 0-24 10.7-24 24V296c0 13.3 10.7 24 24 24s24-10.7 24-24V184c0-13.3-10.7-24-24-24zm32 224a32 32 0 1 0 -64 0 32 32 0 1 0 64 0z"/></svg>
                             <div>Не удалось загрузить прайс-лист. Проверьте интернет-соединение и попробуйте обновить страницу.</div>
-                            <button onclick="location.reload()" style="margin-top: 15px; background: var(--primary-color); color: white; border: none; padding: 10px 20px; border-radius: var(--border-radius); cursor: pointer;">
-                                <i class="fas fa-sync-alt"></i> Обновить страницу
+                            <button onclick="location.reload()" style="margin-top: 15px; background: var(--primary-color); color: white; border: none; padding: 10px 20px; border-radius: var(--border-radius); cursor: pointer; display:inline-flex; align-items:center; gap: 8px;">
+                                <svg class="icon" style="margin-right:0;" viewBox="0 0 512 512"><path fill="#FFF" d="M463.5 224H472c13.3 0 24-10.7 24-24V72c0-9.7-5.8-18.5-14.8-22.2s-19.3-1.7-26.2 5.2L413.4 96.6c-87.6-86.5-228.7-86.2-315.8 1c-87.5 87.5-87.5 229.3 0 316.8s229.3 87.5 316.8 0c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0c-62.5 62.5-163.8 62.5-226.3 0s-62.5-163.8 0-226.3c62.2-62.2 162.7-62.5 225.3-1L327 183c-6.9 6.9-8.9 17.2-5.2 26.2s12.5 14.8 22.2 14.8H463.5z"/></svg>
+                                Обновить страницу
                             </button>
                         </div>
                     `;
@@ -799,14 +814,12 @@
             const filter = this.state.filter.toLowerCase();
 
             this.state.products.forEach(item => {
-                // Применяем текстовый фильтр
                 if (filter && 
                     !item.name.toLowerCase().includes(filter) && 
                     !item.brand.toLowerCase().includes(filter)) {
                     return;
                 }
                 
-                // Применяем активный фильтр (хиты/новинки/мало)
                 if (this.state.activeFilter) {
                     if (this.state.activeFilter === 'hot' && !item.isBestseller) return;
                     if (this.state.activeFilter === 'new' && !item.isNew) return;
@@ -828,11 +841,11 @@
                 row.dataset.category = currentCategory;
                 if (this.state.collapsedCategories.has(currentCategory)) row.classList.add('hidden');
                 
-                const tagsHtml = `
+                 const tagsHtml = `
                     <div class="tags-container">
-                        ${item.isBestseller ? '<span class="tag tag-bestseller"><i class="fas fa-fire"></i> HOT</span>' : ''}
-                        ${item.isNew ? '<span class="tag tag-new"><i class="fas fa-star"></i> NEW</span>' : ''}
-                        ${item.isLowStock ? '<span class="tag tag-low-stock"><i class="fas fa-exclamation-triangle"></i> МАЛО</span>' : ''}
+                        ${item.isBestseller ? `<span class="tag tag-bestseller"><svg class="icon" viewBox="0 0 384 512"><path fill="currentColor" d="M153.6 29.8c-12.3-33.4-50.5-44.1-79.3-25.1S1.5 61.9 22.8 91.2c21.3 29.3 60.1 35.2 84.8 13.9L159 81.3l-28.5 49.3c-11.3 19.6-5.3 44.5 14.3 55.8s44.5 5.3 55.8-14.3L241.2 98l-12-20.8c-13.8-23.9-44.2-31.5-67.6-17.7L153.6 29.8zM211 224l-30.2 52.3c-11.3 19.6-5.3 44.5 14.3 55.8s44.5 5.3 55.8-14.3L288.5 269l-14.9-25.8c-13.8-23.9-44.2-31.5-67.6-17.7L211 224zM128 384c-17.7 0-32 14.3-32 32s14.3 32 32 32s32-14.3 32-32s-14.3-32-32-32zm160 0c-17.7 0-32 14.3-32 32s14.3 32 32 32s32-14.3 32-32s-14.3-32-32-32z"/></svg> HOT</span>` : ''}
+                        ${item.isNew ? `<span class="tag tag-new"><svg class="icon" viewBox="0 0 576 512"><path fill="currentColor" d="M288 385.3l-124.3 65.4 23.7-138.4-100.6-98 138.7-20.2L288 64l62.5 124.1 138.7 20.2-100.6 98 23.7 138.4L288 385.3z"/></svg> NEW</span>` : ''}
+                        ${item.isLowStock ? `<span class="tag tag-low-stock"><svg class="icon" viewBox="0 0 576 512"><path fill="currentColor" d="M569.5 448H6.5C.4 448-2.5 454.9 1.5 459.9l280 280c4 4 11 4 15 0l280-280c4-5 1.1-11.9-5-11.9zM288 352c-17.7 0-32-14.3-32-32V192c0-17.7 14.3-32 32-32s32 14.3 32 32v128c0 17.7-14.3 32-32 32z"/></svg> МАЛО</span>` : ''}
                     </div>
                 `;
 
@@ -859,12 +872,11 @@
             this.elements.tableBody.innerHTML = '';
             this.elements.tableBody.appendChild(fragment);
             
-            // Если нет товаров после фильтрации
             if (this.elements.tableBody.children.length === 0) {
                 this.elements.tableBody.innerHTML = `
                     <tr>
-                        <td colspan="7" style="text-align: center; padding: 30px;">
-                            <i class="fas fa-search" style="font-size: 24px; margin-bottom: 10px; display: block;"></i>
+                        <td colspan="7" style="text-align: center; padding: 30px; display:flex; flex-direction:column; align-items:center; gap:10px;">
+                            <svg class="icon" style="font-size: 24px; margin:0;" viewBox="0 0 512 512"><path d="M416 208c0 45.9-14.9 88.3-40 122.7L502.6 457.4c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L330.7 376c-34.4 25.2-76.8 40-122.7 40C93.1 416 0 322.9 0 208S93.1 0 208 0S416 93.1 416 208zM208 352a144 144 0 1 0 0-288 144 144 0 1 0 0 288z"/></svg>
                             По вашему запросу ничего не найдено
                         </td>
                     </tr>
@@ -968,7 +980,6 @@
                 sumCell.textContent = `${subtotal.toLocaleString('ru-RU')} ₸`;
                 row.querySelector(`.price-p${tier}`)?.classList.add('price-highlight');
                 
-                // Анимация изменения суммы
                 if (qty > 0) {
                     sumCell.classList.add('summary-highlight');
                     setTimeout(() => sumCell.classList.remove('summary-highlight'), 1500);
@@ -979,7 +990,6 @@
             this.elements.totalEl.textContent = `${finalTotal.toLocaleString('ru-RU')} ₸`;
             this.elements.savingsEl.textContent = `Экономия: ${savings.toLocaleString('ru-RU')} ₸`;
             
-            // Анимация изменения итога
             this.elements.totalEl.classList.add('summary-highlight');
             setTimeout(() => this.elements.totalEl.classList.remove('summary-highlight'), 1500);
             
@@ -1128,24 +1138,15 @@
             this.renderTable();
         },
         showToast(message, type = 'normal') {
-            this.elements.toastEl.textContent = message;
-            this.elements.toastEl.className = 'toast-notification';
-            
             const icons = {
-                normal: '<i class="fas fa-info-circle"></i>',
-                warning: '<i class="fas fa-exclamation-triangle"></i>',
-                success: '<i class="fas fa-check-circle"></i>'
+                normal: '<svg class="icon" viewBox="0 0 512 512"><path fill="currentColor" d="M256 512A256 256 0 1 0 256 0a256 256 0 1 0 0 512zM216 336h24V272H216c-13.3 0-24-10.7-24-24s10.7-24 24-24h48c13.3 0 24 10.7 24 24v88h8c13.3 0 24 10.7 24 24s-10.7 24-24 24H216c-13.3 0-24-10.7-24-24s10.7-24 24-24zm40-144a32 32 0 1 0 0-64 32 32 0 1 0 0 64z"/></svg>',
+                warning: '<svg class="icon" viewBox="0 0 512 512"><path fill="currentColor" d="M256 32c14.2 0 27.3 7.5 34.5 19.8l216 368c7.3 12.4 7.3 27.7 .2 40.1S486.3 480 472 480H40c-14.3 0-27.6-7.7-34.7-20.1s-7-27.8 .2-40.1l216-368C228.7 39.5 241.8 32 256 32zm0 128c-13.3 0-24 10.7-24 24V296c0 13.3 10.7 24 24 24s24-10.7 24-24V184c0-13.3-10.7-24-24-24zm32 224a32 32 0 1 0 -64 0 32 32 0 1 0 64 0z"/></svg>',
+                success: '<svg class="icon" viewBox="0 0 512 512"><path fill="currentColor" d="M256 512A256 256 0 1 0 256 0a256 256 0 1 0 0 512zM369 209L241 337c-9.4 9.4-24.6 9.4-33.9 0l-64-64c-9.4-9.4-9.4-24.6 0-33.9s24.6-9.4 33.9 0l47 47L335 175c9.4-9.4 24.6-9.4 33.9 0s9.4 24.6 0 33.9z"/></svg>'
             };
-            
-            if (type === 'warning') {
-                this.elements.toastEl.classList.add('warning');
-                this.elements.toastEl.innerHTML = icons.warning + ' ' + message;
-            } else if (type === 'success') {
-                this.elements.toastEl.classList.add('success');
-                this.elements.toastEl.innerHTML = icons.success + ' ' + message;
-            } else {
-                this.elements.toastEl.innerHTML = icons.normal + ' ' + message;
-            }
+
+            this.elements.toastEl.className = 'toast-notification';
+            this.elements.toastEl.classList.add(type);
+            this.elements.toastEl.innerHTML = (icons[type] || icons['normal']) + ' ' + message;
             
             this.elements.toastEl.classList.add('show');
             setTimeout(() => {
