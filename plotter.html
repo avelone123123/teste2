@@ -231,13 +231,18 @@
         }
         #chart-container {
             width: 100%;
-            height: 400px;
+            height: 450px;
             margin-top: 1.5rem;
             border-radius: 14px;
             background: var(--surface-color);
             border: 1px solid var(--border-color);
             box-shadow: var(--card-shadow);
             overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-muted-color);
+            padding: 10px;
         }
         .info-section {
             background: linear-gradient(145deg, rgba(30,30,30,0.9), rgba(40,40,40,0.8));
@@ -471,7 +476,6 @@
             font-size: 0.9rem;
         }
         
-        /* New Analysis Section Styles */
         .analysis-section {
             background: linear-gradient(145deg, rgba(40,40,40,0.8), rgba(30,30,30,0.9));
             padding: 1.8rem;
@@ -491,7 +495,7 @@
             border-radius: 12px;
             text-align: center;
             border: 1px solid var(--border-color);
-            position: relative; /* Needed for tooltip positioning */
+            position: relative;
         }
         .analysis-card .value {
             font-size: 2rem;
@@ -551,8 +555,6 @@
             opacity: 1;
         }
 
-
-        /* Saved Courses Section */
         .saved-courses-section {
             margin-top: 3rem;
         }
@@ -595,6 +597,29 @@
             padding: 0.7rem;
             font-size: 0.9rem;
         }
+        
+        .toast-notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background-color: var(--surface-color);
+            color: var(--text-color);
+            padding: 1rem 1.5rem;
+            border-radius: 10px;
+            border-left: 5px solid var(--primary-color);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+            z-index: 9999;
+            opacity: 0;
+            transform: translateX(100%);
+            transition: all 0.5s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+        }
+        .toast-notification.show {
+            opacity: 1;
+            transform: translateX(0);
+        }
+        .toast-notification.success { border-color: var(--success-color); }
+        .toast-notification.error { border-color: var(--danger-color); }
+
 
         /* Мобильная адаптация */
         @media (max-width: 768px) {
@@ -609,8 +634,13 @@
                 display: none;
                 flex-direction: column;
                 width: 100%;
-                padding: 1rem 0 0.5rem;
+                background: var(--surface-color);
+                position: absolute;
+                top: 100%;
+                left: 0;
+                padding: 1rem;
                 gap: 0.8rem;
+                box-shadow: 0 8px 16px rgba(0,0,0,0.3);
             }
             .nav-links.show {
                 display: flex;
@@ -627,7 +657,7 @@
             .button-row .button { width: 100%; min-width: auto; }
             .single-compound-div { padding: 1.2rem; }
             .info-section { padding: 1.5rem; margin-top: 2rem; }
-            #chart-container { height: 350px; }
+            #chart-container { height: 400px; } /* Adjusted height for mobile */
             .step-cards { grid-template-columns: 1fr; }
             .faq-item { padding: 1.2rem; }
             .faq-item h4 { font-size: 1.2rem; }
@@ -643,7 +673,7 @@
             footer { padding: 1.5rem 1rem; font-size: 0.8rem; }
             .chart-controls { gap: 0.5rem; }
             .chart-controls button { padding: 0.5rem 0.8rem; font-size: 0.8rem; }
-            .analysis-grid { grid-template-columns: 1fr 1fr; } /* 2 columns on mobile */
+            .analysis-grid { grid-template-columns: 1fr 1fr; } 
             .analysis-card .value { font-size: 1.5rem; }
             #saved-courses-container { grid-template-columns: 1fr; }
         }
@@ -653,23 +683,23 @@
             h2 { font-size: 1.3rem; }
             .button { padding: 0.8rem 1.2rem; font-size: 0.9rem; }
             .form-control, .button { padding: 0.8rem; }
-            #chart-container { height: 300px; }
+            #chart-container { height: 320px; } /* Adjusted height for small mobile */
             .protocol-card { padding: 1.2rem; }
             .step-card { padding: 1rem; }
-            .analysis-grid { grid-template-columns: 1fr; } /* 1 column on small mobile */
+            .analysis-grid { grid-template-columns: 1fr; }
         }
     </style>
 </head>
 <body>
     <header class="header">
-        <a href="index.html" class="logo">
+        <a href="#" class="logo">
             <img src="https://thb.tildacdn.one/tild6461-6365-4266-b662-336533346434/-/resize/504x/whitewhite_3.png" alt="Nefarma Logo">
         </a>
         <button class="mobile-menu-btn" id="mobile-menu">
             <i class="fas fa-bars"></i>
         </button>
         <div class="nav-links" id="nav-links">
-            <a href="calc.html" class="button" style="font-size: 0.9rem;">
+            <a href="#calculator" class="button" style="font-size: 0.9rem;">
                 <i class="fas fa-calculator"></i> Калькулятор
             </a>
             <a href="#examples" class="button" style="font-size: 0.9rem;">
@@ -751,7 +781,9 @@
             </div>
         </form>
 
-        <div id="chart-container"></div>
+        <div id="chart-container">
+             <span>Заполните параметры курса и нажмите "Построить график"</span>
+        </div>
         <div class="chart-controls">
             <button id="export-png"><i class="fas fa-download"></i> PNG</button>
             <button id="export-jpeg"><i class="fas fa-download"></i> JPEG</button>
@@ -1008,33 +1040,60 @@
         const savedCoursesContainer = document.getElementById('saved-courses-container');
         let chart = null;
 
-        // Mobile menu toggle
+        function showToast(message, type = 'success') {
+            const toast = document.createElement('div');
+            toast.className = `toast-notification ${type}`;
+            toast.textContent = message;
+            document.body.appendChild(toast);
+            setTimeout(() => toast.classList.add('show'), 100);
+            setTimeout(() => {
+                toast.classList.remove('show');
+                toast.addEventListener('transitionend', () => toast.remove());
+            }, 3000);
+        }
+
+        function updateCompoundTitles() {
+            const compoundDivs = document.querySelectorAll('.single-compound-div');
+            compoundDivs.forEach((div, index) => {
+                const title = div.querySelector('.compound-name');
+                if (title) {
+                    title.textContent = `Препарат #${index + 1}`;
+                }
+            });
+        }
+        
         mobileMenuBtn.addEventListener('click', () => {
             navLinks.classList.toggle('show');
             mobileMenuBtn.innerHTML = navLinks.classList.contains('show') ?
                 '<i class="fas fa-times"></i>' : '<i class="fas fa-bars"></i>';
         });
 
-        // Close mobile menu when clicking on links
         document.querySelectorAll('.nav-links a').forEach(link => {
-            link.addEventListener('click', () => {
-                navLinks.classList.remove('show');
-                mobileMenuBtn.innerHTML = '<i class="fas fa-bars"></i>';
+            link.addEventListener('click', (e) => {
+                const anchor = e.target.closest('a');
+                if (anchor && anchor.hash && document.querySelector(anchor.hash)) {
+                    e.preventDefault();
+                    document.querySelector(anchor.hash).scrollIntoView({ behavior: 'smooth' });
+                }
+                if (navLinks.classList.contains('show')) {
+                    navLinks.classList.remove('show');
+                    mobileMenuBtn.innerHTML = '<i class="fas fa-bars"></i>';
+                }
             });
         });
 
         function addCompound(data = {}) {
-            const compoundId = `compound_${Date.now()}_${Math.random()}`;
+            const compoundId = `compound_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
             const compoundDiv = document.createElement('div');
             compoundDiv.className = 'single-compound-div';
             compoundDiv.id = compoundId;
-
             const defaultColor = data.color || "#" + Math.floor(Math.random()*16777215).toString(16).padStart(6, '0');
 
             compoundDiv.innerHTML = `
                 <div class="compound-info">
-                    <div class="compound-name">Препарат #${document.querySelectorAll('.single-compound-div').length + 1}</div>
+                    <div class="compound-name"></div>
                     <div class="half-life-info">T½: <span class="half-life-value">-</span> дней</div>
+                    <input type="color" class="compound-color-input" value="${defaultColor}" style="display: none;">
                     <div class="compound-color" style="background-color: ${defaultColor};"></div>
                 </div>
                 <div class="form-grid">
@@ -1055,7 +1114,7 @@
                         <input type="number" class="schedule form-control" value="${data.schedule || 7}" min="1">
                     </div>
                 </div>
-                <button type="button" class="button danger" onclick="document.getElementById('${compoundId}').remove()" style="font-size: 0.9rem; padding: 0.7rem; margin-top: 1rem;">
+                <button type="button" class="button danger remove-compound-btn" style="font-size: 0.9rem; padding: 0.7rem; margin-top: 1rem;">
                     <i class="fas fa-trash-alt"></i> Удалить препарат
                 </button>
             `;
@@ -1068,28 +1127,24 @@
                 option.textContent = cName;
                 compoundSelect.appendChild(option);
             });
+            
+            compoundDiv.querySelector('.remove-compound-btn').addEventListener('click', () => {
+                compoundDiv.remove();
+                updateCompoundTitles();
+            });
 
             compoundSelect.addEventListener('change', () => updateFormOptions(compoundDiv));
-
-            if (data.compound) {
+            if (data.compound && compounds[data.compound]) {
                 compoundSelect.value = data.compound;
             }
-
             updateFormOptions(compoundDiv, data.form);
+            updateCompoundTitles();
 
             const colorBox = compoundDiv.querySelector('.compound-color');
-            colorBox.addEventListener('click', function() {
-                const colorPicker = document.createElement('input');
-                colorPicker.type = 'color';
-                colorPicker.value = this.style.backgroundColor || defaultColor;
-                colorPicker.style.position = 'absolute';
-                colorPicker.style.opacity = '0';
-                colorPicker.addEventListener('input', function() {
-                    colorBox.style.backgroundColor = this.value;
-                });
-                document.body.appendChild(colorPicker);
-                colorPicker.click();
-                document.body.removeChild(colorPicker);
+            const colorInput = compoundDiv.querySelector('.compound-color-input');
+            colorBox.addEventListener('click', () => colorInput.click());
+            colorInput.addEventListener('input', () => {
+                colorBox.style.backgroundColor = colorInput.value;
             });
         }
 
@@ -1099,7 +1154,6 @@
             const halfLifeSpan = compoundDiv.querySelector('.half-life-value');
             const selectedCompound = compoundSelect.value;
             const forms = compounds[selectedCompound];
-
             formSelect.innerHTML = '';
             for (const formKey in forms) {
                 const option = document.createElement('option');
@@ -1107,23 +1161,23 @@
                 option.textContent = forms[formKey].name;
                 formSelect.appendChild(option);
             }
-            if (selectedFormKey) {
+            if (selectedFormKey && forms[selectedFormKey]) {
                 formSelect.value = selectedFormKey;
             }
-
             const updateInfo = () => {
                 const selectedForm = formSelect.value;
                  if (selectedForm && forms[selectedForm]) {
                     halfLifeSpan.textContent = forms[selectedForm].halfLife;
                     const colorBox = compoundDiv.querySelector('.compound-color');
+                    const colorInput = compoundDiv.querySelector('.compound-color-input');
                     if (forms[selectedForm].color) {
                          colorBox.style.backgroundColor = forms[selectedForm].color;
+                         colorInput.value = forms[selectedForm].color;
                     }
                 }
             };
-
             formSelect.addEventListener('change', updateInfo);
-            updateInfo(); // Initial call
+            updateInfo();
         }
 
         function resetForm() {
@@ -1131,8 +1185,7 @@
             document.getElementById('length').value = 8;
             document.getElementById('course-name').value = '';
             addCompound();
-            clearChart();
-            document.getElementById('analysis-results').style.display = 'none';
+            clearChartAndAnalysis();
         }
 
         document.getElementById('add-compound-button').addEventListener('click', () => addCompound());
@@ -1146,22 +1199,19 @@
                 const protocolId = e.target.closest('a').dataset.protocol;
                 if (protocols[protocolId]) {
                     loadProtocol(protocols[protocolId]);
-                    navLinks.classList.remove('show');
-                    mobileMenuBtn.innerHTML = '<i class="fas fa-bars"></i>';
                 }
             });
         });
         
         function loadProtocol(protocol) {
-            resetForm(); // Clear existing form before loading
-            allCompoundsDiv.innerHTML = ''; // Ensure it's empty
+            resetForm(); 
+            allCompoundsDiv.innerHTML = ''; 
             document.getElementById('length').value = protocol.length;
             document.getElementById('course-name').value = protocol.name;
             protocol.compounds.forEach(comp => addCompound(comp));
             plotGraph();
-
             setTimeout(() => {
-                document.getElementById('chart-container').scrollIntoView({
+                document.getElementById('calculator').scrollIntoView({
                     behavior: 'smooth',
                     block: 'start'
                 });
@@ -1170,150 +1220,124 @@
 
         function plotGraph() {
             const cycleLength = parseInt(document.getElementById('length').value) * 7;
+            if (!cycleLength || cycleLength <= 0) {
+                showToast("Пожалуйста, укажите корректную длительность курса.", "error");
+                return;
+            }
             const series = [];
             const allHalfLives = [];
-            
             const compoundDivs = document.querySelectorAll('.single-compound-div');
             if (compoundDivs.length === 0) {
-                clearChart();
+                clearChartAndAnalysis();
+                showToast("Добавьте хотя бы один препарат для построения графика.", "error");
                 return;
             }
 
             let totalConcentrations = new Array(cycleLength + 1).fill(0);
-
+            let isValid = true;
             compoundDivs.forEach(div => {
                 const dose = parseFloat(div.querySelector('.dose').value);
                 const schedule = parseInt(div.querySelector('.schedule').value);
                 const compoundKey = div.querySelector('.compound').value;
                 const formKey = div.querySelector('.compound-form').value;
-                const colorBox = div.querySelector('.compound-color');
-                const color = colorBox ? colorBox.style.backgroundColor : "#00aaff";
+                const color = div.querySelector('.compound-color-input').value;
 
-                if (!dose || !schedule || !compoundKey || !formKey) return;
+                if (!dose || !schedule || dose <= 0 || schedule <= 0) isValid = false;
+                const compoundInfo = compounds[compoundKey]?.[formKey];
+                if (!compoundInfo || !compoundInfo.halfLife || compoundInfo.halfLife <= 0) isValid = false; 
+                if(!isValid) return;
 
-                const compoundInfo = compounds[compoundKey][formKey];
                 const halfLife = compoundInfo.halfLife;
                 allHalfLives.push(halfLife);
-
                 const seriesName = `${compoundKey} (${compoundInfo.name})`;
                 const data = [];
-                let concentration = 0;
+                let concentration = dose;
 
                 for (let day = 0; day <= cycleLength; day++) {
-                    if (day > 0 && day % schedule === 0) {
+                    const currentConcentration = concentration;
+                    data.push([day, Math.round(currentConcentration)]);
+                    totalConcentrations[day] += currentConcentration;
+                    concentration = currentConcentration * Math.pow(0.5, 1 / halfLife);
+                    if ((day + 1) % schedule === 0 && (day + 1) <= cycleLength) {
                         concentration += dose;
                     }
-                    data.push([day, Math.round(concentration)]);
-                    totalConcentrations[day] += concentration;
-                    
-                    concentration = concentration * Math.pow(0.5, 1 / halfLife);
                 }
                 series.push({
-                    name: seriesName,
-                    data: data,
-                    type: 'spline',
-                    color: color,
-                    lineWidth: 3,
-                    marker: { enabled: false },
-                    tooltip: { valueDecimals: 0 }
+                    name: seriesName, data: data, type: 'areaspline', color: color, lineWidth: 2,
+                    marker: { enabled: false, states: { hover: { enabled: true, radius: 5 }}},
+                    fillColor: {
+                        linearGradient: { x1: 0, y1: 0, x2: 0, y2: 1 },
+                        stops: [
+                            [0, Highcharts.color(color).setOpacity(0.5).get('rgba')],
+                            [1, Highcharts.color(color).setOpacity(0).get('rgba')]
+                        ]
+                    }
                 });
             });
+            
+            if (!isValid) {
+                clearChartAndAnalysis();
+                showToast("Проверьте, что все дозы, частоты и препараты указаны корректно.", "error");
+                return;
+            }
+            
+            const totalData = totalConcentrations.map((val, day) => [day, Math.round(val)]);
+            series.push({
+                name: 'Общая концентрация', data: totalData, type: 'spline', color: '#FFFFFF', 
+                lineWidth: 3.5, marker: { enabled: false, states: { hover: { enabled: true, radius: 5 }}},
+                dashStyle: 'shortdash', zIndex: 10
+            });
 
-            if(series.length > 0) {
-                calculateAndDisplayAnalysis(totalConcentrations, allHalfLives, cycleLength);
-                drawChart(series);
+            if(series.length > 1) {
+                calculateAndDisplayAnalysis(totalConcentrations, allHalfLives);
+                drawChart(series, cycleLength);
             } else {
-                 clearChart();
-                 document.getElementById('analysis-results').style.display = 'none';
+                 clearChartAndAnalysis();
             }
         }
         
-        function calculateAndDisplayAnalysis(totalConcentrations, halfLives, cycleLength) {
-            // Filter out the initial zero before any injections
-            const relevantConcentrations = totalConcentrations.slice(1);
-
-            const peak = Math.max(...relevantConcentrations);
-            const average = relevantConcentrations.reduce((a, b) => a + b, 0) / relevantConcentrations.length;
-            const lowest = Math.min(...relevantConcentrations.filter(c => c > 0)); // Find min greater than 0
-
-            // PCT calculation: 3 to 5 times the longest half-life
+        function calculateAndDisplayAnalysis(totalConcentrations, halfLives) {
+            const peak = Math.max(...totalConcentrations);
+            const average = totalConcentrations.reduce((a, b) => a + b, 0) / totalConcentrations.length;
+            const lowest = Math.min(...totalConcentrations.filter(c => c > 0));
             const longestHalfLife = Math.max(...halfLives);
-            const pctStart = Math.round(longestHalfLife * 3.5); // Using an average multiplier
-
+            const pctStart = Math.round(longestHalfLife * 3.5);
             document.getElementById('peak-concentration').textContent = Math.round(peak);
             document.getElementById('average-concentration').textContent = Math.round(average);
-            document.getElementById('lowest-concentration').textContent = Math.round(lowest);
+            document.getElementById('lowest-concentration').textContent = Math.round(lowest) || 0;
             document.getElementById('pct-start').textContent = pctStart;
-
             document.getElementById('analysis-results').style.display = 'block';
         }
 
-        function drawChart(series) {
+        function drawChart(series, cycleLength) {
+            document.getElementById('chart-container').innerHTML = '';
             chart = Highcharts.chart('chart-container', {
-                chart: {
-                    backgroundColor: 'transparent',
-                    style: { fontFamily: 'Inter, sans-serif' },
-                    plotBorderWidth: 0,
-                    animation: true
-                },
-                title: {
-                    text: 'Динамика концентрации препаратов',
-                    style: {
-                        color: 'var(--text-color)',
-                        fontSize: '1.4rem',
-                        fontWeight: '600'
-                    },
-                    margin: 25
-                },
+                chart: { backgroundColor: 'transparent', style: { fontFamily: 'Inter, sans-serif' }},
+                title: { text: 'Динамика концентрации препаратов', style: { color: 'var(--text-color)', fontSize: '1.4rem', fontWeight: '600' }, margin: 25 },
                 xAxis: {
-                    title: {
-                        text: 'Дни',
-                        style: {
-                            color: 'var(--text-muted-color)',
-                            fontSize: '1rem'
-                        }
-                    },
+                    title: { text: 'Дни', style: { color: 'var(--text-muted-color)', fontSize: '1rem' } },
                     labels: { style: { color: 'var(--text-muted-color)' } },
-                    gridLineColor: 'rgba(255,255,255,0.05)',
-                    lineColor: 'var(--border-color)',
-                    tickColor: 'var(--border-color)'
+                    gridLineColor: 'rgba(255,255,255,0.1)', lineColor: 'var(--border-color)', tickColor: 'var(--border-color)',
+                    crosshair: { width: 1.5, color: 'var(--primary-color)', dashStyle: 'shortdot' },
+                    plotBands: [{
+                        from: 0, to: cycleLength, color: 'rgba(0, 170, 255, 0.07)',
+                        label: { text: 'Основной курс', style: { color: 'rgba(255, 255, 255, 0.4)', fontSize: '11px' }, verticalAlign: 'top', y: 15 }
+                    }]
                 },
                 yAxis: {
-                    title: {
-                        text: 'Концентрация (усл. ед.)',
-                        style: {
-                            color: 'var(--text-muted-color)',
-                            fontSize: '1rem'
-                        }
-                    },
+                    title: { text: 'Концентрация (усл. ед.)', style: { color: 'var(--text-muted-color)', fontSize: '1rem' } },
                     labels: { style: { color: 'var(--text-muted-color)' } },
-                    gridLineColor: 'rgba(255,255,255,0.05)',
-                    lineColor: 'var(--border-color)',
-                    tickColor: 'var(--border-color)'
+                    gridLineColor: 'rgba(255,255,255,0.08)', gridLineDashStyle: 'longdash', lineColor: 'var(--border-color)', tickColor: 'var(--border-color)', min: 0
                 },
-                legend: {
-                    itemStyle: { color: 'var(--text-color)', fontWeight: '500' },
-                    itemHoverStyle: { color: 'var(--primary-color)' },
-                    itemMarginBottom: 10,
-                    align: 'center',
-                    verticalAlign: 'bottom',
-                    padding: 15
-                },
+                legend: { itemStyle: { color: 'var(--text-color)', fontWeight: '500' }, itemHoverStyle: { color: 'var(--primary-color)' }},
                 tooltip: {
-                    backgroundColor: 'rgba(30,30,30,0.95)',
-                    borderColor: 'var(--primary-color)',
-                    borderRadius: 10,
-                    style: { color: '#F0F0F0', padding: '12px' },
-                    shared: true,
-                    crosshairs: true,
-                    pointFormat: '<span style="color:{point.color}">●</span> {series.name}: <b>{point.y}</b><br/>'
+                    backgroundColor: 'rgba(18,18,18,0.9)', borderColor: 'var(--border-color)', borderRadius: 10, style: { color: '#F0F0F0' },
+                    shared: true, useHTML: true,
+                    headerFormat: '<span style="font-size: 1.1em; color: var(--text-color);">День {point.key}</span><br/><table>',
+                    pointFormat: '<tr><td style="color: {series.color}; padding-right: 10px;">● {series.name}:</td><td style="text-align: right"><b>{point.y}</b></td></tr>',
+                    footerFormat: '</table><hr style="border-color: var(--border-color); margin: 5px 0;" /><table><tr><td style="color: var(--text-color); padding-right: 10px;"><b>Итого:</b></td><td style="text-align: right"><b>{point.total}</b></td></tr></table>',
                 },
-                plotOptions: {
-                    series: {
-                        marker: { enabled: false },
-                        states: { hover: { halo: { size: 8, opacity: 0.25 }, lineWidthPlus: 1 } }
-                    }
-                },
+                plotOptions: { series: { animation: { duration: 1500 }, states: { hover: { lineWidthPlus: 1 } }, shadow: true }},
                 series: series,
                 credits: { enabled: false },
                 exporting: { enabled: false },
@@ -1321,130 +1345,130 @@
                     rules: [{
                         condition: { maxWidth: 768 },
                         chartOptions: {
-                           title: { style: { fontSize: '1.2rem' } }
+                            title: { style: { fontSize: '1.2rem' } },
+                            legend: { itemStyle: { fontSize: '0.8rem' }, symbolWidth: 12, symbolHeight: 12 },
+                            yAxis: { title: { style: { fontSize: '0.8rem' } } },
+                            xAxis: { title: { style: { fontSize: '0.8rem' } } }
+                        }
+                    }, {
+                        condition: { maxWidth: 480 },
+                        chartOptions: {
+                            title: { style: { fontSize: '1rem' } },
+                            legend: { enabled: false },
+                            yAxis: { title: { enabled: false }, labels: { style: { fontSize: '0.75rem' } }},
+                            xAxis: { title: { enabled: false }, labels: { style: { fontSize: '0.75rem' } }}
                         }
                     }]
                 }
             });
         }
 
-        function clearChart() {
+        function clearChartAndAnalysis() {
             if (chart) { chart.destroy(); chart = null; }
-            document.getElementById('chart-container').innerHTML = '';
-             document.getElementById('analysis-results').style.display = 'none';
+            const chartContainer = document.getElementById('chart-container');
+            chartContainer.innerHTML = '<span>Заполните параметры курса и нажмите "Построить график"</span>';
+            document.getElementById('analysis-results').style.display = 'none';
         }
         
-        // --- Local Storage Functions ---
-
         function saveCourse() {
             const courseName = document.getElementById('course-name').value.trim();
             if (!courseName) {
-                alert('Пожалуйста, введите название курса перед сохранением.');
+                showToast('Пожалуйста, введите название курса перед сохранением.', 'error');
                 return;
             }
-
-            const courseData = {
-                id: `course_${Date.now()}`,
-                name: courseName,
-                length: document.getElementById('length').value,
-                compounds: []
-            };
-
-            document.querySelectorAll('.single-compound-div').forEach(div => {
-                const compound = {
-                    compound: div.querySelector('.compound').value,
-                    form: div.querySelector('.compound-form').value,
-                    dose: div.querySelector('.dose').value,
-                    schedule: div.querySelector('.schedule').value,
-                    color: div.querySelector('.compound-color').style.backgroundColor
-                };
-                courseData.compounds.push(compound);
+            const courseData = { id: `course_${Date.now()}`, name: courseName, length: document.getElementById('length').value, compounds: [] };
+            const compoundDivs = document.querySelectorAll('.single-compound-div');
+             if (compoundDivs.length === 0) {
+                 showToast('Нельзя сохранить пустой курс. Добавьте хотя бы один препарат.', 'error');
+                return;
+            }
+            compoundDivs.forEach(div => {
+                courseData.compounds.push({
+                    compound: div.querySelector('.compound').value, form: div.querySelector('.compound-form').value,
+                    dose: div.querySelector('.dose').value, schedule: div.querySelector('.schedule').value,
+                    color: div.querySelector('.compound-color-input').value
+                });
             });
-
-            if (courseData.compounds.length === 0) {
-                 alert('Нельзя сохранить пустой курс. Добавьте хотя бы один препарат.');
-                return;
-            }
-
             let savedCourses = JSON.parse(localStorage.getItem('nefarma_courses')) || [];
-            savedCourses.push(courseData);
+            savedCourses.unshift(courseData);
             localStorage.setItem('nefarma_courses', JSON.stringify(savedCourses));
-            
-            alert(`Курс "${courseName}" успешно сохранен!`);
+            showToast(`Курс "${courseName}" успешно сохранен!`, 'success');
             displaySavedCourses();
         }
 
         function loadSavedCourse(courseId) {
             let savedCourses = JSON.parse(localStorage.getItem('nefarma_courses')) || [];
             const courseToLoad = savedCourses.find(c => c.id === courseId);
-
             if (courseToLoad) {
                 resetForm();
                 allCompoundsDiv.innerHTML = '';
                 document.getElementById('length').value = courseToLoad.length;
                 document.getElementById('course-name').value = courseToLoad.name;
-                courseToLoad.compounds.forEach(comp => addCompound(comp));
+                courseToLoad.compounds.forEach(comp => {
+                    if (compounds[comp.compound] && compounds[comp.compound][comp.form]) {
+                        addCompound(comp);
+                    } else {
+                        showToast(`Предупреждение: препарат ${comp.compound} (${comp.form}) не найден и не будет загружен.`, 'error');
+                    }
+                });
                 plotGraph();
-                 document.getElementById('calculator').scrollIntoView({ behavior: 'smooth' });
+                document.getElementById('calculator').scrollIntoView({ behavior: 'smooth' });
             }
         }
 
         function deleteSavedCourse(courseId) {
             if (!confirm('Вы уверены, что хотите удалить этот сохраненный курс?')) return;
-            
             let savedCourses = JSON.parse(localStorage.getItem('nefarma_courses')) || [];
             const updatedCourses = savedCourses.filter(c => c.id !== courseId);
             localStorage.setItem('nefarma_courses', JSON.stringify(updatedCourses));
             displaySavedCourses();
+            showToast('Курс удален.', 'success');
         }
 
         function displaySavedCourses() {
             savedCoursesContainer.innerHTML = '';
             let savedCourses = JSON.parse(localStorage.getItem('nefarma_courses')) || [];
-            
             if (savedCourses.length === 0) {
                 savedCoursesContainer.innerHTML = `<p style="color: var(--text-muted-color); text-align: center;">У вас пока нет сохраненных курсов.</p>`;
                 return;
             }
-
             savedCourses.forEach(course => {
                 const card = document.createElement('div');
                 card.className = 'saved-course-card';
-                
                 let compoundsList = '';
                 course.compounds.forEach(c => {
-                    const compInfo = compounds[c.compound] ? compounds[c.compound][c.form] : null;
-                    const compName = compInfo ? `${c.compound} (${compInfo.name})` : 'Неизвестный препарат';
+                    const compInfo = compounds[c.compound]?.[c.form];
+                    const compName = compInfo ? `${c.compound} (${compInfo.name})` : `<s>${c.compound}</s> (удален)`;
                     compoundsList += `<li>${compName}: ${c.dose}мг / ${c.schedule}д</li>`;
                 });
-
                 card.innerHTML = `
                     <h4>${course.name}</h4>
-                    <ul>
-                        <li>Длительность: ${course.length} нед.</li>
-                        ${compoundsList}
-                    </ul>
+                    <ul><li>Длительность: ${course.length} нед.</li>${compoundsList}</ul>
                     <div class="saved-course-buttons">
-                        <button class="button" onclick="window.loadSavedCourse('${course.id}')"><i class="fas fa-upload"></i> Загрузить</button>
-                        <button class="button danger" onclick="window.deleteSavedCourse('${course.id}')"><i class="fas fa-trash"></i> Удалить</button>
-                    </div>
-                `;
+                        <button class="button load-btn"><i class="fas fa-upload"></i> Загрузить</button>
+                        <button class="button danger delete-btn"><i class="fas fa-trash"></i> Удалить</button>
+                    </div>`;
+                card.querySelector('.load-btn').addEventListener('click', () => loadSavedCourse(course.id));
+                card.querySelector('.delete-btn').addEventListener('click', () => deleteSavedCourse(course.id));
                 savedCoursesContainer.appendChild(card);
             });
         }
         
-        // Make functions globally accessible for inline onclick handlers
-        window.loadSavedCourse = loadSavedCourse;
-        window.deleteSavedCourse = deleteSavedCourse;
+        document.getElementById('export-png').addEventListener('click', function() { 
+            if (chart) chart.exportChart({ type: 'image/png', filename: 'nefarma-курс-концентрация' }); 
+            else showToast('Сначала постройте график для экспорта.', 'error');
+        });
+        document.getElementById('export-jpeg').addEventListener('click', function() { 
+            if (chart) chart.exportChart({ type: 'image/jpeg', filename: 'nefarma-курс-концентрация' }); 
+            else showToast('Сначала постройте график для экспорта.', 'error');
+        });
+        document.getElementById('export-svg').addEventListener('click', function() { 
+            if (chart) chart.exportChart({ type: 'image/svg+xml', filename: 'nefarma-курс-концентрация' }); 
+            else showToast('Сначала постройте график для экспорта.', 'error');
+        });
 
-        // Export buttons functionality
-        document.getElementById('export-png').addEventListener('click', function() { if (chart) chart.exportChart({ type: 'image/png', filename: 'nefarma-курс-концентрация' }); });
-        document.getElementById('export-jpeg').addEventListener('click', function() { if (chart) chart.exportChart({ type: 'image/jpeg', filename: 'nefarma-курс-концентрация' }); });
-        document.getElementById('export-svg').addEventListener('click', function() { if (chart) chart.exportChart({ type: 'image/svg+xml', filename: 'nefarma-курс-концентрация' }); });
-
-        // Initialize
-        resetForm(); // Start with a clean slate
-        displaySavedCourses(); // Load any saved courses on page load
+        resetForm();
+        displaySavedCourses();
     });
     </script>
 </body>
