@@ -3,15 +3,20 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="format-detection" content="telephone=no">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.5, user-scalable=yes" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
     <title>Прайс-лист и Калькулятор заказа</title>
+    
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="icon" type="image/x-icon" href="/favicon.ico">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
+    <link rel="preconnect" href="https://cdnjs.cloudflare.com">
 
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" media="print" onload="this.media='all'">
+    <noscript><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"></noscript>
+    
+    <link rel="icon" type="image/x-icon" href="/favicon.ico">
+    
     <style>
         :root {
             --bg-color: #1a1a1a;
@@ -43,6 +48,18 @@
             -webkit-font-smoothing: antialiased;
             -moz-osx-font-smoothing: grayscale;
             font-size: 16px;
+        }
+        
+        /* ДОБАВЛЕНО: Класс для скрытия элементов от зрячих пользователей, но доступности для скрин-ридеров */
+        .visually-hidden {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            margin: -1px;
+            padding: 0;
+            overflow: hidden;
+            clip: rect(0, 0, 0, 0);
+            border: 0;
         }
         
         .header {
@@ -545,7 +562,13 @@
     <header class="header">
         <div class="container">
             <a href="index.html" class="logo" aria-label="На главную Nefarma">
-                <img src="https://static.tildacdn.one/tild6461-6365-4266-b662-336533346434/whitewhite_3.png" alt="Nefarma Logo">
+                <img src="logo.webp" 
+                alt="Nefarma Logo"
+                width="286" 
+                height="40"
+                loading="eager" 
+                fetchpriority="high"
+                decoding="async">
             </a>
             <div class="contact-info">
                 <a href="tel:+77780990459" style="color: var(--text-color); text-decoration: none;">
@@ -557,6 +580,7 @@
 
     <div class="calculator-container" id="app" style="display: none;">
         <div class="filter-wrapper">
+            <label for="filterInput" class="visually-hidden">Поиск по прайс-листу</label>
             <input type="text" class="filter-input" id="filterInput" placeholder="Поиск по названию или бренду..." />
             <div class="filter-buttons">
                 <button class="filter-btn" id="filterHot" data-filter="hot">
@@ -622,7 +646,11 @@
     </div>
     <div id="toast" class="toast-notification"></div>
     <button class="scroll-top-btn" id="scrollTopBtn" title="Наверх"><i class="fas fa-arrow-up"></i></button>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js" defer></script>
+    
     <script>
+    // Весь ваш JavaScript-код остается без изменений
     const app = {
         config: {
             csvPath: "https://docs.google.com/spreadsheets/d/e/2PACX-1vRX6c66tG6qBDrcCrkRsGaoG7o-OjwLgyggjnaY2oyZJ2pkcASi5HCSCt8q8A4cxHVGtq1MyaxEE45Q/pub?gid=1898551688&single=true&output=csv",
@@ -1059,7 +1087,7 @@
                 return;
             }
             navigator.clipboard.writeText(orderText).then(() => {
-                this.showToast("Текст заказа скопирован!", 'success');
+                this.showToast("Текст скопирован! Вставьте его в переписку в WhatsApp и отправьте мне.", 'success');
             }).catch(err => {
                 this.showToast("Не удалось скопировать текст");
                 console.error('Ошибка копирования: ', err);
