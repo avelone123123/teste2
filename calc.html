@@ -6,13 +6,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
     <title>Прайс-лист и Калькулятор заказа</title>
     
-    <!-- Предзагрузка критических ресурсов -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap">
     <link rel="preload" as="image" href="logo_calc_optimized.webp">
     
-    <!-- Асинхронная загрузка шрифтов -->
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" media="print" onload="this.media='all'">
     <noscript>
         <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap">
@@ -294,6 +292,7 @@
             color: white;
         }
 
+        
         .quantity-control {
             display: flex;
             align-items: center;
@@ -349,13 +348,14 @@
             justify-content: space-between;
             align-items: center;
             flex-wrap: wrap;
-            gap: 20px;
+            gap: 10px;
         }
 
         .totals {
             font-size: 14px;
             line-height: 1.6;
             flex-grow: 1;
+            width: 100%;
         }
 
         .totals #tier {
@@ -380,13 +380,14 @@
         }
 
         .actions {
+            width: 100%;
             display: flex;
             gap: 15px;
             flex-wrap: wrap;
         }
 
         .action-button {
-            padding: 12px 20px;
+            padding: 10px 15px;
             font-size: 16px;
             font-weight: 600;
             border: none;
@@ -398,6 +399,11 @@
             align-items: center;
             justify-content: center;
             gap: 8px;
+            line-height: 1.2;
+        }
+        
+        .action-button strong {
+            font-size: 16px;
         }
 
         .whatsapp-btn {
@@ -407,10 +413,10 @@
         .whatsapp-btn:hover { background-color: #218838; }
 
         .copy-btn {
-            background-color: var(--primary-color);
+            background-color: var(--tag-bestseller-bg);
             color: white;
         }
-        .copy-btn:hover { background-color: var(--primary-hover-color); }
+        .copy-btn:hover { background-color: #c0392b; }
 
         .clear-btn {
             background-color: var(--warning-color);
@@ -548,7 +554,6 @@
     <header class="header">
         <div class="container">
             <a href="index.html" class="logo" aria-label="На главную Nefarma">
-                <!-- Оптимизированное изображение -->
                 <img src="logo_calc.webp" 
                 alt="Nefarma Logo"
                 width="286" 
@@ -570,21 +575,6 @@
         <div class="filter-wrapper">
             <label for="filterInput" class="visually-hidden">Поиск по прайс-листу</label>
             <input type="text" class="filter-input" id="filterInput" placeholder="Поиск по названию или бренду..." />
-            <div class="filter-buttons">
-                <button class="filter-btn" id="filterHot" data-filter="hot">
-                    🔥 HOT
-                </button>
-                <button class="filter-btn" id="filterNew" data-filter="new">
-                    ✨ NEW
-                </button>
-                <button class="filter-btn" id="filterLowStock" data-filter="low">
-                    ⏳ Мало
-                </button>
-                <button class="filter-btn" id="resetFilter">
-                    <svg class="icon" viewBox="0 0 24 24" width="16" height="16"><path fill="currentColor" d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
-                    Сброс
-                </button>
-            </div>
         </div>
         <div class="table-wrapper">
             <table id="priceTable">
@@ -616,21 +606,40 @@
                 <div class="kaspi-info" id="kaspi"></div>
                 <div>Итоговая сумма: <span class="final-total" id="total">0 ₸</span></div>
             </div>
+            
+            <div class="order-instructions" style="text-align: center; margin: 15px 0 5px 0; width: 100%;">
+                <p style="margin: 0; color: var(--text-color); font-size: 15px; font-weight: 500;">Готовы оформить заказ?</p>
+                <p style="margin: 5px 0 0 0; color: var(--text-muted-color); font-size: 13px;">Выберите способ оплаты ниже. Ваш заказ будет отправлен в WhatsApp для подтверждения.</p>
+            </div>
             <div class="actions">
+                <button class="action-button copy-btn" id="buyInstallmentBtn" onclick="app.sendOrder('installment')">
+                    <svg class="icon" viewBox="0 0 448 512"><path fill="#FFF" d="M380.9 97.1C339 55.1 283.2 32 223.9 32c-122.4 0-222 99.6-222 222 0 39.1 10.2 77.3 29.6 111L0 480l117.7-30.9c32.4 17.7 68.9 27 106.1 27h.1c122.3 0 224.1-99.6 224.1-222 0-59.3-25.2-115-67.1-157zm-157 341.6c-33.8 0-65.7-8.9-94-25.4l-6.7-4-69.8 18.3L72 359.2l-4.4-7c-18.5-29.4-28.2-63.3-28.2-98.2 0-101.7 82.8-184.5 184.6-184.5 49.3 0 95.6 19.2 130.4 54.1 34.8 34.9 56.2 81.2 56.1 130.5 0 101.8-84.9 184.6-186.6 184.6zm101.2-138.2c-5.5-2.8-32.8-16.2-37.9-18-5.1-1.9-8.8-2.8-12.5 2.8-3.7 5.6-14.3 18-17.6 21.8-3.2 3.7-6.5 4.2-12 1.4-32.6-16.3-54-29.1-75.5-66-5.7-9.8 5.7-9.1 16.3-30.3 1.8-3.7.9-6.9-.5-9.7-1.4-2.8-12.5-30.1-17.1-41.2-4.5-10.8-9.1-9.3-12.5-9.5-3.2-.2-6.9-.2-10.6-.2-3.7 0-9.7 1.4-14.8 6.9-5.1 5.6-19.4 19-19.4 46.3 0 27.3 19.9 53.7 22.6 57.4 2.8 3.7 39.1 59.7 94.8 83.8 35.2 15.2 49 16.5 66.6 13.9 10.7-1.6 32.8-13.4 37.4-26.4 4.6-13 4.6-24.1 3.2-26.4-1.3-2.5-5-3.9-10.5-6.6z"></path></svg>
+                    <div style="text-align: left; flex-grow: 1; margin-left: 10px;">
+                        <div>Купить в рассрочку</div>
+                        <div style="font-size:12px; opacity:0.8;">Kaspi 0-0-12</div>
+                    </div>
+                    <strong id="installmentPriceOnBtn">0 ₸</strong>
+                </button>
+                <button class="action-button whatsapp-btn" id="buyDirectBtn" onclick="app.sendOrder('direct')">
+                     <svg class="icon" viewBox="0 0 448 512"><path fill="#FFF" d="M380.9 97.1C339 55.1 283.2 32 223.9 32c-122.4 0-222 99.6-222 222 0 39.1 10.2 77.3 29.6 111L0 480l117.7-30.9c32.4 17.7 68.9 27 106.1 27h.1c122.3 0 224.1-99.6 224.1-222 0-59.3-25.2-115-67.1-157zm-157 341.6c-33.8 0-65.7-8.9-94-25.4l-6.7-4-69.8 18.3L72 359.2l-4.4-7c-18.5-29.4-28.2-63.3-28.2-98.2 0-101.7 82.8-184.5 184.6-184.5 49.3 0 95.6 19.2 130.4 54.1 34.8 34.9 56.2 81.2 56.1 130.5 0 101.8-84.9 184.6-186.6 184.6zm101.2-138.2c-5.5-2.8-32.8-16.2-37.9-18-5.1-1.9-8.8-2.8-12.5 2.8-3.7 5.6-14.3 18-17.6 21.8-3.2 3.7-6.5 4.2-12 1.4-32.6-16.3-54-29.1-75.5-66-5.7-9.8 5.7-9.1 16.3-30.3 1.8-3.7.9-6.9-.5-9.7-1.4-2.8-12.5-30.1-17.1-41.2-4.5-10.8-9.1-9.3-12.5-9.5-3.2-.2-6.9-.2-10.6-.2-3.7 0-9.7 1.4-14.8 6.9-5.1 5.6-19.4 19-19.4 46.3 0 27.3 19.9 53.7 22.6 57.4 2.8 3.7 39.1 59.7 94.8 83.8 35.2 15.2 49 16.5 66.6 13.9 10.7-1.6 32.8-13.4 37.4-26.4 4.6-13 4.6-24.1 3.2-26.4-1.3-2.5-5-3.9-10.5-6.6z"></path></svg>
+                    <div style="text-align: left; flex-grow: 1; margin-left: 10px;">
+                        <div>Оплатить сразу</div>
+                        <div style="font-size:12px; opacity:0.8;">QR / Перевод</div>
+                    </div>
+                    <strong id="directPriceOnBtn">0 ₸</strong>
+                </button>
+            </div>
+            <div class="actions" style="margin-top: 10px; display: grid; grid-template-columns: 1fr 1fr;">
+                <button class="action-button" style="background-color: var(--border-color);" onclick="app.copyOrderForChat()">
+                    <svg class="icon" viewBox="0 0 24 24" width="16" height="16"><path fill="currentColor" d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"></path></svg>
+                    Просто скопировать
+                </button>
                 <button class="action-button clear-btn" onclick="app.clearOrder()">
-                    <svg class="icon" viewBox="0 0 24 24" width="16" height="16"><path fill="currentColor" d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"/></svg>
+                    <svg class="icon" viewBox="0 0 24 24" width="16" height="16"><path fill="currentColor" d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"></path></svg>
                      Очистить
                 </button>
-                <button class="action-button copy-btn" onclick="app.copyOrderLink()">
-                    <svg class="icon" viewBox="0 0 24 24" width="16" height="16"><path fill="currentColor" d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"/></svg>
-                    Скопировать
-                </button>
-                <button class="action-button whatsapp-btn" onclick="app.sendToWhatsApp()">
-                    <svg class="icon" viewBox="0 0 448 512"><path fill="#FFF" d="M380.9 97.1C339 55.1 283.2 32 223.9 32c-122.4 0-222 99.6-222 222 0 39.1 10.2 77.3 29.6 111L0 480l117.7-30.9c32.4 17.7 68.9 27 106.1 27h.1c122.3 0 224.1-99.6 224.1-222 0-59.3-25.2-115-67.1-157zm-157 341.6c-33.8 0-65.7-8.9-94-25.4l-6.7-4-69.8 18.3L72 359.2l-4.4-7c-18.5-29.4-28.2-63.3-28.2-98.2 0-101.7 82.8-184.5 184.6-184.5 49.3 0 95.6 19.2 130.4 54.1 34.8 34.9 56.2 81.2 56.1 130.5 0 101.8-84.9 184.6-186.6 184.6zm101.2-138.2c-5.5-2.8-32.8-16.2-37.9-18-5.1-1.9-8.8-2.8-12.5 2.8-3.7 5.6-14.3 18-17.6 21.8-3.2 3.7-6.5 4.2-12 1.4-32.6-16.3-54-29.1-75.5-66-5.7-9.8 5.7-9.1 16.3-30.3 1.8-3.7.9-6.9-.5-9.7-1.4-2.8-12.5-30.1-17.1-41.2-4.5-10.8-9.1-9.3-12.5-9.5-3.2-.2-6.9-.2-10.6-.2-3.7 0-9.7 1.4-14.8 6.9-5.1 5.6-19.4 19-19.4 46.3 0 27.3 19.9 53.7 22.6 57.4 2.8 3.7 39.1 59.7 94.8 83.8 35.2 15.2 49 16.5 66.6 13.9 10.7-1.6 32.8-13.4 37.4-26.4 4.6-13 4.6-24.1 3.2-26.4-1.3-2.5-5-3.9-10.5-6.6z"/></svg>
-                    WhatsApp
-                </button>               
             </div>
-        </div>
+             </div>
     </div>
     <div id="loader">
         <div class="loader-spinner"></div>
@@ -641,7 +650,6 @@
         <svg class="icon" viewBox="0 0 24 24" width="16" height="16"><path fill="#FFF" d="M13 19V7.83l4.59 4.59L19 11l-7-7-7 7 1.41 1.41L11 7.83V19h2z"/></svg>
     </button>
 
-    <!-- Загрузка скрипта без блокировки -->
     <script>
     (function() {
         const script = document.createElement('script');
@@ -670,7 +678,6 @@
             quantities: {},
             filter: '',
             collapsedCategories: new Set(),
-            activeFilter: null,
         },
         elements: {
             appContainer: document.getElementById('app'),
@@ -683,10 +690,8 @@
             toastEl: document.getElementById("toast"),
             filterInput: document.getElementById("filterInput"),
             scrollTopBtn: document.getElementById("scrollTopBtn"),
-            filterHot: document.getElementById("filterHot"),
-            filterNew: document.getElementById("filterNew"),
-            filterLowStock: document.getElementById("filterLowStock"),
-            resetFilter: document.getElementById("resetFilter"),
+            installmentPriceOnBtn: document.getElementById('installmentPriceOnBtn'),
+            directPriceOnBtn: document.getElementById('directPriceOnBtn'),
         },
         init() {
             this.bindEvents();
@@ -698,11 +703,6 @@
             this.elements.tableBody.addEventListener('click', this.handleCategoryClick.bind(this));
             window.addEventListener('scroll', this.handleScroll.bind(this));
             this.elements.scrollTopBtn.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
-            
-            this.elements.filterHot.addEventListener('click', () => this.toggleFilter('hot'));
-            this.elements.filterNew.addEventListener('click', () => this.toggleFilter('new'));
-            this.elements.filterLowStock.addEventListener('click', () => this.toggleFilter('low'));
-            this.elements.resetFilter.addEventListener('click', this.resetFilters.bind(this));
         },
 
         async loadData() {
@@ -791,6 +791,12 @@
         },
 
         renderTable() {
+            // FIX: Replace tbody to remove old event listeners and prevent duplication
+            const oldTbody = this.elements.tableBody;
+            const newTbody = document.createElement('tbody');
+            oldTbody.parentNode.replaceChild(newTbody, oldTbody);
+            this.elements.tableBody = newTbody;
+
             let currentCategory = null;
             const fragment = document.createDocumentFragment();
             const filter = this.state.filter.toLowerCase();
@@ -800,12 +806,6 @@
                     !item.name.toLowerCase().includes(filter) && 
                     !item.brand.toLowerCase().includes(filter)) {
                     return;
-                }
-                
-                if (this.state.activeFilter) {
-                    if (this.state.activeFilter === 'hot' && !item.isBestseller) return;
-                    if (this.state.activeFilter === 'new' && !item.isNew) return;
-                    if (this.state.activeFilter === 'low' && !item.isLowStock) return;
                 }
 
                 if (item.category && item.category !== currentCategory) {
@@ -851,7 +851,6 @@
                 `;
                 fragment.appendChild(row);
             });
-            this.elements.tableBody.innerHTML = '';
             this.elements.tableBody.appendChild(fragment);
             
             if (this.elements.tableBody.children.length === 0) {
@@ -976,6 +975,13 @@
                 В рассрочку KASPI ≈ <strong>${kaspiTotal.toLocaleString('ru-RU')} ₸</strong>
                 <span style="font-size: 0.9em;">(${kaspiMonthly.toLocaleString('ru-RU')} ₸/мес)</span>
             `;
+
+            if(this.elements.directPriceOnBtn) {
+                 this.elements.directPriceOnBtn.textContent = `${finalTotal.toLocaleString('ru-RU')} ₸`;
+            }
+            if(this.elements.installmentPriceOnBtn) {
+                this.elements.installmentPriceOnBtn.textContent = `${kaspiTotal.toLocaleString('ru-RU')} ₸`;
+            }
         },
         saveState() {
             const quantities = {};
@@ -1024,7 +1030,7 @@
                 }
             }
         },
-        generateOrderData() {
+        generateOrderData(paymentType) { 
             const orderItems = [];
             let baseTotal = 0;
             this.elements.tableBody.querySelectorAll('.quantity-input').forEach(input => {
@@ -1037,11 +1043,16 @@
                     orderItems.push({ product, qty });
                 }
             });
+
+            if (orderItems.length === 0) {
+                return { orderText: "", hasItems: false };
+            }
+
             const tier = baseTotal >= this.config.priceTiers.tier3.limit
                             ? 3
                             : baseTotal >= this.config.priceTiers.tier2.limit ? 2 : 1;
             let finalTotal = 0;
-            let orderText = "*Мой заказ:*\n";
+            let orderText = "Здравствуйте! Хочу сделать заказ:\n\n";
             const orderParams = [];
             orderItems.forEach(({ product, qty }) => {
                 const price = product.prices[`p${tier}`];
@@ -1050,17 +1061,32 @@
                 orderParams.push(`${product.id}=${qty}`);
                 orderText += `• ${product.name} (${product.brand}) — ${qty} шт × ${price.toLocaleString('ru-RU')} ₸ = ${subtotal.toLocaleString('ru-RU')} ₸\n`;
             });
+            
             const kaspiTotal = Math.round(finalTotal * this.config.kaspiMultiplier);
-            const kaspiMonthly = Math.round(kaspiTotal / 12);
+            
+            let paymentText = "";
+            if (paymentType === 'direct') {
+                paymentText = `\n*Выбранный способ оплаты: Оплатить сразу (QR / Перевод)*\n*Итоговая сумма: ${finalTotal.toLocaleString("ru-RU")} ₸*`;
+            } else if (paymentType === 'installment') {
+                paymentText = `\n*Выбранный способ оплаты: Рассрочка Kaspi 0-0-12*\n*Итоговая сумма: ${kaspiTotal.toLocaleString("ru-RU")} ₸*`;
+            } else {
+                orderText += `\n*Итого без рассрочки: ${finalTotal.toLocaleString("ru-RU")} ₸*`;
+                orderText += `\nСумма через рассрочку KASPI 0-0-12: ${kaspiTotal.toLocaleString("ru-RU")} ₸`;
+            }
+
+            if (paymentText) {
+                orderText += paymentText;
+            }
+            
             const baseUrl = window.location.href.split("#")[0];
             const orderLink = `${baseUrl}#order:${orderParams.join(",")}`;
-            orderText += `\n*Итого без рассрочки: ${finalTotal.toLocaleString("ru-RU")} ₸*`;
-            orderText += `\nСумма через рассрочку KASPI 0-0-12: ${kaspiTotal.toLocaleString("ru-RU")} ₸ (≈ ${kaspiMonthly.toLocaleString("ru-RU")} ₸/мес)`;
-            orderText += `\n\nСсылка на заказ: ${orderLink}`;
+            orderText += `\n\n(Ссылка для восстановления заказа: ${orderLink})`;
+            orderText += `\n\nПожалуйста, подтвердите наличие и детали заказа.`;
+
             return { orderText, orderLink, hasItems: orderItems.length > 0 };
         },
-        sendToWhatsApp() {
-            const { orderText, hasItems } = this.generateOrderData();
+        sendOrder(paymentType) {
+            const { orderText, hasItems } = this.generateOrderData(paymentType);
             if (!hasItems) {
                 this.showToast("Сначала добавьте товары в корзину");
                 return;
@@ -1069,14 +1095,14 @@
             const url = `https://wa.me/${this.config.whatsAppPhone}?text=${encodedText}`;
             window.open(url, "_blank");
         },
-        copyOrderLink() {
-            const { orderText, hasItems } = this.generateOrderData();
-            if (!hasItems) {
+        copyOrderForChat() {
+            const { orderText, hasItems } = this.generateOrderData(null);
+             if (!hasItems) {
                 this.showToast("Сначала добавьте товары в корзину");
                 return;
             }
             navigator.clipboard.writeText(orderText).then(() => {
-                this.showToast("Текст скопирован! Вставьте его в переписку в WhatsApp и отправьте мне.", 'success');
+                this.showToast("Скопировано! Вставьте в чат WhatsApp ✅", 'success');
             }).catch(err => {
                 this.showToast("Не удалось скопировать текст");
                 console.error('Ошибка копирования: ', err);
@@ -1092,26 +1118,6 @@
                 this.saveState();
                 this.showToast("Заказ очищен", 'success');
             }
-        },
-        toggleFilter(filterType) {
-            if (this.state.activeFilter === filterType) {
-                this.state.activeFilter = null;
-            } else {
-                this.state.activeFilter = filterType;
-            }
-            this.elements.filterHot.classList.toggle('active', this.state.activeFilter === 'hot');
-            this.elements.filterNew.classList.toggle('active', this.state.activeFilter === 'new');
-            this.elements.filterLowStock.classList.toggle('active', this.state.activeFilter === 'low');
-            this.renderTable();
-        },
-        resetFilters() {
-            this.state.activeFilter = null;
-            this.state.filter = '';
-            this.elements.filterInput.value = '';
-            this.elements.filterHot.classList.remove('active');
-            this.elements.filterNew.classList.remove('active');
-            this.elements.filterLowStock.classList.remove('active');
-            this.renderTable();
         },
         showToast(message, type = 'normal') {
             const icons = {
