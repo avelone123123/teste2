@@ -17,6 +17,7 @@
     --telegram-color: #0088CC;
     --instagram-color: #E4405F;
     --price-color: #73d325;
+    --preorder-color: #d4b91e;
     --wiki-color-light: linear-gradient(135deg, #4a4a4a, #2a2a2a);
     --wiki-hover-light: linear-gradient(135deg, #5a5a5a, #3a3a3a);
     --wiki-color-dark: linear-gradient(135deg, #c0c0c0, #a0a0a0);
@@ -211,6 +212,7 @@ body.dark-mode .icon-sun { display: none; }
 .btn-telegram-channel { background: linear-gradient(45deg, #0088CC, #00A0E9); }
 .btn-instagram { background: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%); }
 .btn-price { background-color: var(--price-color); }
+.btn-preorder { background-color: var(--preorder-color); }
 .btn-courses { background-color: var(--whatsapp-color); }
 .btn-wiki {
     background: var(--wiki-color-light);
