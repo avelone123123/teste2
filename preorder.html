@@ -4,10 +4,10 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
     <title>Предзаказ фармацевтики - Nefarma</title>
-    
+
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    
+
     <style>
         :root {
             --bg-color: #0d1117;
@@ -1184,7 +1184,6 @@
             },
 
             renderPreorders() {
-                // Очистка предыдущих таймеров
                 Object.values(this.state.timers).forEach(timerId => clearInterval(timerId));
                 this.state.timers = {};
                 
@@ -1221,9 +1220,6 @@
                     card.dataset.id = preorder.id;
                     card.style.animationDelay = `${index * 0.05}s`;
                     
-                    const now = new Date();
-                    const ended = now > preorder.endDate;
-
                     const initialQuantity = preorder.minOrder;
                     let initialPricePerItem;
                     if (initialQuantity >= 10 && preorder.price10 > 0) {
@@ -1275,8 +1271,8 @@
                                 <i class="fas fa-wallet"></i> Итого: <span id="total-${preorder.id}">${initialTotalPrice.toLocaleString('ru-RU')} ₸</span>
                             </div>
                             
-                            <button class="preorder-btn" ${ended ? 'disabled' : ''}>
-                                <i class="fab fa-whatsapp"></i> ${ended ? 'Предзаказ завершён' : 'Заказать по предзаказу'}
+                            <button class="preorder-btn" disabled>
+                                <i class="fas fa-hourglass-half"></i> Загрузка...
                             </button>
                         </div>
                     `;
@@ -1291,10 +1287,27 @@
             
             startTimer(preorder) {
                 const now = new Date();
+                const timerEl = document.getElementById(`timer-${preorder.id}`);
+                const card = timerEl ? timerEl.closest('.preorder-card') : null;
+                
+                if (!card || !preorder.endDate || isNaN(preorder.endDate)) {
+                    if (card) {
+                        const btn = card.querySelector('.preorder-btn');
+                        btn.disabled = true;
+                        btn.innerHTML = '<i class="fas fa-times-circle"></i> Загрузка';
+                        if(timerEl) timerEl.innerHTML = '<div class="preorder-ended">Некорректная дата</div>';
+                    }
+                    return;
+                }
+                
                 if (preorder.endDate - now <= 0) {
-                    const timerEl = document.getElementById(`timer-${preorder.id}`);
                     if (timerEl) {
                         timerEl.innerHTML = '<div class="preorder-ended">Предзаказ завершён</div>';
+                    }
+                    const btn = card.querySelector('.preorder-btn');
+                    if (btn) {
+                        btn.disabled = true;
+                        btn.innerHTML = '<i class="fab fa-whatsapp"></i> Предзаказ завершён';
                     }
                     return;
                 }
@@ -1307,6 +1320,8 @@
                 const timerEl = document.getElementById(`timer-${preorder.id}`);
                 if (!timerEl) return;
                 
+                const card = timerEl.closest('.preorder-card');
+                const btn = card ? card.querySelector('.preorder-btn') : null;
                 const now = new Date();
                 const diff = preorder.endDate - now;
                 
@@ -1314,15 +1329,16 @@
                     clearInterval(this.state.timers[preorder.id]);
                     timerEl.innerHTML = '<div class="preorder-ended">Предзаказ завершён</div>';
                     
-                    const card = document.querySelector(`.preorder-card[data-id="${preorder.id}"]`);
-                    if (card) {
-                        const btn = card.querySelector('.preorder-btn');
-                        if (btn) {
-                            btn.disabled = true;
-                            btn.innerHTML = '<i class="fab fa-whatsapp"></i> Предзаказ завершён';
-                        }
+                    if (btn) {
+                        btn.disabled = true;
+                        btn.innerHTML = '<i class="fab fa-whatsapp"></i> Предзаказ завершён';
                     }
                     return;
+                }
+                
+                if (btn && btn.disabled) {
+                    btn.disabled = false;
+                    btn.innerHTML = `<i class="fab fa-whatsapp"></i> Заказать по предзаказу`;
                 }
                 
                 const days = Math.floor(diff / (1000 * 60 * 60 * 24));
