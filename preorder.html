@@ -159,7 +159,6 @@
             line-height: 1.6;
         }
 
-        /* --- НОВЫЕ СТИЛИ ДЛЯ БЛОКА "КАК РАБОТАЕТ" --- */
         .how-it-works-section {
             background: var(--surface-color);
             border-radius: var(--border-radius);
@@ -224,7 +223,6 @@
             color: var(--text-color);
             line-height: 1.5;
         }
-        /* --- КОНЕЦ НОВЫХ СТИЛЕЙ --- */
 
         #loader {
             text-align: center;
@@ -406,7 +404,31 @@
             font-weight: 800;
             color: var(--timer-color);
             text-shadow: 0 0 10px rgba(240, 183, 47, 0.4);
+            position: relative;
         }
+        
+        /* --- СТИЛИ ДЛЯ БЕЙДЖА "ОСТАЛОСЬ МАЛО ВРЕМЕНИ" --- */
+        .ending-soon-badge {
+            background-color: var(--warning-color);
+            color: var(--bg-color);
+            font-size: 13px;
+            font-weight: 800;
+            padding: 4px 10px;
+            border-radius: 6px;
+            position: absolute;
+            top: -30px;
+            left: 50%;
+            transform: translateX(-50%);
+            white-space: nowrap;
+            animation: pulse 1.5s infinite;
+        }
+
+        @keyframes pulse {
+            0% { box-shadow: 0 0 0 0 rgba(210, 153, 34, 0.7); }
+            70% { box-shadow: 0 0 0 10px rgba(210, 153, 34, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(210, 153, 34, 0); }
+        }
+        /* --- КОНЕЦ СТИЛЕЙ БЕЙДЖА --- */
         
         .time-unit {
             display: flex;
@@ -680,6 +702,81 @@
             font-size: 17px;
         }
         
+        /* --- СТИЛИ ДЛЯ БЛОКА "НОВЫЕ ТОВАРЫ СКОРО" --- */
+        .coming-soon-section {
+            background: var(--surface-color);
+            border: 1px dashed var(--border-color);
+            border-radius: var(--border-radius);
+            padding: 40px;
+            margin: 60px auto 0;
+            text-align: center;
+            max-width: 1100px;
+        }
+
+        .coming-soon-icon {
+            font-size: 48px;
+            color: var(--primary-color);
+            margin-bottom: 20px;
+        }
+
+        .coming-soon-title {
+            font-size: 1.6rem;
+            font-weight: 700;
+            color: var(--text-color);
+            margin-bottom: 12px;
+        }
+
+        .coming-soon-text {
+            color: var(--text-muted);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        /* --- КОНЕЦ СТИЛЕЙ БЛОКА --- */
+
+        /* --- СТИЛИ ДЛЯ БЛОКА "УСЛОВИЯ ПРЕДЗАКАЗА" --- */
+        .preorder-conditions {
+            padding: 40px 0;
+            margin-top: 60px;
+            border-top: 1px solid var(--border-color);
+        }
+
+        .conditions-list {
+            max-width: 900px;
+            margin: 0 auto;
+            list-style-type: none;
+            padding-left: 0;
+        }
+
+        .conditions-list li {
+            display: flex;
+            align-items: flex-start;
+            gap: 20px;
+            padding: 15px 0;
+        }
+        
+        .conditions-list li:not(:last-child) {
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .conditions-list .condition-icon {
+            font-size: 22px;
+            color: var(--primary-color);
+            flex-shrink: 0;
+            margin-top: 4px;
+        }
+        
+        .condition-text strong {
+            display: block;
+            font-weight: 700;
+            color: var(--text-color);
+            margin-bottom: 4px;
+        }
+        
+        .condition-text span {
+            color: var(--text-muted);
+        }
+        /* --- КОНЕЦ СТИЛЕЙ БЛОКА --- */
+
         .toast-notification {
             position: fixed;
             bottom: 30px;
@@ -778,27 +875,28 @@
             color: transparent;
         }
         
-        .footer-links {
-            display: flex;
-            gap: 30px;
-            margin: 20px 0;
-            flex-wrap: wrap;
-            justify-content: center;
-        }
-        
-        .footer-links a {
-            color: var(--text-muted);
+        /* --- СТИЛИ ДЛЯ КНОПКИ В ФУТЕРЕ --- */
+        .footer-contact-btn {
+            background: var(--primary-gradient);
+            color: white;
             text-decoration: none;
+            padding: 16px 32px;
+            border-radius: 50px;
+            font-size: 18px;
+            font-weight: 700;
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
             transition: var(--transition);
-            font-size: 16px;
-            font-weight: 500;
+            box-shadow: 0 5px 20px rgba(88, 166, 255, 0.3);
         }
         
-        .footer-links a:hover {
-            color: var(--primary-color);
-            transform: translateY(-2px);
+        .footer-contact-btn:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 25px rgba(88, 166, 255, 0.4);
         }
-        
+        /* --- КОНЕЦ СТИЛЕЙ КНОПКИ --- */
+
         .copyright {
             color: var(--text-muted);
             font-size: 15px;
@@ -819,20 +917,16 @@
             color: var(--border-color);
         }
         
-        /* Анимации */
         @keyframes fadeIn {
             from { opacity: 0; transform: translateY(20px); }
             to { opacity: 1; transform: translateY(0); }
         }
-        
         
         .preorder-card {
             animation: fadeIn 0.6s ease forwards;
             opacity: 0;
         }
         
-        
-        /* Мобильные стили */
         @media (max-width: 992px) {
             .preorders-grid {
                 grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
@@ -861,7 +955,6 @@
                 margin-bottom: 30px;
             }
 
-            /* --- НОВЫЕ МОБИЛЬНЫЕ СТИЛИ --- */
             .steps-container {
                 grid-template-columns: 1fr;
                 gap: 16px;
@@ -884,7 +977,6 @@
             .step-content {
                 flex: 1;
             }
-             /* --- КОНЕЦ НОВЫХ МОБИЛЬНЫХ СТИЛЕЙ --- */
 
             .preorders-grid {
                 grid-template-columns: 1fr;
@@ -1064,6 +1156,7 @@
                     </div>
                 </div>
             </section>
+
             <div class="preorders-container" id="app">
                 <div class="filter-section">
                     <div class="filter-wrapper">
@@ -1082,18 +1175,57 @@
                 </div>
                 <div class="preorders-grid" id="preordersGrid"></div>
             </div>
-            
+
             <div id="loader">
                 <div class="loader-spinner"></div>
                 <div>Загружаем список предзаказов...</div>
             </div>
-        </div>
+
+            <section class="coming-soon-section">
+                <div class="coming-soon-icon">
+                    <i class="fas fa-flask"></i>
+                </div>
+                <h3 class="coming-soon-title">Новые товары уже в пути!</h3>
+                <p class="coming-soon-text">Мы постоянно работаем над расширением ассортимента. Следите за обновлениями, чтобы не пропустить выгодные предложения по предзаказу.</p>
+            </section>
+            </div>
     </main>
-    
+
+    <section class="preorder-conditions">
+        <div class="container">
+            <h2 class="section-title">Условия предзаказа</h2>
+            <ul class="conditions-list">
+                <li>
+                    <div class="condition-icon"><i class="fas fa-credit-card"></i></div>
+                    <div class="condition-text">
+                        <strong>Предоплата</strong>
+                        <span>Для подтверждения предзаказа требуется полная или частичная предоплата. Детали уточнит менеджер при оформлении заказа.</span>
+                    </div>
+                </li>
+                <li>
+                    <div class="condition-icon"><i class="fas fa-receipt"></i></div>
+                    <div class="condition-text">
+                        <strong>Оформление и оплата</strong>
+                        <span>Оплата списывается после подтверждения заказа менеджером. Вы получите электронный чек или подтверждение в WhatsApp.</span>
+                    </div>
+                </li>
+                <li>
+                    <div class="condition-icon"><i class="fas fa-box-open"></i></div>
+                    <div class="condition-text">
+                        <strong>Если товара не будет в наличии</strong>
+                        <span>В редких случаях поставка может быть отменена. Мы немедленно сообщим вам об этом и вернем полную сумму предоплаты.</span>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </section>
     <footer class="footer">
         <div class="container">
             <div class="footer-content">
                 <div class="footer-logo">Nefarma</div>
+                <a href="https://wa.me/77780990459?text=Здравствуйте!%20У%20меня%20есть%20вопрос%20по%20предзаказу." class="footer-contact-btn" target="_blank" rel="noopener noreferrer">
+                    <i class="fab fa-whatsapp"></i> Остались вопросы? Напишите нам
+                </a>
                 <div class="copyright">
                     &copy; 2023 Nefarma. Все права защищены.
                 </div>
@@ -1370,7 +1502,8 @@
                             <div class="preorder-timer">
                                 <span class="timer-label">До окончания предзаказа:</span>
                                 <div class="timer-display" id="timer-${preorder.id}">
-                                    </div>
+                                    <div class="badge-container"></div>
+                                </div>
                             </div>
                             
                             <div class="pricing-section">
@@ -1453,6 +1586,7 @@
                 
                 const card = timerEl.closest('.preorder-card');
                 const btn = card ? card.querySelector('.preorder-btn') : null;
+                const badgeContainer = timerEl.querySelector('.badge-container');
                 const now = new Date();
                 const diff = preorder.endDate - now;
                 
@@ -1471,29 +1605,52 @@
                     btn.disabled = false;
                     btn.innerHTML = `<i class="fab fa-whatsapp"></i> Заказать по предзаказу`;
                 }
+
+                // --- ЛОГИКА ДЛЯ БЕЙДЖА "ОСТАЛОСЬ МАЛО ВРЕМЕНИ" ---
+                if (badgeContainer) {
+                    if (diff < 24 * 60 * 60 * 1000 && diff > 0) {
+                       if (!badgeContainer.querySelector('.ending-soon-badge')) {
+                           badgeContainer.innerHTML = `<div class="ending-soon-badge">Осталось мало времени!</div>`;
+                       }
+                    } else {
+                        badgeContainer.innerHTML = '';
+                    }
+                }
+                // --- КОНЕЦ ЛОГИКИ БЕЙДЖА ---
                 
                 const days = Math.floor(diff / (1000 * 60 * 60 * 24));
                 const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
                 const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
                 const seconds = Math.floor((diff % (1000 * 60)) / 1000);
                 
-                timerEl.innerHTML = `
-                    <div class="time-unit">
-                        <span class="time-value">${days.toString().padStart(2, '0')}</span>
-                        <span class="time-label">дней</span>
-                    </div>
-                    <div class="time-unit">
-                        <span class="time-value">${hours.toString().padStart(2, '0')}</span>
-                        <span class="time-label">часов</span>
-                    </div>
-                    <div class="time-unit">
-                        <span class="time-value">${minutes.toString().padStart(2, '0')}</span>
-                        <span class="time-label">минут</span>
-                    </div>
-                    <div class="time-unit">
-                        <span class="time-value">${seconds.toString().padStart(2, '0')}</span>
-                        <span class="time-label">секунд</span>
-                    </div>`;
+                // Проверяем, что таймер не содержит другие элементы (как .preorder-ended)
+                if (timerEl.querySelectorAll('.time-unit').length === 0) {
+                    const badgeHTML = badgeContainer ? badgeContainer.innerHTML : '';
+                    timerEl.innerHTML = `
+                        ${badgeHTML}
+                        <div class="time-unit">
+                            <span class="time-value">${days.toString().padStart(2, '0')}</span>
+                            <span class="time-label">дней</span>
+                        </div>
+                        <div class="time-unit">
+                            <span class="time-value">${hours.toString().padStart(2, '0')}</span>
+                            <span class="time-label">часов</span>
+                        </div>
+                        <div class="time-unit">
+                            <span class="time-value">${minutes.toString().padStart(2, '0')}</span>
+                            <span class="time-label">минут</span>
+                        </div>
+                        <div class="time-unit">
+                            <span class="time-value">${seconds.toString().padStart(2, '0')}</span>
+                            <span class="time-label">секунд</span>
+                        </div>`;
+                } else {
+                    // Обновляем существующие значения
+                    timerEl.querySelector('.time-unit:nth-child(1) .time-value').textContent = days.toString().padStart(2, '0');
+                    timerEl.querySelector('.time-unit:nth-child(2) .time-value').textContent = hours.toString().padStart(2, '0');
+                    timerEl.querySelector('.time-unit:nth-child(3) .time-value').textContent = minutes.toString().padStart(2, '0');
+                    timerEl.querySelector('.time-unit:nth-child(4) .time-value').textContent = seconds.toString().padStart(2, '0');
+                }
             },
 
             handleCardClick(event) {
