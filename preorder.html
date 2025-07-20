@@ -158,7 +158,74 @@
             padding: 0 20px;
             line-height: 1.6;
         }
+
+        /* --- НОВЫЕ СТИЛИ ДЛЯ БЛОКА "КАК РАБОТАЕТ" --- */
+        .how-it-works-section {
+            background: var(--surface-color);
+            border-radius: var(--border-radius);
+            padding: 32px 24px;
+            margin: 0 auto 50px;
+            box-shadow: var(--shadow);
+            border: 1px solid var(--border-color);
+            max-width: 1100px;
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 1.8rem;
+            font-weight: 800;
+            color: var(--text-color);
+            margin-bottom: 35px;
+        }
+
+        .steps-container {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 24px;
+            position: relative;
+        }
+
+        .step {
+            text-align: center;
+            padding: 20px;
+            border-radius: var(--border-radius-sm);
+            transition: var(--transition);
+            position: relative;
+        }
+
+        .step:not(:last-child)::after {
+            content: '';
+            position: absolute;
+            top: 40px;
+            right: -12px;
+            transform: translateX(50%);
+            width: 25%;
+            height: 2px;
+            background: repeating-linear-gradient(90deg, var(--border-color), var(--border-color) 4px, transparent 4px, transparent 8px);
+        }
+
+        .step-icon {
+            font-size: 36px;
+            color: var(--primary-color);
+            margin-bottom: 16px;
+            line-height: 1;
+        }
         
+        .step-number {
+            font-size: 14px;
+            font-weight: 700;
+            color: var(--text-muted);
+            margin-bottom: 8px;
+            text-transform: uppercase;
+        }
+
+        .step-description {
+            font-size: 15px;
+            color: var(--text-color);
+            line-height: 1.5;
+        }
+        /* --- КОНЕЦ НОВЫХ СТИЛЕЙ --- */
+
         #loader {
             text-align: center;
             padding: 60px 20px;
@@ -771,6 +838,12 @@
                 grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
                 gap: 30px;
             }
+            .steps-container {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            .step:nth-child(2)::after {
+                display: none;
+            }
         }
         
         @media (max-width: 768px) {
@@ -787,7 +860,32 @@
                 font-size: 1.1rem;
                 margin-bottom: 30px;
             }
-            
+
+            /* --- НОВЫЕ МОБИЛЬНЫЕ СТИЛИ --- */
+            .steps-container {
+                grid-template-columns: 1fr;
+                gap: 16px;
+            }
+            .step {
+                display: flex;
+                text-align: left;
+                align-items: center;
+                gap: 16px;
+                padding: 16px;
+                background: rgba(0,0,0,0.2);
+            }
+            .step::after {
+                display: none;
+            }
+            .step-icon {
+                font-size: 28px;
+                margin-bottom: 0;
+            }
+            .step-content {
+                flex: 1;
+            }
+             /* --- КОНЕЦ НОВЫХ МОБИЛЬНЫХ СТИЛЕЙ --- */
+
             .preorders-grid {
                 grid-template-columns: 1fr;
                 gap: 30px;
@@ -933,6 +1031,39 @@
             <h1 class="page-title">Предзаказ фармацевтики</h1>
             <p class="page-subtitle">Закажите необходимые препараты по специальным ценам до окончания срока предзаказа. Гарантированная поставка и лучшие цены.</p>
             
+            <section class="how-it-works-section">
+                <h2 class="section-title">Как работает предзаказ?</h2>
+                <div class="steps-container">
+                    <div class="step">
+                        <div class="step-icon"><i class="fas fa-mouse-pointer"></i></div>
+                        <div class="step-content">
+                            <div class="step-number">Шаг 1</div>
+                            <div class="step-description">Выберите товар и укажите нужное количество.</div>
+                        </div>
+                    </div>
+                    <div class="step">
+                        <div class="step-icon"><i class="fab fa-whatsapp"></i></div>
+                         <div class="step-content">
+                            <div class="step-number">Шаг 2</div>
+                            <div class="step-description">Нажмите «Заказать» и отправьте нам готовое сообщение в WhatsApp.</div>
+                        </div>
+                    </div>
+                    <div class="step">
+                        <div class="step-icon"><i class="fas fa-user-check"></i></div>
+                         <div class="step-content">
+                            <div class="step-number">Шаг 3</div>
+                            <div class="step-description">Наш менеджер свяжется с вами для подтверждения заказа и деталей.</div>
+                        </div>
+                    </div>
+                    <div class="step">
+                        <div class="step-icon"><i class="fas fa-shipping-fast"></i></div>
+                         <div class="step-content">
+                            <div class="step-number">Шаг 4</div>
+                            <div class="step-description">Получите ваш заказ после завершения периода предзаказа.</div>
+                        </div>
+                    </div>
+                </div>
+            </section>
             <div class="preorders-container" id="app">
                 <div class="filter-section">
                     <div class="filter-wrapper">
