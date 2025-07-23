@@ -31,1063 +31,134 @@
             --shadow-hover: 0 12px 28px rgba(88, 166, 255, 0.2);
             --transition: all 0.3s cubic-bezier(0.165, 0.84, 0.44, 1);
         }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { font-family: var(--font-main); background-color: var(--bg-color); color: var(--text-color); margin: 0; padding: 0; font-size: 16px; line-height: 1.6; min-height: 100vh; display: flex; flex-direction: column; background-image: radial-gradient(circle at 10% 20%, rgba(40, 40, 40, 0.08) 0px, transparent 50%), radial-gradient(circle at 90% 80%, rgba(40, 40, 40, 0.08) 0px, transparent 50%); background-attachment: fixed; }
+        .header { background-color: rgba(13, 17, 23, 0.95); padding: 16px 0; position: sticky; top: 0; z-index: 100; backdrop-filter: blur(12px); border-bottom: 1px solid rgba(48, 54, 61, 0.3); box-shadow: 0 4px 12px rgba(1, 4, 9, 0.3); }
+        .container { max-width: 1300px; margin: 0 auto; padding: 0 24px; }
+        .header .container { display: flex; justify-content: space-between; align-items: center; gap: 24px; flex-wrap: wrap; }
+        .logo { display: flex; align-items: center; gap: 14px; transition: var(--transition); }
+        .logo:hover { transform: translateY(-2px); }
+        .logo img { height: 48px; width: auto; transition: var(--transition); }
+        .logo-text { font-weight: 800; font-size: 22px; background: var(--primary-gradient); -webkit-background-clip: text; background-clip: text; color: transparent; letter-spacing: -0.5px; }
+        .contact-info a { color: var(--text-color); text-decoration: none; display: flex; align-items: center; gap: 10px; padding: 10px 20px; border-radius: 50px; background: rgba(48, 54, 61, 0.4); transition: var(--transition); font-weight: 600; white-space: nowrap; border: 1px solid var(--border-color); box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); }
+        .contact-info a:hover { background: rgba(88, 166, 255, 0.15); transform: translateY(-3px); box-shadow: 0 6px 12px rgba(88, 166, 255, 0.2); border-color: rgba(88, 166, 255, 0.3); }
+        .main-content { flex: 1; padding: 30px 0 60px; }
+        .page-title { text-align: center; margin: 0 0 24px; font-size: 2.5rem; background: var(--primary-gradient); -webkit-background-clip: text; background-clip: text; color: transparent; font-weight: 800; padding: 0 20px; line-height: 1.2; letter-spacing: -0.5px; }
+        .page-subtitle { text-align: center; color: var(--text-muted); max-width: 800px; margin: 0 auto 40px; font-size: 1.2rem; padding: 0 20px; line-height: 1.6; }
+        .how-it-works-section { background: var(--surface-color); border-radius: var(--border-radius); padding: 32px 24px; margin: 0 auto 50px; box-shadow: var(--shadow); border: 1px solid var(--border-color); max-width: 1100px; }
+        .section-title { text-align: center; font-size: 1.8rem; font-weight: 800; color: var(--text-color); margin-bottom: 35px; }
+        .steps-container { display: grid; grid-template-columns: repeat(4, 1fr); gap: 24px; position: relative; }
+        .step { text-align: center; padding: 20px; border-radius: var(--border-radius-sm); transition: var(--transition); position: relative; }
+        .step:not(:last-child)::after { content: ''; position: absolute; top: 40px; right: -12px; transform: translateX(50%); width: 25%; height: 2px; background: repeating-linear-gradient(90deg, var(--border-color), var(--border-color) 4px, transparent 4px, transparent 8px); }
+        .step-icon { font-size: 36px; color: var(--primary-color); margin-bottom: 16px; line-height: 1; }
+        .step-number { font-size: 14px; font-weight: 700; color: var(--text-muted); margin-bottom: 8px; text-transform: uppercase; }
+        .step-description { font-size: 15px; color: var(--text-color); line-height: 1.5; }
+        #loader { text-align: center; padding: 60px 20px; font-size: 18px; color: var(--text-muted); display: flex; flex-direction: column; align-items: center; gap: 30px; min-height: 60vh; justify-content: center; }
+        .loader-spinner { width: 70px; height: 70px; border: 8px solid rgba(255, 255, 255, 0.1); border-radius: 50%; border-top-color: var(--primary-color); animation: spin 1.2s cubic-bezier(0.5, 0, 0.5, 1) infinite; }
+        @keyframes spin { to { transform: rotate(360deg); } }
+        .preorders-container { max-width: 1300px; margin: auto; display: none; }
+        .filter-section { background: var(--surface-color); border-radius: var(--border-radius); padding: 24px; margin: 0 0 40px; box-shadow: var(--shadow); border: 1px solid var(--border-color); }
+        .filter-wrapper { display: flex; gap: 16px; position: relative; }
+        .filter-input { flex-grow: 1; padding: 16px 24px; background: rgba(22, 27, 34, 0.8); color: var(--text-color); border: 1px solid var(--border-color); border-radius: var(--border-radius); font-size: 17px; transition: var(--transition); font-weight: 500; }
+        .filter-input:focus { outline: none; border-color: var(--primary-color); box-shadow: 0 0 0 4px rgba(88, 166, 255, 0.2); }
+        .filter-input::placeholder { color: var(--text-muted); }
+        .clear-filter { position: absolute; right: 20px; top: 50%; transform: translateY(-50%); background: none; border: none; color: var(--text-muted); cursor: pointer; opacity: 0.7; transition: var(--transition); display: flex; align-items: center; justify-content: center; width: 28px; height: 28px; border-radius: 50%; }
+        .clear-filter:hover { opacity: 1; background: rgba(255, 255, 255, 0.1); color: var(--primary-color); transform: translateY(-50%) scale(1.1); }
+        .results-count { text-align: center; margin: 18px 0 0; font-size: 15px; color: var(--text-muted); }
+        .preorders-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(340px, 1fr)); gap: 35px; }
+        .preorder-card { background: var(--surface-color); border-radius: var(--border-radius); box-shadow: var(--shadow); overflow: hidden; transition: var(--transition); border: 1px solid var(--border-color); display: flex; flex-direction: column; position: relative; transform: translateY(0); will-change: transform, box-shadow; }
+        .preorder-card:hover { transform: translateY(-10px); box-shadow: var(--shadow-hover); border-color: rgba(88, 166, 255, 0.4); }
+        .card-content { padding: 24px; display: flex; flex-direction: column; flex-grow: 1; }
+        .product-title { font-size: 22px; font-weight: 800; margin: 0 0 16px; color: var(--primary-color); text-align: center; line-height: 1.3; }
+        .product-description { font-size: 15px; color: var(--text-muted); line-height: 1.7; margin-bottom: 24px; text-align: center; flex-grow: 1; }
+        .preorder-timer { background: rgba(22, 27, 34, 0.7); border-radius: var(--border-radius-sm); padding: 18px; margin: 0 0 24px; text-align: center; border: 1px solid var(--timer-color); backdrop-filter: blur(5px); box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); }
+        .timer-label { font-size: 16px; color: var(--timer-color); margin-bottom: 14px; display: block; font-weight: 700; }
+        .timer-display { display: flex; justify-content: center; gap: 10px; font-size: 26px; font-weight: 800; color: var(--timer-color); text-shadow: 0 0 10px rgba(240, 183, 47, 0.4); position: relative; }
+        .ending-soon-badge { background-color: var(--warning-color); color: var(--bg-color); font-size: 13px; font-weight: 800; padding: 4px 10px; border-radius: 6px; position: absolute; top: -30px; left: 50%; transform: translateX(-50%); white-space: nowrap; animation: pulse 1.5s infinite; }
+        @keyframes pulse { 0% { box-shadow: 0 0 0 0 rgba(210, 153, 34, 0.7); } 70% { box-shadow: 0 0 0 10px rgba(210, 153, 34, 0); } 100% { box-shadow: 0 0 0 0 rgba(210, 153, 34, 0); } }
+        .time-unit { display: flex; flex-direction: column; align-items: center; min-width: 60px; }
+        .time-value { background: rgba(0, 0, 0, 0.4); padding: 10px; border-radius: 10px; min-width: 50px; text-align: center; font-feature-settings: "tnum"; font-variant-numeric: tabular-nums; position: relative; overflow: hidden; box-shadow: inset 0 0 8px rgba(0, 0, 0, 0.3); }
+        .time-value::after { content: ""; position: absolute; top: 0; left: 0; right: 0; height: 50%; background: rgba(255, 255, 255, 0.05); border-bottom: 1px solid rgba(255, 255, 255, 0.1); }
+        .time-label { font-size: 12px; text-transform: uppercase; margin-top: 8px; opacity: 0.8; letter-spacing: 0.5px; font-weight: 600; }
+        .pricing-section { margin: 0 0 24px; }
+        .pricing-title { font-size: 17px; font-weight: 700; margin-bottom: 18px; color: var(--text-muted); text-align: center; position: relative; padding-bottom: 12px; }
+        .pricing-title::after { content: ""; position: absolute; bottom: 0; left: 50%; transform: translateX(-50%); width: 70px; height: 3px; background: var(--primary-color); border-radius: 3px; }
+        .price-option { display: flex; justify-content: space-between; padding: 14px 0; border-bottom: 1px solid rgba(48, 54, 61, 0.5); transition: var(--transition); }
+        .price-option:hover { background: rgba(48, 54, 61, 0.2); border-radius: var(--border-radius-sm); padding: 14px 12px; }
+        .price-option:last-child { border-bottom: none; }
+        .quantity { color: var(--text-muted); display: flex; align-items: center; gap: 10px; font-size: 16px; }
+        .quantity-icon { color: var(--primary-color); font-size: 16px; }
+        .price { font-weight: 800; color: var(--discount-color); font-size: 20px; display: flex; flex-direction: column; align-items: flex-end; }
+        .per-item { font-size: 13px; color: var(--text-muted); display: block; margin-top: 4px; font-weight: 500; }
+        .selected-quantity { display: flex; flex-direction: column; align-items: center; margin: 24px 0; gap: 16px; }
+        .quantity-label { font-size: 18px; font-weight: 600; display: flex; align-items: center; gap: 10px; }
+        .quantity-selector { display: flex; gap: 10px; align-items: center; }
+        .quantity-btn { background: var(--primary-color); color: white; border: none; width: 48px; height: 48px; border-radius: 50%; font-weight: bold; font-size: 22px; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: var(--transition); box-shadow: 0 5px 15px rgba(88, 166, 255, 0.3); user-select: none; }
+        .quantity-btn:disabled { background: var(--border-color); cursor: not-allowed; opacity: 0.5; box-shadow: none; }
+        .quantity-btn:hover:not(:disabled) { background: var(--primary-hover); transform: scale(1.08); box-shadow: 0 7px 18px rgba(88, 166, 255, 0.4); }
+        .quantity-value { width: 80px; text-align: center; font-weight: 800; font-size: 24px; background: rgba(13, 17, 23, 0.4); border-radius: var(--border-radius-sm); padding: 10px; border: 1px solid var(--border-color); color: var(--text-color); transition: var(--transition); box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.2); -moz-appearance: textfield; }
+        .quantity-value::-webkit-outer-spin-button, .quantity-value::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
+        .quantity-value:focus { outline: none; border-color: var(--primary-color); box-shadow: 0 0 0 4px rgba(88, 166, 255, 0.2), inset 0 0 10px rgba(0, 0, 0, 0.2); }
+        .total-price { background: rgba(13, 17, 23, 0.4); padding: 20px; border-radius: var(--border-radius-sm); margin: 20px 0; text-align: center; font-size: 22px; border: 1px solid var(--primary-color); font-weight: 700; display: flex; justify-content: center; gap: 12px; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); }
+        .total-price span { color: var(--discount-color); font-weight: 900; }
+        .card-actions { display: flex; gap: 10px; margin-top: auto; }
+        .preorder-btn, .copy-btn { color: white; border: none; padding: 20px; width: 100%; border-radius: var(--border-radius-sm); font-size: 19px; font-weight: 700; cursor: pointer; transition: var(--transition); display: flex; align-items: center; justify-content: center; gap: 14px; text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3); position: relative; overflow: hidden; z-index: 1; }
+        .preorder-btn { background: var(--success-gradient); box-shadow: 0 5px 20px rgba(63, 185, 80, 0.3); flex-grow: 1; }
+        .copy-btn { background: var(--primary-gradient); box-shadow: 0 5px 20px rgba(88, 166, 255, 0.3); width: 70px; flex-shrink: 0; font-size: 22px; }
+        .preorder-btn:not(:disabled)::before { content: ""; position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(135deg, rgba(255,255,255,0.1), rgba(255,255,255,0.05)); z-index: -1; transform: translateX(-100%); transition: transform 0.6s cubic-bezier(0.23, 1, 0.32, 1); }
+        .preorder-btn:hover:not(:disabled), .copy-btn:hover:not(:disabled) { transform: translateY(-4px); }
+        .preorder-btn:hover:not(:disabled) { box-shadow: 0 8px 25px rgba(63, 185, 80, 0.4); }
+        .copy-btn:hover:not(:disabled) { box-shadow: 0 8px 25px rgba(88, 166, 255, 0.4); }
+        .preorder-btn:hover:not(:disabled)::before { transform: translateX(0); }
+        .preorder-btn:disabled, .copy-btn:disabled { background: #444; cursor: not-allowed; transform: none; box-shadow: none; opacity: 0.7; }
+        .preorder-ended { background: rgba(255, 123, 114, 0.1); color: var(--discount-color); text-align: center; padding: 16px; border-radius: var(--border-radius-sm); margin: 24px 0; border: 1px solid var(--discount-color); font-weight: 700; font-size: 17px; }
+        .preorder-conditions { padding: 40px 0; margin-top: 60px; border-top: 1px solid var(--border-color); }
+        .conditions-list { max-width: 900px; margin: 0 auto; list-style-type: none; padding-left: 0; }
+        .conditions-list li { display: flex; align-items: flex-start; gap: 20px; padding: 15px 0; }
+        .conditions-list li:not(:last-child) { border-bottom: 1px solid var(--border-color); }
+        .conditions-list .condition-icon { font-size: 22px; color: var(--primary-color); flex-shrink: 0; margin-top: 4px; }
+        .condition-text strong { display: block; font-weight: 700; color: var(--text-color); margin-bottom: 4px; }
+        .condition-text span { color: var(--text-muted); }
+        .toast-notification { position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%) translateY(20px); background-color: var(--primary-color); color: white; padding: 18px 35px; border-radius: var(--border-radius); box-shadow: var(--shadow-hover); z-index: 1002; opacity: 0; visibility: hidden; transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275); display: flex; align-items: center; gap: 14px; font-weight: 600; max-width: 90%; text-align: center; backdrop-filter: blur(10px); border: 1px solid rgba(255, 255, 255, 0.1); }
+        .toast-notification.show { opacity: 1; visibility: visible; transform: translateX(-50%) translateY(0); }
+        .toast-notification.error { background-color: #f85149; }
+        .toast-notification.warning { background-color: #e3b341; color: #0d1117; }
+        .toast-notification.success { background-color: #3fb950; }
+        .cache-info { position: fixed; bottom: 20px; right: 20px; font-size: 13px; color: var(--text-muted); background: rgba(13, 17, 23, 0.7); padding: 8px 16px; border-radius: 50px; z-index: 1000; backdrop-filter: blur(8px); border: 1px solid rgba(255, 255, 255, 0.1); display: flex; align-items: center; gap: 10px; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); }
+        .cache-indicator { width: 12px; height: 12px; border-radius: 50%; background: var(--success-color); box-shadow: 0 0 8px var(--success-color); }
+        .cache-indicator.cached { background: var(--warning-color); box-shadow: 0 0 8px var(--warning-color); }
+        .footer { background: var(--surface-color); padding: 40px 0; border-top: 1px solid var(--border-color); margin-top: 60px; }
+        .footer-content { display: flex; flex-direction: column; align-items: center; gap: 24px; text-align: center; }
+        .footer-logo { font-size: 28px; font-weight: 800; background: var(--primary-gradient); -webkit-background-clip: text; background-clip: text; color: transparent; }
+        .footer-contact-btn { background: var(--primary-gradient); color: white; text-decoration: none; padding: 16px 32px; border-radius: 50px; font-size: 18px; font-weight: 700; display: inline-flex; align-items: center; gap: 12px; transition: var(--transition); box-shadow: 0 5px 20px rgba(88, 166, 255, 0.3); }
+        .footer-contact-btn:hover { transform: translateY(-4px); box-shadow: 0 8px 25px rgba(88, 166, 255, 0.4); }
+        .copyright { color: var(--text-muted); font-size: 15px; margin-top: 15px; }
+        .no-results { grid-column: 1 / -1; text-align: center; padding: 60px 20px; color: var(--text-muted); font-size: 19px; }
+        .no-results-icon { font-size: 54px; margin-bottom: 24px; color: var(--border-color); }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+        .preorder-card, .pharmacom-section { animation: fadeIn 0.6s ease forwards; opacity: 0; }
         
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-        }
-        
-        body {
-            font-family: var(--font-main);
-            background-color: var(--bg-color);
-            color: var(--text-color);
-            margin: 0;
-            padding: 0;
-            font-size: 16px;
-            line-height: 1.6;
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            background-image: 
-                radial-gradient(circle at 10% 20%, rgba(40, 40, 40, 0.08) 0px, transparent 50%),
-                radial-gradient(circle at 90% 80%, rgba(40, 40, 40, 0.08) 0px, transparent 50%);
-            background-attachment: fixed;
-        }
-        
-        .header {
-            background-color: rgba(13, 17, 23, 0.95);
-            padding: 16px 0;
-            position: sticky;
-            top: 0;
-            z-index: 100;
-            backdrop-filter: blur(12px);
-            border-bottom: 1px solid rgba(48, 54, 61, 0.3);
-            box-shadow: 0 4px 12px rgba(1, 4, 9, 0.3);
-        }
-        
-        .container {
-            max-width: 1300px;
-            margin: 0 auto;
-            padding: 0 24px;
-        }
-        
-        .header .container {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            gap: 24px;
-            flex-wrap: wrap;
-        }
-        
-        .logo {
-            display: flex;
-            align-items: center;
-            gap: 14px;
-            transition: var(--transition);
-        }
-        
-        .logo:hover {
-            transform: translateY(-2px);
-        }
-        
-        .logo img {
-            height: 48px;
-            width: auto;
-            transition: var(--transition);
-        }
-        
-        .logo-text {
-            font-weight: 800;
-            font-size: 22px;
-            background: var(--primary-gradient);
-            -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
-            letter-spacing: -0.5px;
-        }
-        
-        .contact-info a {
-            color: var(--text-color);
-            text-decoration: none;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            padding: 10px 20px;
-            border-radius: 50px;
-            background: rgba(48, 54, 61, 0.4);
-            transition: var(--transition);
-            font-weight: 600;
-            white-space: nowrap;
-            border: 1px solid var(--border-color);
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-        }
-        
-        .contact-info a:hover {
-            background: rgba(88, 166, 255, 0.15);
-            transform: translateY(-3px);
-            box-shadow: 0 6px 12px rgba(88, 166, 255, 0.2);
-            border-color: rgba(88, 166, 255, 0.3);
-        }
-        
-        .main-content {
-            flex: 1;
-            padding: 30px 0 60px;
-        }
-        
-        .page-title {
-            text-align: center;
-            margin: 0 0 24px;
-            font-size: 2.5rem;
-            background: var(--primary-gradient);
-            -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
-            font-weight: 800;
-            padding: 0 20px;
-            line-height: 1.2;
-            letter-spacing: -0.5px;
-        }
-        
-        .page-subtitle {
-            text-align: center;
-            color: var(--text-muted);
-            max-width: 800px;
-            margin: 0 auto 40px;
-            font-size: 1.2rem;
-            padding: 0 20px;
-            line-height: 1.6;
-        }
+        /* PHARMACOM SECTION STYLES */
+        .pharmacom-section { background: var(--surface-color); border-radius: var(--border-radius); padding: 32px 24px; margin: 50px auto 0; box-shadow: var(--shadow); border: 1px solid var(--border-color); max-width: 1100px; }
+        .pharmacom-calculator-table { width: 100%; border-collapse: collapse; margin-top: 25px; }
+        .pharmacom-calculator-table th, .pharmacom-calculator-table td { padding: 15px 5px; text-align: left; border-bottom: 1px solid var(--border-color); vertical-align: middle; }
+        .pharmacom-calculator-table th { color: var(--text-muted); font-weight: 700; font-size: 14px; text-transform: uppercase; }
+        .pharmacom-calculator-table .quantity-selector { justify-content: flex-end; gap: 8px; }
+        .pharmacom-calculator-table .quantity-value { width: 60px; font-size: 18px; padding: 8px; }
+        .pharmacom-calculator-table .quantity-btn { width: 40px; height: 40px; font-size: 18px; box-shadow: none; }
+        .pharmacom-summary { margin-top: 30px; background: rgba(13, 17, 23, 0.6); padding: 25px; border-radius: var(--border-radius); border: 1px solid var(--border-color); }
+        .summary-row { display: flex; justify-content: space-between; align-items: center; font-size: 18px; padding: 12px 0; }
+        .summary-row:not(:last-child) { border-bottom: 1px dashed var(--border-color); }
+        .summary-row strong { font-weight: 700; color: var(--text-color); }
+        .summary-row span { font-weight: 800; }
+        .summary-row .total-raw-price { color: var(--text-muted); text-decoration: line-through; }
+        .summary-row .discount-amount { color: var(--success-color); }
+        .summary-row .final-price { color: var(--discount-color); font-size: 24px; }
+        .min-order-notice { text-align: center; color: var(--warning-color); font-weight: 600; margin-top: 20px; padding: 12px; background: rgba(210, 153, 34, 0.1); border-radius: var(--border-radius-sm); border: 1px solid var(--warning-color); }
 
-        .how-it-works-section {
-            background: var(--surface-color);
-            border-radius: var(--border-radius);
-            padding: 32px 24px;
-            margin: 0 auto 50px;
-            box-shadow: var(--shadow);
-            border: 1px solid var(--border-color);
-            max-width: 1100px;
-        }
-
-        .section-title {
-            text-align: center;
-            font-size: 1.8rem;
-            font-weight: 800;
-            color: var(--text-color);
-            margin-bottom: 35px;
-        }
-
-        .steps-container {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 24px;
-            position: relative;
-        }
-
-        .step {
-            text-align: center;
-            padding: 20px;
-            border-radius: var(--border-radius-sm);
-            transition: var(--transition);
-            position: relative;
-        }
-
-        .step:not(:last-child)::after {
-            content: '';
-            position: absolute;
-            top: 40px;
-            right: -12px;
-            transform: translateX(50%);
-            width: 25%;
-            height: 2px;
-            background: repeating-linear-gradient(90deg, var(--border-color), var(--border-color) 4px, transparent 4px, transparent 8px);
-        }
-
-        .step-icon {
-            font-size: 36px;
-            color: var(--primary-color);
-            margin-bottom: 16px;
-            line-height: 1;
-        }
-        
-        .step-number {
-            font-size: 14px;
-            font-weight: 700;
-            color: var(--text-muted);
-            margin-bottom: 8px;
-            text-transform: uppercase;
-        }
-
-        .step-description {
-            font-size: 15px;
-            color: var(--text-color);
-            line-height: 1.5;
-        }
-
-        #loader {
-            text-align: center;
-            padding: 60px 20px;
-            font-size: 18px;
-            color: var(--text-muted);
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 30px;
-            min-height: 60vh;
-            justify-content: center;
-        }
-        
-        .loader-spinner {
-            width: 70px;
-            height: 70px;
-            border: 8px solid rgba(255, 255, 255, 0.1);
-            border-radius: 50%;
-            border-top-color: var(--primary-color);
-            animation: spin 1.2s cubic-bezier(0.5, 0, 0.5, 1) infinite;
-        }
-        
-        @keyframes spin {
-            to { transform: rotate(360deg); }
-        }
-        
-        .preorders-container {
-            max-width: 1300px;
-            margin: auto;
-            display: none;
-        }
-        
-        .filter-section {
-            background: var(--surface-color);
-            border-radius: var(--border-radius);
-            padding: 24px;
-            margin: 0 0 40px;
-            box-shadow: var(--shadow);
-            border: 1px solid var(--border-color);
-        }
-        
-        .filter-wrapper {
-            display: flex;
-            gap: 16px;
-            position: relative;
-        }
-        
-        .filter-input {
-            flex-grow: 1;
-            padding: 16px 24px;
-            background: rgba(22, 27, 34, 0.8);
-            color: var(--text-color);
-            border: 1px solid var(--border-color);
-            border-radius: var(--border-radius);
-            font-size: 17px;
-            transition: var(--transition);
-            font-weight: 500;
-        }
-        
-        .filter-input:focus {
-            outline: none;
-            border-color: var(--primary-color);
-            box-shadow: 0 0 0 4px rgba(88, 166, 255, 0.2);
-        }
-        
-        .filter-input::placeholder {
-            color: var(--text-muted);
-        }
-        
-        .clear-filter {
-            position: absolute;
-            right: 20px;
-            top: 50%;
-            transform: translateY(-50%);
-            background: none;
-            border: none;
-            color: var(--text-muted);
-            cursor: pointer;
-            opacity: 0.7;
-            transition: var(--transition);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            width: 28px;
-            height: 28px;
-            border-radius: 50%;
-        }
-        
-        .clear-filter:hover {
-            opacity: 1;
-            background: rgba(255, 255, 255, 0.1);
-            color: var(--primary-color);
-            transform: translateY(-50%) scale(1.1);
-        }
-        
-        .results-count {
-            text-align: center;
-            margin: 18px 0 0;
-            font-size: 15px;
-            color: var(--text-muted);
-        }
-        
-        .preorders-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
-            gap: 35px;
-        }
-        
-        .preorder-card {
-            background: var(--surface-color);
-            border-radius: var(--border-radius);
-            box-shadow: var(--shadow);
-            overflow: hidden;
-            transition: var(--transition);
-            border: 1px solid var(--border-color);
-            display: flex;
-            flex-direction: column;
-            position: relative;
-            transform: translateY(0);
-            will-change: transform, box-shadow;
-        }
-        
-        .preorder-card:hover {
-            transform: translateY(-10px);
-            box-shadow: var(--shadow-hover);
-            border-color: rgba(88, 166, 255, 0.4);
-        }
-        
-        .card-content {
-            padding: 24px;
-            display: flex;
-            flex-direction: column;
-            flex-grow: 1;
-        }
-        
-        .product-title {
-            font-size: 22px;
-            font-weight: 800;
-            margin: 0 0 16px;
-            color: var(--primary-color);
-            text-align: center;
-            line-height: 1.3;
-        }
-        
-        .product-description {
-            font-size: 15px;
-            color: var(--text-muted);
-            line-height: 1.7;
-            margin-bottom: 24px;
-            text-align: center;
-            flex-grow: 1;
-        }
-        
-        .preorder-timer {
-            background: rgba(22, 27, 34, 0.7);
-            border-radius: var(--border-radius-sm);
-            padding: 18px;
-            margin: 0 0 24px;
-            text-align: center;
-            border: 1px solid var(--timer-color);
-            backdrop-filter: blur(5px);
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-        }
-        
-        .timer-label {
-            font-size: 16px;
-            color: var(--timer-color);
-            margin-bottom: 14px;
-            display: block;
-            font-weight: 700;
-        }
-        
-        .timer-display {
-            display: flex;
-            justify-content: center;
-            gap: 10px;
-            font-size: 26px;
-            font-weight: 800;
-            color: var(--timer-color);
-            text-shadow: 0 0 10px rgba(240, 183, 47, 0.4);
-            position: relative;
-        }
-        
-        /* --- СТИЛИ ДЛЯ БЕЙДЖА "ОСТАЛОСЬ МАЛО ВРЕМЕНИ" --- */
-        .ending-soon-badge {
-            background-color: var(--warning-color);
-            color: var(--bg-color);
-            font-size: 13px;
-            font-weight: 800;
-            padding: 4px 10px;
-            border-radius: 6px;
-            position: absolute;
-            top: -30px;
-            left: 50%;
-            transform: translateX(-50%);
-            white-space: nowrap;
-            animation: pulse 1.5s infinite;
-        }
-
-        @keyframes pulse {
-            0% { box-shadow: 0 0 0 0 rgba(210, 153, 34, 0.7); }
-            70% { box-shadow: 0 0 0 10px rgba(210, 153, 34, 0); }
-            100% { box-shadow: 0 0 0 0 rgba(210, 153, 34, 0); }
-        }
-        /* --- КОНЕЦ СТИЛЕЙ БЕЙДЖА --- */
-        
-        .time-unit {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            min-width: 60px;
-        }
-        
-        .time-value {
-            background: rgba(0, 0, 0, 0.4);
-            padding: 10px;
-            border-radius: 10px;
-            min-width: 50px;
-            text-align: center;
-            font-feature-settings: "tnum";
-            font-variant-numeric: tabular-nums;
-            position: relative;
-            overflow: hidden;
-            box-shadow: inset 0 0 8px rgba(0, 0, 0, 0.3);
-        }
-        
-        .time-value::after {
-            content: "";
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 50%;
-            background: rgba(255, 255, 255, 0.05);
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-        }
-        
-        .time-label {
-            font-size: 12px;
-            text-transform: uppercase;
-            margin-top: 8px;
-            opacity: 0.8;
-            letter-spacing: 0.5px;
-            font-weight: 600;
-        }
-        
-        .pricing-section {
-            margin: 0 0 24px;
-        }
-        
-        .pricing-title {
-            font-size: 17px;
-            font-weight: 700;
-            margin-bottom: 18px;
-            color: var(--text-muted);
-            text-align: center;
-            position: relative;
-            padding-bottom: 12px;
-        }
-        
-        .pricing-title::after {
-            content: "";
-            position: absolute;
-            bottom: 0;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 70px;
-            height: 3px;
-            background: var(--primary-color);
-            border-radius: 3px;
-        }
-        
-        .price-option {
-            display: flex;
-            justify-content: space-between;
-            padding: 14px 0;
-            border-bottom: 1px solid rgba(48, 54, 61, 0.5);
-            transition: var(--transition);
-        }
-        
-        .price-option:hover {
-            background: rgba(48, 54, 61, 0.2);
-            border-radius: var(--border-radius-sm);
-            padding: 14px 12px;
-        }
-        
-        .price-option:last-child {
-            border-bottom: none;
-        }
-        
-        .quantity {
-            color: var(--text-muted);
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            font-size: 16px;
-        }
-        
-        .quantity-icon {
-            color: var(--primary-color);
-            font-size: 16px;
-        }
-        
-        .price {
-            font-weight: 800;
-            color: var(--discount-color);
-            font-size: 20px;
-            display: flex;
-            flex-direction: column;
-            align-items: flex-end;
-        }
-        
-        .per-item {
-            font-size: 13px;
-            color: var(--text-muted);
-            display: block;
-            margin-top: 4px;
-            font-weight: 500;
-        }
-        
-        .selected-quantity {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            margin: 24px 0;
-            gap: 16px;
-        }
-        
-        .quantity-label {
-            font-size: 18px;
-            font-weight: 600;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-        
-        .quantity-selector {
-            display: flex;
-            gap: 16px;
-            align-items: center;
-        }
-        
-        .quantity-btn {
-            background: var(--primary-color);
-            color: white;
-            border: none;
-            width: 48px;
-            height: 48px;
-            border-radius: 50%;
-            font-weight: bold;
-            font-size: 22px;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: var(--transition);
-            box-shadow: 0 5px 15px rgba(88, 166, 255, 0.3);
-            user-select: none;
-        }
-        
-        .quantity-btn:disabled {
-            background: var(--border-color);
-            cursor: not-allowed;
-            opacity: 0.5;
-            box-shadow: none;
-        }
-        
-        .quantity-btn:hover:not(:disabled) {
-            background: var(--primary-hover);
-            transform: scale(1.08);
-            box-shadow: 0 7px 18px rgba(88, 166, 255, 0.4);
-        }
-        
-        .quantity-value {
-            width: 80px;
-            text-align: center;
-            font-weight: 800;
-            font-size: 24px;
-            background: rgba(13, 17, 23, 0.4);
-            border-radius: var(--border-radius-sm);
-            padding: 10px;
-            border: 1px solid var(--border-color);
-            color: var(--text-color);
-            transition: var(--transition);
-            box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.2);
-        }
-        
-        .quantity-value:focus {
-            outline: none;
-            border-color: var(--primary-color);
-            box-shadow: 0 0 0 4px rgba(88, 166, 255, 0.2), inset 0 0 10px rgba(0, 0, 0, 0.2);
-        }
-        
-        .total-price {
-            background: rgba(13, 17, 23, 0.4);
-            padding: 20px;
-            border-radius: var(--border-radius-sm);
-            margin: 20px 0;
-            text-align: center;
-            font-size: 22px;
-            border: 1px solid var(--primary-color);
-            font-weight: 700;
-            display: flex;
-            justify-content: center;
-            gap: 12px;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-        }
-        
-        .total-price span {
-            color: var(--discount-color);
-            font-weight: 900;
-        }
-        
-        .preorder-btn {
-            background: var(--success-gradient);
-            color: white;
-            border: none;
-            padding: 20px;
-            width: 100%;
-            border-radius: var(--border-radius-sm);
-            font-size: 19px;
-            font-weight: 700;
-            cursor: pointer;
-            transition: var(--transition);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 14px;
-            box-shadow: 0 5px 20px rgba(63, 185, 80, 0.3);
-            text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
-            margin-top: auto;
-            position: relative;
-            overflow: hidden;
-            z-index: 1;
-        }
-        
-        .preorder-btn:not(:disabled)::before {
-            content: "";
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(135deg, rgba(255,255,255,0.1), rgba(255,255,255,0.05));
-            z-index: -1;
-            transform: translateX(-100%);
-            transition: transform 0.6s cubic-bezier(0.23, 1, 0.32, 1);
-        }
-        
-        .preorder-btn:hover:not(:disabled) {
-            transform: translateY(-4px);
-            box-shadow: 0 8px 25px rgba(63, 185, 80, 0.4);
-        }
-        
-        .preorder-btn:hover:not(:disabled)::before {
-            transform: translateX(0);
-        }
-        
-        .preorder-btn:disabled {
-            background: #444;
-            cursor: not-allowed;
-            transform: none;
-            box-shadow: none;
-            opacity: 0.7;
-        }
-        
-        .preorder-ended {
-            background: rgba(255, 123, 114, 0.1);
-            color: var(--discount-color);
-            text-align: center;
-            padding: 16px;
-            border-radius: var(--border-radius-sm);
-            margin: 24px 0;
-            border: 1px solid var(--discount-color);
-            font-weight: 700;
-            font-size: 17px;
-        }
-        
-        /* --- СТИЛИ ДЛЯ БЛОКА "НОВЫЕ ТОВАРЫ СКОРО" --- */
-        .coming-soon-section {
-            background: var(--surface-color);
-            border: 1px dashed var(--border-color);
-            border-radius: var(--border-radius);
-            padding: 40px;
-            margin: 60px auto 0;
-            text-align: center;
-            max-width: 1100px;
-        }
-
-        .coming-soon-icon {
-            font-size: 48px;
-            color: var(--primary-color);
-            margin-bottom: 20px;
-        }
-
-        .coming-soon-title {
-            font-size: 1.6rem;
-            font-weight: 700;
-            color: var(--text-color);
-            margin-bottom: 12px;
-        }
-
-        .coming-soon-text {
-            color: var(--text-muted);
-            max-width: 600px;
-            margin: 0 auto;
-        }
-        /* --- КОНЕЦ СТИЛЕЙ БЛОКА --- */
-
-        /* --- СТИЛИ ДЛЯ БЛОКА "УСЛОВИЯ ПРЕДЗАКАЗА" --- */
-        .preorder-conditions {
-            padding: 40px 0;
-            margin-top: 60px;
-            border-top: 1px solid var(--border-color);
-        }
-
-        .conditions-list {
-            max-width: 900px;
-            margin: 0 auto;
-            list-style-type: none;
-            padding-left: 0;
-        }
-
-        .conditions-list li {
-            display: flex;
-            align-items: flex-start;
-            gap: 20px;
-            padding: 15px 0;
-        }
-        
-        .conditions-list li:not(:last-child) {
-            border-bottom: 1px solid var(--border-color);
-        }
-
-        .conditions-list .condition-icon {
-            font-size: 22px;
-            color: var(--primary-color);
-            flex-shrink: 0;
-            margin-top: 4px;
-        }
-        
-        .condition-text strong {
-            display: block;
-            font-weight: 700;
-            color: var(--text-color);
-            margin-bottom: 4px;
-        }
-        
-        .condition-text span {
-            color: var(--text-muted);
-        }
-        /* --- КОНЕЦ СТИЛЕЙ БЛОКА --- */
-
-        .toast-notification {
-            position: fixed;
-            bottom: 30px;
-            left: 50%;
-            transform: translateX(-50%) translateY(20px);
-            background-color: var(--primary-color);
-            color: white;
-            padding: 18px 35px;
-            border-radius: var(--border-radius);
-            box-shadow: var(--shadow-hover);
-            z-index: 1002;
-            opacity: 0;
-            visibility: hidden;
-            transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            display: flex;
-            align-items: center;
-            gap: 14px;
-            font-weight: 600;
-            max-width: 90%;
-            text-align: center;
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-        }
-        
-        .toast-notification.show {
-            opacity: 1;
-            visibility: visible;
-            transform: translateX(-50%) translateY(0);
-        }
-        
-        .toast-notification.error {
-            background-color: #f85149;
-        }
-        
-        .toast-notification.warning {
-            background-color: #e3b341;
-            color: #0d1117;
-        }
-        
-        .toast-notification.success {
-            background-color: #3fb950;
-        }
-        
-        .cache-info {
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            font-size: 13px;
-            color: var(--text-muted);
-            background: rgba(13, 17, 23, 0.7);
-            padding: 8px 16px;
-            border-radius: 50px;
-            z-index: 1000;
-            backdrop-filter: blur(8px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-        }
-        
-        .cache-indicator {
-            width: 12px;
-            height: 12px;
-            border-radius: 50%;
-            background: var(--success-color);
-            box-shadow: 0 0 8px var(--success-color);
-        }
-        
-        .cache-indicator.cached {
-            background: var(--warning-color);
-            box-shadow: 0 0 8px var(--warning-color);
-        }
-        
-        .footer {
-            background: var(--surface-color);
-            padding: 40px 0;
-            border-top: 1px solid var(--border-color);
-            margin-top: 60px;
-        }
-        
-        .footer-content {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 24px;
-            text-align: center;
-        }
-        
-        .footer-logo {
-            font-size: 28px;
-            font-weight: 800;
-            background: var(--primary-gradient);
-            -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
-        }
-        
-        /* --- СТИЛИ ДЛЯ КНОПКИ В ФУТЕРЕ --- */
-        .footer-contact-btn {
-            background: var(--primary-gradient);
-            color: white;
-            text-decoration: none;
-            padding: 16px 32px;
-            border-radius: 50px;
-            font-size: 18px;
-            font-weight: 700;
-            display: inline-flex;
-            align-items: center;
-            gap: 12px;
-            transition: var(--transition);
-            box-shadow: 0 5px 20px rgba(88, 166, 255, 0.3);
-        }
-        
-        .footer-contact-btn:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 8px 25px rgba(88, 166, 255, 0.4);
-        }
-        /* --- КОНЕЦ СТИЛЕЙ КНОПКИ --- */
-
-        .copyright {
-            color: var(--text-muted);
-            font-size: 15px;
-            margin-top: 15px;
-        }
-        
-        .no-results {
-            grid-column: 1 / -1;
-            text-align: center;
-            padding: 60px 20px;
-            color: var(--text-muted);
-            font-size: 19px;
-        }
-        
-        .no-results-icon {
-            font-size: 54px;
-            margin-bottom: 24px;
-            color: var(--border-color);
-        }
-        
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-        
-        .preorder-card {
-            animation: fadeIn 0.6s ease forwards;
-            opacity: 0;
-        }
-        
-        @media (max-width: 992px) {
-            .preorders-grid {
-                grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-                gap: 30px;
-            }
-            .steps-container {
-                grid-template-columns: repeat(2, 1fr);
-            }
-            .step:nth-child(2)::after {
-                display: none;
-            }
-        }
-        
-        @media (max-width: 768px) {
-            .header .container {
-                justify-content: center;
-                gap: 20px;
-            }
-            
-            .page-title {
-                font-size: 2.1rem;
-            }
-            
-            .page-subtitle {
-                font-size: 1.1rem;
-                margin-bottom: 30px;
-            }
-
-            .steps-container {
-                grid-template-columns: 1fr;
-                gap: 16px;
-            }
-            .step {
-                display: flex;
-                text-align: left;
-                align-items: center;
-                gap: 16px;
-                padding: 16px;
-                background: rgba(0,0,0,0.2);
-            }
-            .step::after {
-                display: none;
-            }
-            .step-icon {
-                font-size: 28px;
-                margin-bottom: 0;
-            }
-            .step-content {
-                flex: 1;
-            }
-
-            .preorders-grid {
-                grid-template-columns: 1fr;
-                gap: 30px;
-            }
-            
-            .filter-section {
-                padding: 20px;
-            }
-            
-            .filter-input {
-                padding: 15px 20px;
-                font-size: 16px;
-            }
-            
-            .timer-display {
-                font-size: 22px;
-            }
-            
-            .time-unit {
-                min-width: 55px;
-            }
-            
-            .time-value {
-                min-width: 45px;
-                padding: 8px;
-            }
-            
-            .preorder-btn {
-                padding: 18px;
-                font-size: 18px;
-            }
-            
-            .product-title {
-                font-size: 20px;
-            }
-            
-            .quantity-btn {
-                width: 44px;
-                height: 44px;
-                font-size: 20px;
-            }
-            
-            .quantity-value {
-                width: 70px;
-                font-size: 22px;
-            }
-        }
-        
-        @media (max-width: 480px) {
-            .container {
-                padding: 0 16px;
-            }
-            
-            .header .container {
-                gap: 15px;
-            }
-            
-            .logo img {
-                height: 42px;
-            }
-            
-            .logo-text {
-                font-size: 20px;
-            }
-            
-            .contact-info a {
-                padding: 8px 16px;
-                font-size: 15px;
-            }
-            
-            .page-title {
-                font-size: 1.8rem;
-            }
-            
-            .page-subtitle {
-                font-size: 1rem;
-            }
-            
-            .time-unit {
-                min-width: 50px;
-            }
-            
-            .time-value {
-                min-width: 40px;
-            }
-            
-            .timer-label {
-                font-size: 15px;
-            }
-            
-            .quantity-btn {
-                width: 40px;
-                height: 40px;
-                font-size: 19px;
-            }
-            
-            .quantity-value {
-                width: 65px;
-                font-size: 20px;
-            }
-            
-            .total-price {
-                padding: 16px;
-                font-size: 20px;
-            }
-            
-            .footer-links {
-                gap: 20px;
-            }
-        }
+        @media (max-width: 992px) { .preorders-grid { grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 30px; } .steps-container { grid-template-columns: repeat(2, 1fr); } .step:nth-child(2)::after { display: none; } }
+        @media (max-width: 768px) { .header .container { justify-content: center; gap: 20px; } .page-title { font-size: 2.1rem; } .page-subtitle { font-size: 1.1rem; margin-bottom: 30px; } .steps-container { grid-template-columns: 1fr; gap: 16px; } .step { display: flex; text-align: left; align-items: center; gap: 16px; padding: 16px; background: rgba(0,0,0,0.2); } .step::after { display: none; } .step-icon { font-size: 28px; margin-bottom: 0; } .step-content { flex: 1; } .preorders-grid { grid-template-columns: 1fr; gap: 30px; } .filter-section { padding: 20px; } .filter-input { padding: 15px 20px; font-size: 16px; } .timer-display { font-size: 22px; } .time-unit { min-width: 55px; } .time-value { min-width: 45px; padding: 8px; } .preorder-btn, .copy-btn { padding: 18px; font-size: 18px; } .product-title { font-size: 20px; } .quantity-btn { width: 44px; height: 44px; font-size: 20px; } .quantity-value { width: 70px; font-size: 22px; } .pharmacom-calculator-table thead { display: none; } .pharmacom-calculator-table tr { display: block; margin-bottom: 20px; border: 1px solid var(--border-color); border-radius: var(--border-radius-sm); padding: 10px; } .pharmacom-calculator-table td { display: flex; justify-content: space-between; align-items: center; padding: 10px 5px; border-bottom: none; } .pharmacom-calculator-table td::before { content: attr(data-label); font-weight: 600; color: var(--text-muted); } .pharmacom-calculator-table .quantity-btn { width: 40px; height: 40px; } }
+        @media (max-width: 480px) { .container { padding: 0 16px; } .header .container { gap: 15px; } .logo img { height: 42px; } .logo-text { font-size: 20px; } .contact-info a { padding: 8px 16px; font-size: 15px; } .page-title { font-size: 1.8rem; } .page-subtitle { font-size: 1rem; } .time-unit { min-width: auto; flex-grow: 1;} .time-value { min-width: 40px; font-size: 22px; } .timer-label { font-size: 13px; } .quantity-btn { width: 40px; height: 40px; font-size: 19px; } .quantity-value { width: 65px; font-size: 20px; } .total-price { padding: 16px; font-size: 20px; } .card-actions { flex-direction: column; } .copy-btn { width: 100%; } .pharmacom-calculator-table .quantity-selector { gap: 5px; } .pharmacom-calculator-table .quantity-btn { width: 38px; height: 38px; font-size: 16px; } .pharmacom-calculator-table .quantity-value { width: 50px; font-size: 16px; }}
     </style>
     
     <link rel="preload" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap&subset=cyrillic" as="style" onload="this.onload=null;this.rel='stylesheet'">
@@ -1102,13 +173,7 @@
     <header class="header">
         <div class="container">
             <a href="index.html" class="logo" aria-label="На главную Nefarma">
-                <img 
-                    src="logo.webp" 
-                    alt="Nefarma Logo" 
-                    width="180" 
-                    height="45"
-                    loading="eager"
-                >
+                <img src="logo.webp" alt="Nefarma Logo" width="180" height="45" loading="eager">
             </a>
             <div class="contact-info">
                 <a href="tel:+77780990459">
@@ -1120,7 +185,7 @@
 
     <main class="main-content">
         <div class="container">
-            <h1 class="page-title">Предзаказ фармацевтики</h1>
+            <h1 class="page-title">Предзаказ фармы в Казахстане</h1>
             <p class="page-subtitle">Закажите необходимые препараты по специальным ценам до окончания срока предзаказа. Гарантированная поставка и лучшие цены.</p>
             
             <section class="how-it-works-section">
@@ -1151,7 +216,7 @@
                         <div class="step-icon"><i class="fas fa-shipping-fast"></i></div>
                          <div class="step-content">
                             <div class="step-number">Шаг 4</div>
-                            <div class="step-description">Получите ваш заказ после завершения периода предзаказа.</div>
+                            <div class="step-description">Вы получите заказ в указанные сроки.</div>
                         </div>
                     </div>
                 </div>
@@ -1160,13 +225,7 @@
             <div class="preorders-container" id="app">
                 <div class="filter-section">
                     <div class="filter-wrapper">
-                        <input 
-                            type="text" 
-                            class="filter-input" 
-                            id="filterInput" 
-                            placeholder="Поиск по названию товара..." 
-                            aria-label="Поиск товаров"
-                        />
+                        <input type="text" class="filter-input" id="filterInput" placeholder="Поиск по названию товара..." aria-label="Поиск товаров"/>
                         <button class="clear-filter" id="clearFilter" aria-label="Очистить поиск">
                             <i class="fas fa-times"></i>
                         </button>
@@ -1181,12 +240,15 @@
                 <div>Загружаем список предзаказов...</div>
             </div>
 
-            <section class="coming-soon-section">
-                <div class="coming-soon-icon">
-                    <i class="fas fa-flask"></i>
-                </div>
-                <h3 class="coming-soon-title">Новые товары уже в пути!</h3>
-                <p class="coming-soon-text">Мы постоянно работаем над расширением ассортимента. Следите за обновлениями, чтобы не пропустить выгодные предложения по предзаказу.</p>
+            <section class="pharmacom-section" id="pharmacomApp" style="display: none;">
+                <h2 class="section-title">Предзаказ продукции PHARMACOM LABS</h2>
+                <p class="page-subtitle" style="margin-bottom: 20px;">Соберите корзину и получите скидку в зависимости от общей суммы заказа. Минимальная сумма для предзаказа — 50 000 ₸.</p>
+                
+                <div id="pharmacomCalculator">
+                    </div>
+                
+                <div id="pharmacomSummary" class="pharmacom-summary">
+                    </div>
             </section>
             </div>
     </main>
@@ -1199,7 +261,7 @@
                     <div class="condition-icon"><i class="fas fa-credit-card"></i></div>
                     <div class="condition-text">
                         <strong>Предоплата</strong>
-                        <span>Для подтверждения предзаказа требуется полная или частичная предоплата. Детали уточнит менеджер при оформлении заказа.</span>
+                        <span>Для подтверждения предзаказа требуется 100% предоплата.</span>
                     </div>
                 </li>
                 <li>
@@ -1213,12 +275,20 @@
                     <div class="condition-icon"><i class="fas fa-box-open"></i></div>
                     <div class="condition-text">
                         <strong>Если товара не будет в наличии</strong>
-                        <span>В редких случаях поставка может быть отменена. Мы немедленно сообщим вам об этом и вернем полную сумму предоплаты.</span>
+                        <span>В редких случаях поставка может быть отменена. Мы немедленно сообщим вам об этом и вернем полную сумму предоплаты либо предложим альтернативу.</span>
+                    </div>
+                </li>
+                <li>
+                    <div class="condition-icon"><i class="fas fa-undo"></i></div>
+                    <div class="condition-text">
+                        <strong>Возврат и отмена</strong>
+                        <span>Возврат денег и отмена предзаказа возможны в любое время. Возврат денежных средства будет осуществлен в течении 48 часов.</span>
                     </div>
                 </li>
             </ul>
         </div>
     </section>
+
     <footer class="footer">
         <div class="container">
             <div class="footer-content">
@@ -1243,13 +313,18 @@
     document.addEventListener('DOMContentLoaded', () => {
         const app = {
             config: {
-                csvPath: "https://docs.google.com/spreadsheets/d/e/2PACX-1vSfesuKmj4PFzrZsFb6SvKC_ALaV0h5303QNPLagg5nRRA67orVMglsabqpNn7JXzND7YU2ll_2-Sq1/pub?gid=1090655748&single=true&output=csv",
+                individualPreorderCsvPath: "https://docs.google.com/spreadsheets/d/e/2PACX-1vQrt-3Zzbl-WCVOa_owT0fSjKpzDyzBO0UBtFqPHfqRAiQ29uq9OqhqScNclh1zMI6dWRBFKez7pC1y/pub?gid=2024297683&single=true&output=csv",
+                // !!! ВАЖНО: Замените эту ссылку на вашу новую опубликованную Google Таблицу !!!
+                pharmacomCsvPath: "https://docs.google.com/spreadsheets/d/e/2PACX-1vQErW5azg8oxig8j_Jf5-shLlojbKvRWnezDfNSO7hRjIpZqsUFVWbCQmjjgdSa6k7GZ78lAFORZf8O/pub?gid=213278967&single=true&output=csv",
                 whatsAppPhone: "77780990459",
-                cacheKey: 'preordersDataCache_v2',
-                cacheDuration: 5 * 60 * 1000
+                cacheKey: 'preordersDataCache_v4',
+                cacheDuration: 5 * 60 * 1000,
+                pharmacomMinOrder: 50000
             },
             state: {
                 preorders: [],
+                pharmacomProducts: [],
+                pharmacomCart: {},
                 filter: '',
                 usingCachedData: false,
                 lastCacheUpdate: null,
@@ -1266,10 +341,13 @@
                 cacheInfoEl: document.getElementById("cacheInfo"),
                 cacheText: document.getElementById("cacheText"),
                 cacheIndicator: document.getElementById("cacheIndicator"),
-                resultsCount: document.getElementById("resultsCount")
+                resultsCount: document.getElementById("resultsCount"),
+                pharmacomApp: document.getElementById('pharmacomApp'),
+                pharmacomCalculator: document.getElementById('pharmacomCalculator'),
+                pharmacomSummary: document.getElementById('pharmacomSummary'),
             },
             init() {
-                this.loadData();
+                this.loadAllData();
                 this.setupEventListeners();
             },
 
@@ -1291,114 +369,104 @@
                 
                 this.elements.preordersGrid.addEventListener('click', this.handleCardClick.bind(this));
                 this.elements.preordersGrid.addEventListener('input', this.handleQuantityInput.bind(this));
+                
+                this.elements.pharmacomCalculator.addEventListener('input', this.handlePharmacomQuantityChange.bind(this));
+                this.elements.pharmacomCalculator.addEventListener('click', this.handlePharmacomButtonClick.bind(this));
+                this.elements.pharmacomSummary.addEventListener('click', this.handlePharmacomOrderClick.bind(this));
             },
-            
-            handleQuantityInput(e) {
-                if (e.target.classList.contains('quantity-value')) {
-                    const input = e.target;
-                    const card = input.closest('.preorder-card');
-                    const preorderId = card.dataset.id;
-                    const preorder = this.state.preorders.find(p => p.id === preorderId);
-                    
-                    if (!preorder) return;
-                    
-                    let quantity = parseInt(input.value) || preorder.minOrder;
-                    quantity = Math.max(preorder.minOrder, Math.min(quantity, 99));
-                    input.value = quantity;
-                    
-                    this.updateTotalPrice(card, preorder, quantity);
+
+            async loadAllData() {
+                const cachedData = this.getCachedData();
+                if (cachedData && this.isCacheValid(cachedData)) {
+                    this.state.preorders = cachedData.data.preorders;
+                    this.state.pharmacomProducts = cachedData.data.pharmacomProducts;
+                    this.state.usingCachedData = true;
+                    this.state.lastCacheUpdate = cachedData.timestamp;
+                    this.displayApp();
+                    this.showToast("Показаны данные из кэша", 'warning');
                 }
-            },
 
-            async loadData() {
                 try {
-                    const cachedData = this.getCachedData();
-                    if (cachedData && this.isCacheValid(cachedData)) {
-                        this.state.preorders = cachedData.data;
-                        this.state.usingCachedData = true;
-                        this.state.lastCacheUpdate = cachedData.timestamp;
-                        this.displayApp();
-                    }
+                    const [individualResponse, pharmacomResponse] = await Promise.all([
+                        fetch(this.config.individualPreorderCsvPath, { cache: "no-store" }),
+                        fetch(this.config.pharmacomCsvPath, { cache: "no-store" })
+                    ]);
 
-                    const response = await fetch(this.config.csvPath, { cache: "no-store" });
-                    if (!response.ok) throw new Error(`Ошибка сети: ${response.status}`);
-                    const csvText = await response.text();
+                    if (!individualResponse.ok) throw new Error(`Ошибка загрузки поштучных предзаказов: ${individualResponse.status}`);
+                    if (!pharmacomResponse.ok) throw new Error(`Ошибка загрузки каталога Pharmacom: ${pharmacomResponse.status}`);
+
+                    const individualCsv = await individualResponse.text();
+                    const pharmacomCsv = await pharmacomResponse.text();
+
+                    const individualData = await this.parseCsvPromise(individualCsv);
+                    const pharmacomData = await this.parseCsvPromise(pharmacomCsv);
                     
-                    this.parseCSV(csvText);
+                    this.state.preorders = individualData.data
+                        .filter(row => row.product_id && row.product_name)
+                        .map(p => this.processPreorder(p));
+                    
+                    // --- ИЗМЕНЕНИЕ ЗДЕСЬ ---
+                    // Добавлена проверка на `row.availability`. 
+                    // Товар будет показан, если колонка пуста ИЛИ ее значение не равно "нет".
+                    this.state.pharmacomProducts = pharmacomData.data
+                        .filter(row => row.product_name && row.price && (!row.availability || row.availability.toLowerCase() !== 'нет'))
+                        .map((p, index) => ({ id: `pharma-${index}`, name: p.product_name, price: parseInt(p.price) || 0 }));
+
+                    this.saveDataToCache({ preorders: this.state.preorders, pharmacomProducts: this.state.pharmacomProducts });
+                    this.state.usingCachedData = false;
+                    this.state.lastCacheUpdate = Date.now();
+                    this.displayApp();
+
                 } catch (error) {
                     console.error("Не удалось загрузить данные:", error);
-                    this.handleDataLoadError();
+                    if (!this.state.preorders.length && !this.state.pharmacomProducts.length) {
+                         this.handleDataLoadError();
+                    }
                 }
             },
             
-            parseCSV(csvText) {
-                Papa.parse(csvText, {
-                    header: true,
-                    skipEmptyLines: true,
-                    complete: (results) => {
-                        const freshPreorders = results.data
-                            .filter(row => row.product_id && row.product_name)
-                            .map(preorder => this.processPreorder(preorder));
-                        
-                        this.state.preorders = freshPreorders;
-                        this.saveDataToCache(freshPreorders);
-                        this.state.usingCachedData = false;
-                        this.state.lastCacheUpdate = Date.now();
-                        this.displayApp();
-                    },
-                    error: (err) => { 
-                        throw new Error("Ошибка обработки CSV: " + err.message); 
-                    }
+            parseCsvPromise(csvText) {
+                return new Promise((resolve, reject) => {
+                    Papa.parse(csvText, {
+                        header: true,
+                        skipEmptyLines: true,
+                        complete: resolve,
+                        error: (err) => reject(new Error("Ошибка обработки CSV: " + err.message))
+                    });
                 });
             },
-            
+
             handleDataLoadError() {
-                if (!this.state.preorders.length) {
-                    const cachedData = this.getCachedData();
-                    if (cachedData) {
-                        this.showToast("Не удалось обновить, показаны сохраненные данные", 'warning');
-                        this.state.preorders = cachedData.data;
-                        this.state.usingCachedData = true;
-                        this.state.lastCacheUpdate = cachedData.timestamp;
-                        this.displayApp();
-                    } else {
-                        this.elements.loader.innerHTML = `
-                            <div class="no-results">
-                                <div class="no-results-icon">
-                                    <i class="fas fa-exclamation-triangle"></i>
-                                </div>
-                                <p>Ошибка загрузки данных. Проверьте подключение к интернету.</p>
-                                <button class="preorder-btn" onclick="location.reload()" style="margin-top: 20px;">
-                                    <i class="fas fa-sync-alt"></i> Повторить попытку
-                                </button>
-                            </div>`;
-                        this.showToast("Ошибка загрузки данных", 'error');
-                    }
-                }
+                this.elements.loader.innerHTML = `
+                    <div class="no-results">
+                        <div class="no-results-icon"><i class="fas fa-exclamation-triangle"></i></div>
+                        <p>Ошибка загрузки данных. Проверьте подключение к интернету.</p>
+                        <button class="preorder-btn" onclick="location.reload()" style="margin-top: 20px;">
+                            <i class="fas fa-sync-alt"></i> Повторить попытку
+                        </button>
+                    </div>`;
+                this.showToast("Ошибка загрузки данных", 'error');
             },
 
             displayApp() {
                 this.elements.loader.style.display = 'none';
-                this.elements.appContainer.style.display = 'block';
-                this.renderPreorders();
+                if(this.state.preorders.length > 0) {
+                    this.elements.appContainer.style.display = 'block';
+                    this.renderPreorders();
+                }
+                if(this.state.pharmacomProducts.length > 0) {
+                    this.elements.pharmacomApp.style.display = 'block';
+                    this.renderPharmacomCalculator();
+                }
                 this.updateCacheInfo();
-                
                 if (!this.cacheUpdateInterval) {
-                    this.cacheUpdateInterval = setInterval(
-                        this.updateCacheInfo.bind(this), 
-                        60000
-                    );
+                    this.cacheUpdateInterval = setInterval(() => this.updateCacheInfo(), 60000);
                 }
             },
 
             getCachedData() {
                 const cache = localStorage.getItem(this.config.cacheKey);
-                if (!cache) return null;
-                try { 
-                    return JSON.parse(cache); 
-                } catch (e) { 
-                    return null; 
-                }
+                try { return JSON.parse(cache); } catch (e) { return null; }
             },
 
             isCacheValid(cachedData) {
@@ -1406,11 +474,7 @@
             },
 
             saveDataToCache(data) {
-                const cache = { 
-                    timestamp: Date.now(), 
-                    data: data 
-                };
-                localStorage.setItem(this.config.cacheKey, JSON.stringify(cache));
+                localStorage.setItem(this.config.cacheKey, JSON.stringify({ timestamp: Date.now(), data }));
             },
 
             updateCacheInfo() {
@@ -1418,110 +482,52 @@
                     this.elements.cacheInfoEl.style.display = 'none';
                     return;
                 }
-                
                 const minutes = Math.floor((Date.now() - this.state.lastCacheUpdate) / 60000);
                 let statusText = `Обновлено ${minutes > 0 ? minutes + ' мин.' : 'только что'} назад`;
-                
-                if (this.state.usingCachedData) {
-                    statusText += " (кэш)";
-                    this.elements.cacheIndicator.classList.add('cached');
-                } else {
-                    this.elements.cacheIndicator.classList.remove('cached');
-                }
-                
+                this.elements.cacheIndicator.classList.toggle('cached', this.state.usingCachedData);
+                if (this.state.usingCachedData) statusText += " (кэш)";
                 this.elements.cacheText.textContent = statusText;
                 this.elements.cacheInfoEl.style.display = 'flex';
             },
 
             processPreorder(preorder) {
                 return {
-                    id: preorder.product_id,
-                    name: preorder.product_name,
-                    description: preorder.description || '',
-                    endDate: new Date(preorder.end_date),
-                    price1: parseInt(preorder.price_1) || 0,
-                    price3: parseInt(preorder.price_3) || 0,
-                    price10: parseInt(preorder.price_10) || 0,
-                    minOrder: parseInt(preorder.min_order) || 1
+                    id: preorder.product_id, name: preorder.product_name, description: preorder.description || '', endDate: new Date(preorder.end_date), price1: parseInt(preorder.price_1) || 0, price3: parseInt(preorder.price_3) || 0, price10: parseInt(preorder.price_10) || 0, minOrder: parseInt(preorder.min_order) || 1
                 };
             },
 
             renderPreorders() {
                 Object.values(this.state.timers).forEach(timerId => clearInterval(timerId));
                 this.state.timers = {};
-                
                 const fragment = document.createDocumentFragment();
-                const filter = this.state.filter;
-                
-                const filteredPreorders = this.state.preorders
-                    .filter(preorder => preorder.name.toLowerCase().includes(filter));
-                
-                this.elements.resultsCount.textContent = `Найдено товаров: ${filteredPreorders.length}`;
-                
-                if (filteredPreorders.length === 0) {
-                    this.elements.preordersGrid.innerHTML = `
-                        <div class="no-results">
-                            <div class="no-results-icon"><i class="fas fa-search"></i></div>
-                            <p>По вашему запросу ничего не найдено</p>
-                            <button class="preorder-btn" id="resetFilterBtn" style="margin-top: 20px;">
-                                <i class="fas fa-times"></i> Сбросить фильтр
-                            </button>
-                        </div>`;
-                    
-                    document.getElementById('resetFilterBtn')?.addEventListener('click', () => {
-                        this.elements.filterInput.value = '';
-                        this.state.filter = '';
-                        this.renderPreorders();
-                    });
-                    
+                const filtered = this.state.preorders.filter(p => p.name.toLowerCase().includes(this.state.filter));
+                this.elements.resultsCount.textContent = `Найдено товаров: ${filtered.length}`;
+
+                if (filtered.length === 0 && this.state.filter) {
+                    this.elements.preordersGrid.innerHTML = `<div class="no-results"><div class="no-results-icon"><i class="fas fa-search"></i></div><p>По вашему запросу ничего не найдено</p></div>`;
                     return;
                 }
                 
-                filteredPreorders.forEach((preorder, index) => {
+                filtered.forEach((preorder, index) => {
                     const card = document.createElement('div');
                     card.className = 'preorder-card';
                     card.dataset.id = preorder.id;
                     card.style.animationDelay = `${index * 0.05}s`;
-                    
-                    const initialQuantity = preorder.minOrder;
-                    let initialPricePerItem;
-                    if (initialQuantity >= 10 && preorder.price10 > 0) {
-                        initialPricePerItem = Math.round(preorder.price10 / 10);
-                    } else if (initialQuantity >= 3 && preorder.price3 > 0) {
-                        initialPricePerItem = Math.round(preorder.price3 / 3);
-                    } else {
-                        initialPricePerItem = preorder.price1;
-                    }
-                    const initialTotalPrice = initialPricePerItem * initialQuantity;
-                    
+                    const initialTotalPrice = (preorder.price1 || 0) * (preorder.minOrder || 1);
                     card.innerHTML = `
                         <div class="card-content">
                             <h3 class="product-title">${preorder.name}</h3>
                             <p class="product-description">${preorder.description}</p>
-                            
                             <div class="preorder-timer">
                                 <span class="timer-label">До окончания предзаказа:</span>
-                                <div class="timer-display" id="timer-${preorder.id}">
-                                    <div class="badge-container"></div>
-                                </div>
+                                <div class="timer-display" id="timer-${preorder.id}"><div class="badge-container"></div></div>
                             </div>
-                            
                             <div class="pricing-section">
                                 <h4 class="pricing-title">Специальные цены</h4>
-                                ${preorder.price1 > 0 ? `<div class="price-option">
-                                    <span class="quantity"><i class="fas fa-box quantity-icon"></i> 1 шт.</span>
-                                    <span class="price">${preorder.price1.toLocaleString('ru-RU')} ₸</span>
-                                </div>` : ''}
-                                ${preorder.price3 > 0 ? `<div class="price-option">
-                                    <span class="quantity"><i class="fas fa-boxes quantity-icon"></i> от 3 шт.</span>
-                                    <span class="price">${Math.round(preorder.price3/3).toLocaleString('ru-RU')} ₸ <span class="per-item">/шт</span></span>
-                                </div>` : ''}
-                                ${preorder.price10 > 0 ? `<div class="price-option">
-                                    <span class="quantity"><i class="fas fa-pallet quantity-icon"></i> от 10 шт.</span>
-                                    <span class="price">${Math.round(preorder.price10/10).toLocaleString('ru-RU')} ₸ <span class="per-item">/шт</span></span>
-                                </div>` : ''}
+                                ${preorder.price1 > 0 ? `<div class="price-option"><span class="quantity"><i class="fas fa-box quantity-icon"></i> 1 шт.</span><span class="price">${preorder.price1.toLocaleString('ru-RU')} ₸</span></div>` : ''}
+                                ${preorder.price3 > 0 ? `<div class="price-option"><span class="quantity"><i class="fas fa-boxes quantity-icon"></i> от 3 шт.</span><span class="price">${Math.round(preorder.price3/3).toLocaleString('ru-RU')} ₸ <span class="per-item">/шт</span></span></div>` : ''}
+                                ${preorder.price10 > 0 ? `<div class="price-option"><span class="quantity"><i class="fas fa-pallet quantity-icon"></i> от 10 шт.</span><span class="price">${Math.round(preorder.price10/10).toLocaleString('ru-RU')} ₸ <span class="per-item">/шт</span></span></div>` : ''}
                             </div>
-                            
                             <div class="selected-quantity">
                                 <span class="quantity-label"><i class="fas fa-calculator"></i> Количество:</span>
                                 <div class="quantity-selector">
@@ -1530,52 +536,36 @@
                                     <button class="quantity-btn" data-action="increase">+</button>
                                 </div>
                             </div>
-                            
                             <div class="total-price">
                                 <i class="fas fa-wallet"></i> Итого: <span id="total-${preorder.id}">${initialTotalPrice.toLocaleString('ru-RU')} ₸</span>
                             </div>
-                            
-                            <button class="preorder-btn" disabled>
-                                <i class="fas fa-hourglass-half"></i> Загрузка...
-                            </button>
-                        </div>
-                    `;
+                            <div class="card-actions">
+                                <button class="preorder-btn" disabled><i class="fas fa-hourglass-half"></i> Загрузка...</button>
+                                <button class="copy-btn" disabled aria-label="Копировать заказ"><i class="fas fa-copy"></i></button>
+                            </div>
+                        </div>`;
                     fragment.appendChild(card);
                 });
-
                 this.elements.preordersGrid.innerHTML = '';
                 this.elements.preordersGrid.appendChild(fragment);
-                
-                filteredPreorders.forEach(preorder => this.startTimer(preorder));
+                filtered.forEach(preorder => this.startTimer(preorder));
             },
             
             startTimer(preorder) {
-                const now = new Date();
                 const timerEl = document.getElementById(`timer-${preorder.id}`);
-                const card = timerEl ? timerEl.closest('.preorder-card') : null;
-                
+                const card = timerEl?.closest('.preorder-card');
                 if (!card || !preorder.endDate || isNaN(preorder.endDate)) {
                     if (card) {
-                        const btn = card.querySelector('.preorder-btn');
-                        btn.disabled = true;
-                        btn.innerHTML = '<i class="fas fa-times-circle"></i> Загрузка';
+                        card.querySelectorAll('.preorder-btn, .copy-btn').forEach(b => { b.disabled = true; b.innerHTML = '<i class="fas fa-times-circle"></i>'; });
                         if(timerEl) timerEl.innerHTML = '<div class="preorder-ended">Некорректная дата</div>';
                     }
                     return;
                 }
-                
-                if (preorder.endDate - now <= 0) {
-                    if (timerEl) {
-                        timerEl.innerHTML = '<div class="preorder-ended">Предзаказ завершён</div>';
-                    }
-                    const btn = card.querySelector('.preorder-btn');
-                    if (btn) {
-                        btn.disabled = true;
-                        btn.innerHTML = '<i class="fab fa-whatsapp"></i> Предзаказ завершён';
-                    }
+                if (preorder.endDate - new Date() <= 0) {
+                    if (timerEl) timerEl.innerHTML = '<div class="preorder-ended">Предзаказ завершён</div>';
+                    if (card) card.querySelectorAll('.preorder-btn, .copy-btn').forEach(b => { b.disabled = true; b.innerHTML = '<i class="fas fa-check-circle"></i> Завершён'; });
                     return;
                 }
-                
                 this.state.timers[preorder.id] = setInterval(() => this.updateTimer(preorder), 1000);
                 this.updateTimer(preorder);
             },
@@ -1583,194 +573,263 @@
             updateTimer(preorder) {
                 const timerEl = document.getElementById(`timer-${preorder.id}`);
                 if (!timerEl) return;
-                
                 const card = timerEl.closest('.preorder-card');
-                const btn = card ? card.querySelector('.preorder-btn') : null;
-                const badgeContainer = timerEl.querySelector('.badge-container');
-                const now = new Date();
-                const diff = preorder.endDate - now;
+                const diff = preorder.endDate - new Date();
                 
                 if (diff <= 0) {
                     clearInterval(this.state.timers[preorder.id]);
                     timerEl.innerHTML = '<div class="preorder-ended">Предзаказ завершён</div>';
-                    
-                    if (btn) {
-                        btn.disabled = true;
-                        btn.innerHTML = '<i class="fab fa-whatsapp"></i> Предзаказ завершён';
-                    }
+                    if (card) card.querySelectorAll('.preorder-btn, .copy-btn').forEach(b => { b.disabled = true; b.innerHTML = '<i class="fas fa-check-circle"></i> Завершён'; });
                     return;
                 }
                 
-                if (btn && btn.disabled) {
-                    btn.disabled = false;
-                    btn.innerHTML = `<i class="fab fa-whatsapp"></i> Заказать по предзаказу`;
+                if (card) {
+                    card.querySelectorAll('.preorder-btn, .copy-btn').forEach(b => {
+                        if (b.disabled) {
+                            b.disabled = false;
+                            if (b.classList.contains('preorder-btn')) b.innerHTML = `<i class="fab fa-whatsapp"></i> Заказать`;
+                            if (b.classList.contains('copy-btn')) b.innerHTML = `<i class="fas fa-copy"></i>`;
+                        }
+                    });
                 }
 
-                // --- ЛОГИКА ДЛЯ БЕЙДЖА "ОСТАЛОСЬ МАЛО ВРЕМЕНИ" ---
-                if (badgeContainer) {
-                    if (diff < 24 * 60 * 60 * 1000 && diff > 0) {
-                       if (!badgeContainer.querySelector('.ending-soon-badge')) {
-                           badgeContainer.innerHTML = `<div class="ending-soon-badge">Осталось мало времени!</div>`;
-                       }
+                if (timerEl.querySelector('.badge-container')) {
+                    const badgeContainer = timerEl.querySelector('.badge-container');
+                    if (diff < 24 * 60 * 60 * 1000) {
+                       if (!badgeContainer.querySelector('.ending-soon-badge')) badgeContainer.innerHTML = `<div class="ending-soon-badge">Осталось мало времени!</div>`;
                     } else {
                         badgeContainer.innerHTML = '';
                     }
                 }
-                // --- КОНЕЦ ЛОГИКИ БЕЙДЖА ---
                 
-                const days = Math.floor(diff / (1000 * 60 * 60 * 24));
-                const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-                const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
-                const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+                const d = Math.floor(diff / (86400000));
+                const h = Math.floor((diff % 86400000) / 3600000);
+                const m = Math.floor((diff % 3600000) / 60000);
+                const s = Math.floor((diff % 60000) / 1000);
                 
-                // Проверяем, что таймер не содержит другие элементы (как .preorder-ended)
                 if (timerEl.querySelectorAll('.time-unit').length === 0) {
-                    const badgeHTML = badgeContainer ? badgeContainer.innerHTML : '';
-                    timerEl.innerHTML = `
-                        ${badgeHTML}
-                        <div class="time-unit">
-                            <span class="time-value">${days.toString().padStart(2, '0')}</span>
-                            <span class="time-label">дней</span>
-                        </div>
-                        <div class="time-unit">
-                            <span class="time-value">${hours.toString().padStart(2, '0')}</span>
-                            <span class="time-label">часов</span>
-                        </div>
-                        <div class="time-unit">
-                            <span class="time-value">${minutes.toString().padStart(2, '0')}</span>
-                            <span class="time-label">минут</span>
-                        </div>
-                        <div class="time-unit">
-                            <span class="time-value">${seconds.toString().padStart(2, '0')}</span>
-                            <span class="time-label">секунд</span>
-                        </div>`;
+                    timerEl.innerHTML += `
+                        <div class="time-unit"><span class="time-value">${d.toString().padStart(2, '0')}</span><span class="time-label">дней</span></div>
+                        <div class="time-unit"><span class="time-value">${h.toString().padStart(2, '0')}</span><span class="time-label">часов</span></div>
+                        <div class="time-unit"><span class="time-value">${m.toString().padStart(2, '0')}</span><span class="time-label">минут</span></div>
+                        <div class="time-unit"><span class="time-value">${s.toString().padStart(2, '0')}</span><span class="time-label">секунд</span></div>`;
                 } else {
-                    // Обновляем существующие значения
-                    timerEl.querySelector('.time-unit:nth-child(1) .time-value').textContent = days.toString().padStart(2, '0');
-                    timerEl.querySelector('.time-unit:nth-child(2) .time-value').textContent = hours.toString().padStart(2, '0');
-                    timerEl.querySelector('.time-unit:nth-child(3) .time-value').textContent = minutes.toString().padStart(2, '0');
-                    timerEl.querySelector('.time-unit:nth-child(4) .time-value').textContent = seconds.toString().padStart(2, '0');
-                }
-            },
-
-            handleCardClick(event) {
-                const btn = event.target.closest('.quantity-btn');
-                if (btn) {
-                    this.handleQuantityChange(btn);
-                    return;
-                }
-                
-                const orderBtn = event.target.closest('.preorder-btn');
-                if (orderBtn && !orderBtn.disabled) {
-                    this.sendToWhatsApp(orderBtn.closest('.preorder-card'));
+                    timerEl.querySelector('.time-unit:nth-child(2) .time-value').textContent = d.toString().padStart(2, '0');
+                    timerEl.querySelector('.time-unit:nth-child(3) .time-value').textContent = h.toString().padStart(2, '0');
+                    timerEl.querySelector('.time-unit:nth-child(4) .time-value').textContent = m.toString().padStart(2, '0');
+                    timerEl.querySelector('.time-unit:nth-child(5) .time-value').textContent = s.toString().padStart(2, '0');
                 }
             },
             
-            handleQuantityChange(btn) {
-                const card = btn.closest('.preorder-card');
+            getOrderText(card) {
                 const preorderId = card.dataset.id;
                 const preorder = this.state.preorders.find(p => p.id === preorderId);
-                if (!preorder) return;
-                
-                const valueEl = card.querySelector('.quantity-value');
-                let quantity = parseInt(valueEl.value) || preorder.minOrder;
-                
-                if (btn.dataset.action === 'increase') {
-                    quantity = Math.min(quantity + 1, 99);
-                } else if (btn.dataset.action === 'decrease') {
-                    quantity = Math.max(quantity - 1, preorder.minOrder);
-                }
-                
-                valueEl.value = quantity;
-                this.updateTotalPrice(card, preorder, quantity);
-            },
-            
-            updateTotalPrice(card, preorder, quantity) {
-                const totalEl = card.querySelector(`#total-${preorder.id}`);
-                if (!totalEl) return;
-                
-                let pricePerItem;
-                if (quantity >= 10 && preorder.price10 > 0) {
-                    pricePerItem = Math.round(preorder.price10 / 10);
-                } else if (quantity >= 3 && preorder.price3 > 0) {
-                    pricePerItem = Math.round(preorder.price3 / 3);
-                } else {
-                    pricePerItem = preorder.price1;
-                }
-                
-                const totalPrice = pricePerItem * quantity;
-                totalEl.textContent = totalPrice.toLocaleString('ru-RU') + ' ₸';
-            },
-            
-            sendToWhatsApp(card) {
-                const preorderId = card.dataset.id;
-                const preorder = this.state.preorders.find(p => p.id === preorderId);
-                if (!preorder) {
-                    this.showToast("Не удалось найти информацию о товаре", "error");
-                    return;
-                }
-                
-                const quantity = parseInt(card.querySelector('.quantity-value').value) || 1;
-                let pricePerItem;
+                if (!preorder) return null;
+                const quantity = parseInt(card.querySelector('.quantity-value').value);
+                const totalPrice = card.querySelector(`#total-${preorder.id}`).textContent;
+                const pricePerItem = this.calculatePricePerItem(preorder, quantity);
 
-                if (quantity >= 10 && preorder.price10 > 0) {
-                    pricePerItem = Math.round(preorder.price10 / 10);
-                } else if (quantity >= 3 && preorder.price3 > 0) {
-                    pricePerItem = Math.round(preorder.price3 / 3);
-                } else {
-                    pricePerItem = preorder.price1;
-                }
-                const totalPrice = pricePerItem * quantity;
-                
-                const endDate = new Date(preorder.endDate);
-                const formattedDate = endDate.toLocaleDateString('ru-RU', {
-                    day: 'numeric', month: 'long', year: 'numeric'
-                });
-                
                 let orderText = `*Здравствуйте! Хочу оформить предзаказ:*\n\n`;
                 orderText += `*🏷️ Товар:* ${preorder.name}\n`;
                 orderText += `*📦 Количество:* ${quantity} шт.\n`;
                 orderText += `*💰 Цена за штуку:* ${pricePerItem.toLocaleString('ru-RU')} ₸\n`;
-                orderText += `*💳 Итого:* ${totalPrice.toLocaleString('ru-RU')} ₸\n\n`;
-                orderText += `*⏳ Срок окончания предзаказа:* ${formattedDate}`;
+                orderText += `*💳 Итого:* ${totalPrice}\n\n`;
+                orderText += `*⏳ Срок окончания предзаказа:* ${preorder.endDate.toLocaleDateString('ru-RU', { day: 'numeric', month: 'long', year: 'numeric' })}`;
+                return orderText;
+            },
 
-                window.open(
-                    `https://wa.me/${this.config.whatsAppPhone}?text=${encodeURIComponent(orderText)}`, 
-                    "_blank",
-                    "noopener,noreferrer"
-                );
+            sendToWhatsApp(card) {
+                const orderText = this.getOrderText(card);
+                if (!orderText) {
+                    this.showToast("Не удалось найти информацию о товаре", "error");
+                    return;
+                }
+                window.open(`https://wa.me/${this.config.whatsAppPhone}?text=${encodeURIComponent(orderText)}`, "_blank", "noopener,noreferrer");
+                this.showToast("Перенаправляем в WhatsApp...", "success");
+            },
+
+            copyOrderToClipboard(card) {
+                const orderText = this.getOrderText(card);
+                if (!orderText) {
+                    this.showToast("Не удалось найти информацию о товаре", "error");
+                    return;
+                }
+                navigator.clipboard.writeText(orderText).then(() => {
+                    this.showToast("Заказ скопирован!", "success");
+                }, () => {
+                    this.showToast("Ошибка копирования", "error");
+                });
+            },
+            
+            handleCardClick(event) {
+                const btn = event.target.closest('.quantity-btn');
+                if (btn) { this.handleQuantityChange(btn); return; }
+                const orderBtn = event.target.closest('.preorder-btn');
+                if (orderBtn) { this.sendToWhatsApp(orderBtn.closest('.preorder-card')); return; }
+                const copyBtn = event.target.closest('.copy-btn');
+                if (copyBtn) { this.copyOrderToClipboard(copyBtn.closest('.preorder-card')); }
+            },
+            handleQuantityInput(e) {
+                if (e.target.closest('.preorder-card') && e.target.classList.contains('quantity-value')) {
+                    const card = e.target.closest('.preorder-card');
+                    const preorder = this.state.preorders.find(p => p.id === card.dataset.id);
+                    if (!preorder) return;
+                    let quantity = parseInt(e.target.value) || preorder.minOrder;
+                    quantity = Math.max(preorder.minOrder, Math.min(quantity, 99));
+                    e.target.value = quantity;
+                    this.updateTotalPrice(card, preorder, quantity);
+                }
+            },
+            handleQuantityChange(btn) {
+                const card = btn.closest('.preorder-card');
+                const preorder = this.state.preorders.find(p => p.id === card.dataset.id);
+                if (!preorder) return;
+                const valueEl = card.querySelector('.quantity-value');
+                let quantity = parseInt(valueEl.value);
+                quantity += (btn.dataset.action === 'increase' ? 1 : -1);
+                quantity = Math.max(preorder.minOrder, Math.min(quantity, 99));
+                valueEl.value = quantity;
+                this.updateTotalPrice(card, preorder, quantity);
+            },
+            calculatePricePerItem(preorder, quantity) {
+                if (quantity >= 10 && preorder.price10 > 0) return Math.round(preorder.price10 / 10);
+                if (quantity >= 3 && preorder.price3 > 0) return Math.round(preorder.price3 / 3);
+                return preorder.price1;
+            },
+            updateTotalPrice(card, preorder, quantity) {
+                const totalEl = card.querySelector(`#total-${preorder.id}`);
+                const pricePerItem = this.calculatePricePerItem(preorder, quantity);
+                totalEl.textContent = (pricePerItem * quantity).toLocaleString('ru-RU') + ' ₸';
+            },
+
+            renderPharmacomCalculator() {
+                const table = document.createElement('table');
+                table.className = 'pharmacom-calculator-table';
+                table.innerHTML = `
+                    <thead><tr><th>Название товара</th><th>Цена</th><th style="text-align:right;">Количество</th></tr></thead>
+                    <tbody>
+                        ${this.state.pharmacomProducts.map(p => `
+                            <tr>
+                                <td data-label="Товар">${p.name}</td>
+                                <td data-label="Цена">${p.price.toLocaleString('ru-RU')} ₸</td>
+                                <td data-label="Количество">
+                                    <div class="quantity-selector">
+                                        <button class="quantity-btn pharma-quantity-btn" data-action="decrease" data-id="${p.id}">-</button>
+                                        <input type="number" class="quantity-value" value="0" min="0" max="99" data-id="${p.id}" placeholder="0">
+                                        <button class="quantity-btn pharma-quantity-btn" data-action="increase" data-id="${p.id}">+</button>
+                                    </div>
+                                </td>
+                            </tr>
+                        `).join('')}
+                    </tbody>`;
+                this.elements.pharmacomCalculator.innerHTML = '';
+                this.elements.pharmacomCalculator.appendChild(table);
+                this.updatePharmacomSummary();
+            },
+            handlePharmacomButtonClick(e) {
+                const btn = e.target.closest('.pharma-quantity-btn');
+                if (!btn) return;
+
+                const id = btn.dataset.id;
+                const input = this.elements.pharmacomCalculator.querySelector(`.quantity-value[data-id="${id}"]`);
+                if (!input) return;
+
+                let quantity = parseInt(input.value) || 0;
+                quantity += (btn.dataset.action === 'increase' ? 1 : -1);
+                quantity = Math.max(0, Math.min(quantity, 99));
+                input.value = quantity;
+                input.dispatchEvent(new Event('input', { bubbles: true }));
+            },
+            handlePharmacomQuantityChange(e) {
+                if (e.target.classList.contains('quantity-value') && e.target.closest('.pharmacom-calculator-table')) {
+                    const id = e.target.dataset.id;
+                    const quantity = parseInt(e.target.value) || 0;
+                    if (quantity > 0) {
+                        this.state.pharmacomCart[id] = quantity;
+                    } else {
+                        delete this.state.pharmacomCart[id];
+                    }
+                    this.updatePharmacomSummary();
+                }
+            },
+            updatePharmacomSummary() {
+                let rawTotal = 0;
+                for (const [id, quantity] of Object.entries(this.state.pharmacomCart)) {
+                    const product = this.state.pharmacomProducts.find(p => p.id === id);
+                    if (product) rawTotal += product.price * quantity;
+                }
+
+                let discountPercent = 0;
+                if (rawTotal >= 300000) discountPercent = 15;
+                else if (rawTotal >= 150000) discountPercent = 10;
+                else if (rawTotal >= this.config.pharmacomMinOrder) discountPercent = 5;
                 
-                this.showToast("Заказ отправлен в WhatsApp!", "success");
+                const discountAmount = (rawTotal * discountPercent) / 100;
+                const finalTotal = rawTotal - discountAmount;
+                const canOrder = rawTotal >= this.config.pharmacomMinOrder;
+
+                this.elements.pharmacomSummary.innerHTML = `
+                    <div class="summary-row">
+                        <strong>Сумма без скидки:</strong>
+                        <span class="total-raw-price">${rawTotal.toLocaleString('ru-RU')} ₸</span>
+                    </div>
+                    <div class="summary-row">
+                        <strong>Скидка (${discountPercent}%):</strong>
+                        <span class="discount-amount">-${discountAmount.toLocaleString('ru-RU')} ₸</span>
+                    </div>
+                    <div class="summary-row">
+                        <strong>Итого к оплате:</strong>
+                        <span class="final-price">${finalTotal.toLocaleString('ru-RU')} ₸</span>
+                    </div>
+                    ${!canOrder && rawTotal > 0 ? `<div class="min-order-notice">Минимальная сумма предзаказа от ${this.config.pharmacomMinOrder.toLocaleString('ru-RU')} ₸</div>` : ''}
+                    <button class="preorder-btn" id="pharmacomOrderBtn" ${!canOrder ? 'disabled' : ''} style="margin-top: 20px; width: 100%;">
+                        <i class="fab fa-whatsapp"></i> Оформить заказ
+                    </button>`;
+            },
+            handlePharmacomOrderClick(e) {
+                if(e.target.id === 'pharmacomOrderBtn' && !e.target.disabled) {
+                    this.sendPharmacomOrder();
+                }
+            },
+            sendPharmacomOrder() {
+                let orderText = `*Здравствуйте! Хочу оформить предзаказ на продукцию Pharmacom Labs:*\n`;
+                let rawTotal = 0;
+                
+                for (const [id, quantity] of Object.entries(this.state.pharmacomCart)) {
+                    const product = this.state.pharmacomProducts.find(p => p.id === id);
+                    if (product) {
+                        orderText += `\n- *${product.name}*: ${quantity} шт.`;
+                        rawTotal += product.price * quantity;
+                    }
+                }
+
+                let discountPercent = 0;
+                if (rawTotal >= 300000) discountPercent = 15;
+                else if (rawTotal >= 150000) discountPercent = 10;
+                else if (rawTotal >= this.config.pharmacomMinOrder) discountPercent = 5;
+
+                const discountAmount = (rawTotal * discountPercent) / 100;
+                const finalTotal = rawTotal - discountAmount;
+
+                orderText += `\n\n*Сумма без скидки:* ${rawTotal.toLocaleString('ru-RU')} ₸`;
+                orderText += `\n*Скидка (${discountPercent}%):* -${discountAmount.toLocaleString('ru-RU')} ₸`;
+                orderText += `\n*Итого к оплате:* *${finalTotal.toLocaleString('ru-RU')} ₸*`;
+                
+                window.open(`https://wa.me/${this.config.whatsAppPhone}?text=${encodeURIComponent(orderText)}`, "_blank", "noopener,noreferrer");
             },
 
             showToast(message, type = 'normal') {
                 const el = this.elements.toastEl;
                 el.className = 'toast-notification';
-                
                 let icon = '<i class="fas fa-info-circle" aria-hidden="true"></i>';
-                
-                if (type === 'success') { 
-                    icon = '<i class="fas fa-check-circle" aria-hidden="true"></i>'; 
-                    el.classList.add('success');
-                }
-                else if (type === 'error') { 
-                    icon = '<i class="fas fa-exclamation-circle" aria-hidden="true"></i>'; 
-                    el.classList.add('error');
-                }
-                else if (type === 'warning') { 
-                    icon = '<i class="fas fa-exclamation-triangle" aria-hidden="true"></i>'; 
-                    el.classList.add('warning');
-                }
-                
+                if (type === 'success') { icon = '<i class="fas fa-check-circle" aria-hidden="true"></i>'; el.classList.add('success'); }
+                else if (type === 'error') { icon = '<i class="fas fa-exclamation-circle" aria-hidden="true"></i>'; el.classList.add('error'); }
+                else if (type === 'warning') { icon = '<i class="fas fa-exclamation-triangle" aria-hidden="true"></i>'; el.classList.add('warning'); }
                 el.innerHTML = `${icon} <span>${message}</span>`;
                 el.classList.add('show');
-                
-                setTimeout(() => {
-                    el.classList.remove('show');
-                }, 3000);
+                setTimeout(() => { el.classList.remove('show'); }, 3000);
             }
         };
-        
         app.init();
     });
     </script>
