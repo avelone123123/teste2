@@ -582,14 +582,14 @@
                 if (!timerEl) return;
                 const card = timerEl.closest('.preorder-card');
                 const diff = preorder.endDate - new Date();
-                
+
                 if (diff <= 0) {
                     clearInterval(this.state.timers[preorder.id]);
                     timerEl.innerHTML = '<div class="preorder-ended">Предзаказ завершён</div>';
                     if (card) card.querySelectorAll('.preorder-btn, .copy-btn').forEach(b => { b.disabled = true; b.innerHTML = '<i class="fas fa-check-circle"></i> Завершён'; });
                     return;
                 }
-                
+
                 if (card) {
                     card.querySelectorAll('.preorder-btn, .copy-btn').forEach(b => {
                         if (b.disabled) {
@@ -600,8 +600,8 @@
                     });
                 }
 
-                if (timerEl.querySelector('.badge-container')) {
-                    const badgeContainer = timerEl.querySelector('.badge-container');
+                const badgeContainer = timerEl.querySelector('.badge-container');
+                if (badgeContainer) {
                     if (diff < 24 * 60 * 60 * 1000) {
                        if (!badgeContainer.querySelector('.ending-soon-badge')) badgeContainer.innerHTML = `<div class="ending-soon-badge">Осталось мало времени!</div>`;
                     } else {
@@ -614,17 +614,20 @@
                 const m = Math.floor((diff % 3600000) / 60000);
                 const s = Math.floor((diff % 60000) / 1000);
                 
+                // ОПТИМИЗАЦИЯ: Вместо перерисовки всего блока, обновляем только текст
                 if (timerEl.querySelectorAll('.time-unit').length === 0) {
+                    // Первоначальная отрисовка, если таймера еще нет
                     timerEl.innerHTML += `
-                        <div class="time-unit"><span class="time-value">${d.toString().padStart(2, '0')}</span><span class="time-label">дней</span></div>
-                        <div class="time-unit"><span class="time-value">${h.toString().padStart(2, '0')}</span><span class="time-label">часов</span></div>
-                        <div class="time-unit"><span class="time-value">${m.toString().padStart(2, '0')}</span><span class="time-label">минут</span></div>
-                        <div class="time-unit"><span class="time-value">${s.toString().padStart(2, '0')}</span><span class="time-label">секунд</span></div>`;
+                        <div class="time-unit" data-unit="days"><span class="time-value">${d.toString().padStart(2, '0')}</span><span class="time-label">дней</span></div>
+                        <div class="time-unit" data-unit="hours"><span class="time-value">${h.toString().padStart(2, '0')}</span><span class="time-label">часов</span></div>
+                        <div class="time-unit" data-unit="minutes"><span class="time-value">${m.toString().padStart(2, '0')}</span><span class="time-label">минут</span></div>
+                        <div class="time-unit" data-unit="seconds"><span class="time-value">${s.toString().padStart(2, '0')}</span><span class="time-label">секунд</span></div>`;
                 } else {
-                    timerEl.querySelector('.time-unit:nth-child(2) .time-value').textContent = d.toString().padStart(2, '0');
-                    timerEl.querySelector('.time-unit:nth-child(3) .time-value').textContent = h.toString().padStart(2, '0');
-                    timerEl.querySelector('.time-unit:nth-child(4) .time-value').textContent = m.toString().padStart(2, '0');
-                    timerEl.querySelector('.time-unit:nth-child(5) .time-value').textContent = s.toString().padStart(2, '0');
+                    // Быстрое обновление только текста цифр
+                    timerEl.querySelector('[data-unit="days"] .time-value').textContent = d.toString().padStart(2, '0');
+                    timerEl.querySelector('[data-unit="hours"] .time-value').textContent = h.toString().padStart(2, '0');
+                    timerEl.querySelector('[data-unit="minutes"] .time-value').textContent = m.toString().padStart(2, '0');
+                    timerEl.querySelector('[data-unit="seconds"] .time-value').textContent = s.toString().padStart(2, '0');
                 }
             },
             
