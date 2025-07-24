@@ -140,8 +140,8 @@
                     </tr>
                     <tr>
                         <th class="col-name">Препарат</th>
-                        <th class="col-price price-p1-header">до 30000 ₸</th>
-                        <th class="col-price price-p2-header">30000-100000 ₸</th>
+                        <th class="col-price price-p1-header">30000-70000 ₸</th>
+                        <th class="col-price price-p2-header">70000-100000 ₸</th>
                         <th class="col-price price-p3-header">от 100000 ₸ <span class="profitable-tag">Выгодно</span></th>
                         <th class="col-qty">Количество</th>
                         <th class="col-sum">Сумма</th>
@@ -218,12 +218,12 @@
             csvPath: "https://docs.google.com/spreadsheets/d/e/2PACX-1vTXGkztaAik2l3cvEKopR_VGORxIINNdd2p9gBLM4XgY0XdnKQvJlPw632QC3cMSw9Bt61J53Bg0HCq/pub?gid=1678494563&single=true&output=csv",
             whatsAppPhone: "77780990459",
             priceTiers: {
-                tier1: { limit: 0, label: "до 30000 ₸" },
-                tier2: { limit: 30000, label: "30000-100000 ₸" },
+                tier1: { limit: 0, label: "30000-70000 ₸" },
+                tier2: { limit: 70000, label: "70000-100000 ₸" },
                 tier3: { limit: 100000, label: "от 100000 ₸" },
             },
             kaspiMultiplier: 1.1,
-            minOrderAmount: 30000,
+            minOrderAmount: 70000,
             productsCacheKey: 'preorderPharmacomProducts_v2',
             quantitiesCacheKey: 'preorderPharmacomQuantities_v2',
             cacheDuration: 5 * 60 * 1000,
