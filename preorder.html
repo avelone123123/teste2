@@ -2,848 +2,699 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
-    <meta name="description" content="Оформляйте предзаказ на фармацевтическую продукцию в Казахстане по специальным ценам. Гарантированная поставка и скидки на товары от Pharmacom Labs.">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+    <title>Предзаказ Pharmacom</title>
     
-    <title>Предзаказ фармацевтики - Nefarma</title>
-
+    <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link rel="preconnect" href="https://cdnjs.cloudflare.com">
-
+    <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap">
+    <link rel="preload" as="image" href="logo_calc_optimized.webp">
+    
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" media="print" onload="this.media='all'">
+    <noscript>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap">
+    </noscript>
+    
+    <link rel="icon" type="image/x-icon" href="/favicon.ico">
+    
     <style>
-        /* ИЗМЕНЕНИЕ: Добавлены стили для предотвращения смещения макета (CLS) при загрузке иконок */
-        .fas, .fab {
-            width: 1.25em;
-            text-align: center;
-        }
         :root {
-            --bg-color: #0d1117;
-            --surface-color: #161b22;
-            --surface-hover: #21262d;
-            --primary-color: #58a6ff;
-            --primary-gradient: linear-gradient(135deg, #58a6ff, #1f6feb);
-            --primary-hover: #388bfd;
-            --discount-color: #ff7b72;
-            --timer-color: #f0b72f;
-            --success-color: #3fb950;
-            --success-gradient: linear-gradient(135deg, #3fb950, #2ea043);
-            --warning-color: #d29922;
-            --text-color: #f0f6fc;
-            --text-muted: #8b949e;
-            --border-color: #30363d;
+            --bg-color: #1a1a1a;
+            --surface-color: #2c2c2c;
+            --primary-color: #00aaff;
+            --primary-hover-color: #0088cc;
+            --text-color: #f0f0f0;
+            --text-muted-color: #a0a0a0;
+            --border-color: #444;
+            --success-color: #28a745;
+            --warning-color: #ffc107;
+            --highlight-bg: rgba(0, 170, 255, 0.1);
             --font-main: 'Inter', system-ui, -apple-system, sans-serif;
-            --border-radius: 16px;
-            --border-radius-sm: 10px;
-            --shadow: 0 8px 24px rgba(1, 4, 9, 0.5);
-            --shadow-hover: 0 12px 28px rgba(88, 166, 255, 0.2);
-            --transition: all 0.3s cubic-bezier(0.165, 0.84, 0.44, 1);
+            --border-radius: 8px;
+            --shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+            --tag-bestseller-bg: #e74c3c;
+            --tag-new-bg: #2a527a;
+            --tag-low-stock-bg: #8c5a03;
+            --tag-text-color: #ffffff;
         }
-        * { box-sizing: border-box; margin: 0; padding: 0; }
-        body { font-family: var(--font-main); background-color: var(--bg-color); color: var(--text-color); margin: 0; padding: 0; font-size: 16px; line-height: 1.6; min-height: 100vh; display: flex; flex-direction: column; background-image: radial-gradient(circle at 10% 20%, rgba(40, 40, 40, 0.08) 0px, transparent 50%), radial-gradient(circle at 90% 80%, rgba(40, 40, 40, 0.08) 0px, transparent 50%); background-attachment: fixed; }
-        .header { background-color: rgba(13, 17, 23, 0.95); padding: 16px 0; position: sticky; top: 0; z-index: 100; backdrop-filter: blur(12px); border-bottom: 1px solid rgba(48, 54, 61, 0.3); box-shadow: 0 4px 12px rgba(1, 4, 9, 0.3); }
-        .container { max-width: 1300px; margin: 0 auto; padding: 0 24px; }
-        .header .container { display: flex; justify-content: space-between; align-items: center; gap: 24px; flex-wrap: wrap; }
-        .logo { display: flex; align-items: center; gap: 14px; transition: var(--transition); }
-        .logo:hover { transform: translateY(-2px); }
-        .logo img { height: 48px; width: auto; transition: var(--transition); }
-        .logo-text { font-weight: 800; font-size: 22px; background: var(--primary-gradient); -webkit-background-clip: text; background-clip: text; color: transparent; letter-spacing: -0.5px; }
-        .contact-info a { color: var(--text-color); text-decoration: none; display: flex; align-items: center; gap: 10px; padding: 10px 20px; border-radius: 50px; background: rgba(48, 54, 61, 0.4); transition: var(--transition); font-weight: 600; white-space: nowrap; border: 1px solid var(--border-color); box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); }
-        .contact-info a:hover { background: rgba(88, 166, 255, 0.15); transform: translateY(-3px); box-shadow: 0 6px 12px rgba(88, 166, 255, 0.2); border-color: rgba(88, 166, 255, 0.3); }
-        .main-content { flex: 1; padding: 30px 0 60px; }
-        .page-title { text-align: center; margin: 0 0 24px; font-size: 2.5rem; background: var(--primary-gradient); -webkit-background-clip: text; background-clip: text; color: transparent; font-weight: 800; padding: 0 20px; line-height: 1.2; letter-spacing: -0.5px; }
-        .page-subtitle { text-align: center; color: var(--text-muted); max-width: 800px; margin: 0 auto 40px; font-size: 1.2rem; padding: 0 20px; line-height: 1.6; }
-        .how-it-works-section { background: var(--surface-color); border-radius: var(--border-radius); padding: 32px 24px; margin: 0 auto 50px; box-shadow: var(--shadow); border: 1px solid var(--border-color); max-width: 1100px; }
-        .section-title { text-align: center; font-size: 1.8rem; font-weight: 800; color: var(--text-color); margin-bottom: 35px; }
-        .steps-container { display: grid; grid-template-columns: repeat(4, 1fr); gap: 24px; position: relative; }
-        .step { text-align: center; padding: 20px; border-radius: var(--border-radius-sm); transition: var(--transition); position: relative; }
-        .step:not(:last-child)::after { content: ''; position: absolute; top: 40px; right: -12px; transform: translateX(50%); width: 25%; height: 2px; background: repeating-linear-gradient(90deg, var(--border-color), var(--border-color) 4px, transparent 4px, transparent 8px); }
-        .step-icon { font-size: 36px; color: var(--primary-color); margin-bottom: 16px; line-height: 1; }
-        .step-number { font-size: 14px; font-weight: 700; color: var(--text-muted); margin-bottom: 8px; text-transform: uppercase; }
-        .step-description { font-size: 15px; color: var(--text-color); line-height: 1.5; }
-        #loader { text-align: center; padding: 60px 20px; font-size: 18px; color: var(--text-muted); display: flex; flex-direction: column; align-items: center; gap: 30px; min-height: 60vh; justify-content: center; }
-        .loader-spinner { width: 70px; height: 70px; border: 8px solid rgba(255, 255, 255, 0.1); border-radius: 50%; border-top-color: var(--primary-color); animation: spin 1.2s cubic-bezier(0.5, 0, 0.5, 1) infinite; }
+        .icon { width: 16px; height: 16px; margin-right: 6px; vertical-align: middle; }
+        body { font-family: var(--font-main); background-color: var(--bg-color); color: var(--text-color); margin: 0; padding: 15px; font-size: 16px; }
+        .visually-hidden { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0; }
+        .header { background-color: var(--bg-color); padding: 15px 0; margin-bottom: 15px; display: flex; justify-content: space-between; align-items: center; }
+        .header .container { max-width: 1200px; margin: 0 auto; padding: 0 15px; display: flex; justify-content: space-between; align-items: center; width: 100%; }
+        .logo img { height: 40px; width: auto; display: block; }
+        .calculator-container { max-width: 1200px; margin: auto; animation: fadeIn 0.3s ease-in-out; }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        .filter-wrapper { margin: 15px 0; max-width: 100%; display: flex; gap: 10px; flex-wrap: wrap; }
+        .filter-input { flex-grow: 1; padding: 12px 15px; background: var(--surface-color); color: var(--text-color); border: 1px solid var(--border-color); border-radius: var(--border-radius); font-size: 16px; box-sizing: border-box; min-width: 200px; }
+        .filter-input::placeholder { color: var(--text-muted-color); }
+        .table-wrapper { background: var(--surface-color); border-radius: var(--border-radius); box-shadow: var(--shadow); overflow-x: auto; margin-top: 15px; -webkit-overflow-scrolling: touch; }
+        #priceTable { width: 100%; border-collapse: collapse; min-width: 600px; }
+        #priceTable th, #priceTable td { padding: 12px 15px; text-align: left; border-bottom: 1px solid var(--border-color); vertical-align: middle; }
+        #priceTable th { font-weight: 600; color: var(--text-color); font-size: 11px; text-transform: uppercase; letter-spacing: 0.5px; position: sticky; top: 0; background: #3a3a3a; z-index: 1; text-align: center; }
+        .profitable-tag { background-color: var(--tag-bestseller-bg); color: white; font-size: 7px; font-weight: 600; border-radius: 10em; padding: 3px 8px; margin-left: 5px; text-transform: uppercase; vertical-align: middle; transform: rotate(-3deg); display: inline-block; letter-spacing: 0.5px; }
+        #priceTable tbody tr:last-child td { border-bottom: none; }
+        .col-name { width: 45%; display: flex; flex-direction: column; gap: 5px; align-items: flex-start; }
+        .tags-container { display: flex; gap: 5px; flex-wrap: wrap; }
+        .tag { font-size: 9px; font-weight: 600; padding: 2px 7px; border-radius: 9px; color: var(--tag-text-color); text-transform: uppercase; letter-spacing: 0.4px; display: inline-flex; align-items: center; }
+        .tag-bestseller { background-color: var(--tag-bestseller-bg); }
+        .tag-new { background-color: var(--tag-new-bg); }
+        .tag-low-stock { background-color: var(--tag-low-stock-bg); }
+        .category-row { cursor: pointer; user-select: none; }
+        .category-row td { background-color: rgba(0,0,0,0.2); color: var(--text-color); font-size: 15px; font-weight: 600; padding-left: 15px; position: relative; }
+        .category-row td::before { content: '▼'; display: inline-block; margin-right: 8px; font-size: 12px; transition: transform 0.2s ease; }
+        .category-row.collapsed td::before { transform: rotate(-90deg); }
+        .product-row.hidden { display: none; }
+        .col-price { width: 14%; text-align: center; }
+        .col-qty { width: 18%; text-align: center; }
+        .col-sum { width: 15%; text-align: right; font-weight: 500; }
+        .price-highlight { background-color: var(--highlight-bg); color: var(--primary-color); font-weight: 600; border-radius: 4px; padding: 2px 4px; }
+        #priceTable th.price-highlight { background-color: var(--primary-color); color: white; }
+        .quantity-control { display: flex; align-items: center; justify-content: center; gap: 8px; }
+        .quantity-btn { background: var(--border-color); color: var(--text-color); border: none; width: 40px; height: 40px; border-radius: 50%; font-size: 24px; font-weight: bold; cursor: pointer; display: flex; align-items: center; justify-content: center; line-height: 1; }
+        .quantity-btn:hover { background: var(--primary-color); }
+        .quantity-input { width: 45px; height: 40px; text-align: center; background: var(--bg-color); color: var(--text-color); border: 1px solid var(--border-color); border-radius: var(--border-radius); font-size: 16px; font-weight: 500; -moz-appearance: textfield; }
+        .quantity-input::-webkit-outer-spin-button, .quantity-input::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
+        .summary-panel { background: var(--surface-color); border-radius: var(--border-radius); padding: 20px; margin-top: 20px; box-shadow: var(--shadow); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; }
+        .totals { font-size: 14px; line-height: 1.6; flex-grow: 1; width: 100%; }
+        .totals #tier { font-weight: 600; color: var(--primary-color); }
+        .final-total { font-size: 24px; font-weight: 700; }
+        .savings { color: var(--success-color); font-weight: 600; }
+        .kaspi-info { font-size: 12px; color: var(--text-muted-color); margin-top: 5px; }
+        .actions { width: 100%; display: flex; gap: 15px; flex-wrap: wrap; }
+        .action-button { padding: 10px 15px; font-size: 16px; font-weight: 600; border: none; border-radius: var(--border-radius); cursor: pointer; text-align: center; flex-grow: 1; display: flex; align-items: center; justify-content: center; gap: 8px; line-height: 1.2; }
+        .action-button strong { font-size: 16px; }
+        .whatsapp-btn { background-color: var(--success-color); color: white; }
+        .whatsapp-btn:hover { background-color: #218838; }
+        .copy-btn { background-color: var(--tag-bestseller-bg); color: white; }
+        .copy-btn:hover { background-color: #c0392b; }
+        .clear-btn { background-color: var(--warning-color); color: #333; }
+        .clear-btn:hover { background-color: #e0a800; }
+        #loader { text-align: center; padding: 40px; font-size: 16px; color: var(--text-muted-color); display: flex; flex-direction: column; align-items: center; gap: 20px; }
+        .loader-spinner { width: 50px; height: 50px; border: 5px solid rgba(255,255,255,0.1); border-radius: 50%; border-top-color: var(--primary-color); animation: spin 1s linear infinite; }
         @keyframes spin { to { transform: rotate(360deg); } }
-        .preorders-container { max-width: 1300px; margin: auto; display: none; }
-        .filter-section { background: var(--surface-color); border-radius: var(--border-radius); padding: 24px; margin: 0 0 40px; box-shadow: var(--shadow); border: 1px solid var(--border-color); }
-        .filter-wrapper { display: flex; gap: 16px; position: relative; }
-        .filter-input { flex-grow: 1; padding: 16px 24px; background: rgba(22, 27, 34, 0.8); color: var(--text-color); border: 1px solid var(--border-color); border-radius: var(--border-radius); font-size: 17px; transition: var(--transition); font-weight: 500; }
-        .filter-input:focus { outline: none; border-color: var(--primary-color); box-shadow: 0 0 0 4px rgba(88, 166, 255, 0.2); }
-        .filter-input::placeholder { color: var(--text-muted); }
-        .clear-filter { position: absolute; right: 20px; top: 50%; transform: translateY(-50%); background: none; border: none; color: var(--text-muted); cursor: pointer; opacity: 0.7; transition: var(--transition); display: flex; align-items: center; justify-content: center; width: 28px; height: 28px; border-radius: 50%; }
-        .clear-filter:hover { opacity: 1; background: rgba(255, 255, 255, 0.1); color: var(--primary-color); transform: translateY(-50%) scale(1.1); }
-        .results-count { text-align: center; margin: 18px 0 0; font-size: 15px; color: var(--text-muted); }
-        .preorders-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(340px, 1fr)); gap: 35px; }
-        .preorder-card { background: var(--surface-color); border-radius: var(--border-radius); box-shadow: var(--shadow); overflow: hidden; transition: var(--transition); border: 1px solid var(--border-color); display: flex; flex-direction: column; position: relative; transform: translateY(0); will-change: transform, box-shadow; }
-        .preorder-card:hover { transform: translateY(-10px); box-shadow: var(--shadow-hover); border-color: rgba(88, 166, 255, 0.4); }
-        .card-content { padding: 24px; display: flex; flex-direction: column; flex-grow: 1; }
-        .product-title { font-size: 22px; font-weight: 800; margin: 0 0 16px; color: var(--primary-color); text-align: center; line-height: 1.3; }
-        .product-description { font-size: 15px; color: var(--text-muted); line-height: 1.7; margin-bottom: 24px; text-align: center; flex-grow: 1; }
-        .preorder-timer { background: rgba(22, 27, 34, 0.7); border-radius: var(--border-radius-sm); padding: 18px; margin: 0 0 24px; text-align: center; border: 1px solid var(--timer-color); backdrop-filter: blur(5px); box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); }
-        .timer-label { font-size: 16px; color: var(--timer-color); margin-bottom: 14px; display: block; font-weight: 700; }
-        .timer-display { display: flex; justify-content: center; gap: 10px; font-size: 26px; font-weight: 800; color: var(--timer-color); text-shadow: 0 0 10px rgba(240, 183, 47, 0.4); position: relative; }
-        .ending-soon-badge { background-color: var(--warning-color); color: var(--bg-color); font-size: 13px; font-weight: 800; padding: 4px 10px; border-radius: 6px; position: absolute; top: -30px; left: 50%; transform: translateX(-50%); white-space: nowrap; animation: pulse 1.5s infinite; }
-        @keyframes pulse { 0% { box-shadow: 0 0 0 0 rgba(210, 153, 34, 0.7); } 70% { box-shadow: 0 0 0 10px rgba(210, 153, 34, 0); } 100% { box-shadow: 0 0 0 0 rgba(210, 153, 34, 0); } }
-        .time-unit { display: flex; flex-direction: column; align-items: center; min-width: 60px; }
-        .time-value { background: rgba(0, 0, 0, 0.4); padding: 10px; border-radius: 10px; min-width: 50px; text-align: center; font-feature-settings: "tnum"; font-variant-numeric: tabular-nums; position: relative; overflow: hidden; box-shadow: inset 0 0 8px rgba(0, 0, 0, 0.3); }
-        .time-value::after { content: ""; position: absolute; top: 0; left: 0; right: 0; height: 50%; background: rgba(255, 255, 255, 0.05); border-bottom: 1px solid rgba(255, 255, 255, 0.1); }
-        .time-label { font-size: 12px; text-transform: uppercase; margin-top: 8px; opacity: 0.8; letter-spacing: 0.5px; font-weight: 600; }
-        .pricing-section { margin: 0 0 24px; }
-        .pricing-title { font-size: 17px; font-weight: 700; margin-bottom: 18px; color: var(--text-muted); text-align: center; position: relative; padding-bottom: 12px; }
-        .pricing-title::after { content: ""; position: absolute; bottom: 0; left: 50%; transform: translateX(-50%); width: 70px; height: 3px; background: var(--primary-color); border-radius: 3px; }
-        .price-option { display: flex; justify-content: space-between; padding: 14px 0; border-bottom: 1px solid rgba(48, 54, 61, 0.5); transition: var(--transition); }
-        .price-option:hover { background: rgba(48, 54, 61, 0.2); border-radius: var(--border-radius-sm); padding: 14px 12px; }
-        .price-option:last-child { border-bottom: none; }
-        .quantity { color: var(--text-muted); display: flex; align-items: center; gap: 10px; font-size: 16px; }
-        .quantity-icon { color: var(--primary-color); font-size: 16px; }
-        .price { font-weight: 800; color: var(--discount-color); font-size: 20px; display: flex; flex-direction: column; align-items: flex-end; }
-        .per-item { font-size: 13px; color: var(--text-muted); display: block; margin-top: 4px; font-weight: 500; }
-        .selected-quantity { display: flex; flex-direction: column; align-items: center; margin: 24px 0; gap: 16px; }
-        .quantity-label { font-size: 18px; font-weight: 600; display: flex; align-items: center; gap: 10px; }
-        .quantity-selector { display: flex; gap: 10px; align-items: center; }
-        .quantity-btn { background: var(--primary-color); color: white; border: none; width: 48px; height: 48px; border-radius: 50%; font-weight: bold; font-size: 22px; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: var(--transition); box-shadow: 0 5px 15px rgba(88, 166, 255, 0.3); user-select: none; }
-        .quantity-btn:disabled { background: var(--border-color); cursor: not-allowed; opacity: 0.5; box-shadow: none; }
-        .quantity-btn:hover:not(:disabled) { background: var(--primary-hover); transform: scale(1.08); box-shadow: 0 7px 18px rgba(88, 166, 255, 0.4); }
-        .quantity-value { width: 80px; text-align: center; font-weight: 800; font-size: 24px; background: rgba(13, 17, 23, 0.4); border-radius: var(--border-radius-sm); padding: 10px; border: 1px solid var(--border-color); color: var(--text-color); transition: var(--transition); box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.2); -moz-appearance: textfield; }
-        .quantity-value::-webkit-outer-spin-button, .quantity-value::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
-        .quantity-value:focus { outline: none; border-color: var(--primary-color); box-shadow: 0 0 0 4px rgba(88, 166, 255, 0.2), inset 0 0 10px rgba(0, 0, 0, 0.2); }
-        .total-price { background: rgba(13, 17, 23, 0.4); padding: 20px; border-radius: var(--border-radius-sm); margin: 20px 0; text-align: center; font-size: 22px; border: 1px solid var(--primary-color); font-weight: 700; display: flex; justify-content: center; gap: 12px; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); }
-        .total-price span { color: var(--discount-color); font-weight: 900; }
-        .card-actions { display: flex; gap: 10px; margin-top: auto; }
-        .preorder-btn, .copy-btn { color: white; border: none; padding: 20px; width: 100%; border-radius: var(--border-radius-sm); font-size: 19px; font-weight: 700; cursor: pointer; transition: var(--transition); display: flex; align-items: center; justify-content: center; gap: 14px; text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3); position: relative; overflow: hidden; z-index: 1; }
-        .preorder-btn { background: var(--success-gradient); box-shadow: 0 5px 20px rgba(63, 185, 80, 0.3); flex-grow: 1; }
-        .copy-btn { background: var(--primary-gradient); box-shadow: 0 5px 20px rgba(88, 166, 255, 0.3); width: 70px; flex-shrink: 0; font-size: 22px; }
-        .preorder-btn:not(:disabled)::before { content: ""; position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(135deg, rgba(255,255,255,0.1), rgba(255,255,255,0.05)); z-index: -1; transform: translateX(-100%); transition: transform 0.6s cubic-bezier(0.23, 1, 0.32, 1); }
-        .preorder-btn:hover:not(:disabled), .copy-btn:hover:not(:disabled) { transform: translateY(-4px); }
-        .preorder-btn:hover:not(:disabled) { box-shadow: 0 8px 25px rgba(63, 185, 80, 0.4); }
-        .copy-btn:hover:not(:disabled) { box-shadow: 0 8px 25px rgba(88, 166, 255, 0.4); }
-        .preorder-btn:hover:not(:disabled)::before { transform: translateX(0); }
-        .preorder-btn:disabled, .copy-btn:disabled { background: #444; cursor: not-allowed; transform: none; box-shadow: none; opacity: 0.7; }
-        .preorder-ended { background: rgba(255, 123, 114, 0.1); color: var(--discount-color); text-align: center; padding: 16px; border-radius: var(--border-radius-sm); margin: 24px 0; border: 1px solid var(--discount-color); font-weight: 700; font-size: 17px; }
-        .preorder-conditions { padding: 40px 0; margin-top: 60px; border-top: 1px solid var(--border-color); }
-        .conditions-list { max-width: 900px; margin: 0 auto; list-style-type: none; padding-left: 0; }
-        .conditions-list li { display: flex; align-items: flex-start; gap: 20px; padding: 15px 0; }
-        .conditions-list li:not(:last-child) { border-bottom: 1px solid var(--border-color); }
-        .conditions-list .condition-icon { font-size: 22px; color: var(--primary-color); flex-shrink: 0; margin-top: 4px; }
-        .condition-text strong { display: block; font-weight: 700; color: var(--text-color); margin-bottom: 4px; }
-        .condition-text span { color: var(--text-muted); }
-        .toast-notification { position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%) translateY(20px); background-color: var(--primary-color); color: white; padding: 18px 35px; border-radius: var(--border-radius); box-shadow: var(--shadow-hover); z-index: 1002; opacity: 0; visibility: hidden; transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275); display: flex; align-items: center; gap: 14px; font-weight: 600; max-width: 90%; text-align: center; backdrop-filter: blur(10px); border: 1px solid rgba(255, 255, 255, 0.1); }
+        .toast-notification { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); background-color: var(--primary-color); color: white; padding: 12px 25px; border-radius: var(--border-radius); box-shadow: var(--shadow); z-index: 1000; opacity: 0; visibility: hidden; transition: opacity 0.3s ease, transform 0.3s ease; transform: translateX(-50%) translateY(20px); display: flex; align-items: center; gap: 10px; }
+        .toast-notification.warning { background-color: var(--tag-low-stock-bg); }
+        .toast-notification.success { background-color: var(--success-color); }
         .toast-notification.show { opacity: 1; visibility: visible; transform: translateX(-50%) translateY(0); }
-        .toast-notification.error { background-color: #f85149; }
-        .toast-notification.warning { background-color: #e3b341; color: #0d1117; }
-        .toast-notification.success { background-color: #3fb950; }
-        .cache-info { position: fixed; bottom: 20px; right: 20px; font-size: 13px; color: var(--text-muted); background: rgba(13, 17, 23, 0.7); padding: 8px 16px; border-radius: 50px; z-index: 1000; backdrop-filter: blur(8px); border: 1px solid rgba(255, 255, 255, 0.1); display: flex; align-items: center; gap: 10px; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); }
-        .cache-indicator { width: 12px; height: 12px; border-radius: 50%; background: var(--success-color); box-shadow: 0 0 8px var(--success-color); }
-        .cache-indicator.cached { background: var(--warning-color); box-shadow: 0 0 8px var(--warning-color); }
-        .footer { background: var(--surface-color); padding: 40px 0; border-top: 1px solid var(--border-color); margin-top: 60px; }
-        .footer-content { display: flex; flex-direction: column; align-items: center; gap: 24px; text-align: center; }
-        .footer-logo { font-size: 28px; font-weight: 800; background: var(--primary-gradient); -webkit-background-clip: text; background-clip: text; color: transparent; }
-        .footer-contact-btn { background: var(--primary-gradient); color: white; text-decoration: none; padding: 16px 32px; border-radius: 50px; font-size: 18px; font-weight: 700; display: inline-flex; align-items: center; gap: 12px; transition: var(--transition); box-shadow: 0 5px 20px rgba(88, 166, 255, 0.3); }
-        .footer-contact-btn:hover { transform: translateY(-4px); box-shadow: 0 8px 25px rgba(88, 166, 255, 0.4); }
-        .copyright { color: var(--text-muted); font-size: 15px; margin-top: 15px; }
-        .no-results { grid-column: 1 / -1; text-align: center; padding: 60px 20px; color: var(--text-muted); font-size: 19px; }
-        .no-results-icon { font-size: 54px; margin-bottom: 24px; color: var(--border-color); }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
-        .preorder-card, .pharmacom-section { animation: fadeIn 0.6s ease forwards; opacity: 0; }
-        
-        /* PHARMACOM SECTION STYLES */
-        .pharmacom-section { background: var(--surface-color); border-radius: var(--border-radius); padding: 32px 24px; margin: 50px auto 0; box-shadow: var(--shadow); border: 1px solid var(--border-color); max-width: 1100px; }
-        .pharmacom-calculator-table { width: 100%; border-collapse: collapse; margin-top: 25px; }
-        .pharmacom-calculator-table th, .pharmacom-calculator-table td { padding: 15px 5px; text-align: left; border-bottom: 1px solid var(--border-color); vertical-align: middle; }
-        .pharmacom-calculator-table th { color: var(--text-muted); font-weight: 700; font-size: 14px; text-transform: uppercase; }
-        .pharmacom-calculator-table .quantity-selector { justify-content: flex-end; gap: 8px; }
-        .pharmacom-calculator-table .quantity-value { width: 60px; font-size: 18px; padding: 8px; }
-        .pharmacom-calculator-table .quantity-btn { width: 40px; height: 40px; font-size: 18px; box-shadow: none; }
-        .pharmacom-summary { margin-top: 30px; background: rgba(13, 17, 23, 0.6); padding: 25px; border-radius: var(--border-radius); border: 1px solid var(--border-color); }
-        .summary-row { display: flex; justify-content: space-between; align-items: center; font-size: 18px; padding: 12px 0; }
-        .summary-row:not(:last-child) { border-bottom: 1px dashed var(--border-color); }
-        .summary-row strong { font-weight: 700; color: var(--text-color); }
-        .summary-row span { font-weight: 800; }
-        .summary-row .total-raw-price { color: var(--text-muted); text-decoration: line-through; }
-        .summary-row .discount-amount { color: var(--success-color); }
-        .summary-row .final-price { color: var(--discount-color); font-size: 24px; }
-        .min-order-notice { text-align: center; color: var(--warning-color); font-weight: 600; margin-top: 20px; padding: 12px; background: rgba(210, 153, 34, 0.1); border-radius: var(--border-radius-sm); border: 1px solid var(--warning-color); }
-
-        @media (max-width: 992px) { .preorders-grid { grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 30px; } .steps-container { grid-template-columns: repeat(2, 1fr); } .step:nth-child(2)::after { display: none; } }
-        @media (max-width: 768px) { .header .container { justify-content: center; gap: 20px; } .page-title { font-size: 2.1rem; } .page-subtitle { font-size: 1.1rem; margin-bottom: 30px; } .steps-container { grid-template-columns: 1fr; gap: 16px; } .step { display: flex; text-align: left; align-items: center; gap: 16px; padding: 16px; background: rgba(0,0,0,0.2); } .step::after { display: none; } .step-icon { font-size: 28px; margin-bottom: 0; } .step-content { flex: 1; } .preorders-grid { grid-template-columns: 1fr; gap: 30px; } .filter-section { padding: 20px; } .filter-input { padding: 15px 20px; font-size: 16px; } .timer-display { font-size: 22px; } .time-unit { min-width: 55px; } .time-value { min-width: 45px; padding: 8px; } .preorder-btn, .copy-btn { padding: 18px; font-size: 18px; } .product-title { font-size: 20px; } .quantity-btn { width: 44px; height: 44px; font-size: 20px; } .quantity-value { width: 70px; font-size: 22px; } .pharmacom-calculator-table thead { display: none; } .pharmacom-calculator-table tr { display: block; margin-bottom: 20px; border: 1px solid var(--border-color); border-radius: var(--border-radius-sm); padding: 10px; } .pharmacom-calculator-table td { display: flex; justify-content: space-between; align-items: center; padding: 10px 5px; border-bottom: none; } .pharmacom-calculator-table td::before { content: attr(data-label); font-weight: 600; color: var(--text-muted); } .pharmacom-calculator-table .quantity-btn { width: 40px; height: 40px; } }
-        @media (max-width: 480px) { .container { padding: 0 16px; } .header .container { gap: 15px; } .logo img { height: 42px; } .logo-text { font-size: 20px; } .contact-info a { padding: 8px 16px; font-size: 15px; } .page-title { font-size: 1.8rem; } .page-subtitle { font-size: 1rem; } .time-unit { min-width: auto; flex-grow: 1;} .time-value { min-width: 40px; font-size: 22px; } .timer-label { font-size: 13px; } .quantity-btn { width: 40px; height: 40px; font-size: 19px; } .quantity-value { width: 65px; font-size: 20px; } .total-price { padding: 16px; font-size: 20px; } .card-actions { flex-direction: column; } .copy-btn { width: 100%; } .pharmacom-calculator-table .quantity-selector { gap: 5px; } .pharmacom-calculator-table .quantity-btn { width: 38px; height: 38px; font-size: 16px; } .pharmacom-calculator-table .quantity-value { width: 50px; font-size: 16px; }}
+        .scroll-top-btn { display: none; position: fixed; bottom: 70px; right: 15px; background: var(--primary-color); color: white; width: 40px; height: 40px; border-radius: 50%; border: none; font-size: 20px; cursor: pointer; z-index: 1000; opacity: 0.8; }
+        .scroll-top-btn:hover { opacity: 1; }
+        .scroll-top-btn.visible { display: block; }
+        .summary-highlight { animation: highlight 1.5s ease; }
+        @keyframes highlight { 0% { background-color: rgba(0, 170, 255, 0.3); } 100% { background-color: transparent; } }
+        @media (max-width: 768px) { body { padding: 10px; font-size: 14px; } #priceTable th, #priceTable td { padding: 10px; } .summary-panel { flex-direction: column; align-items: stretch; text-align: center; gap: 15px; } .actions { width: 100%; flex-direction: column; gap: 10px; } .action-button { width: 100%; } .filter-wrapper { flex-direction: column; } }
     </style>
-    
-    <link rel="preload" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap&subset=cyrillic" as="style" onload="this.onload=null;this.rel='stylesheet'">
-    <noscript>
-        <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap&subset=cyrillic">
-    </noscript>
-    
-    <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" as="style" onload="this.rel='stylesheet'">
-    <noscript>
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    </noscript>
 </head>
 <body>
 
     <header class="header">
         <div class="container">
             <a href="index.html" class="logo" aria-label="На главную Nefarma">
-                <img src="logo.webp" alt="Nefarma Logo" width="180" height="48" loading="eager" style="height: 48px; width: 180px;">
+                <img src="logo_calc.webp" alt="Nefarma Logo" width="286" height="40" loading="eager" fetchpriority="high" decoding="async">
             </a>
             <div class="contact-info">
-                <a href="tel:+77780990459">
-                    <i class="fas fa-phone-alt"></i> +7 (778) 099-04-59
+                <a href="tel:+77780990459" style="color: var(--text-color); text-decoration: none; display: inline-flex; align-items: center;">
+                    <svg class="icon" viewBox="0 0 24 24" width="16" height="16"><path fill="currentColor" d="M19.23 15.26l-2.54-.29c-.61-.07-1.21.14-1.64.47l-1.84 1.84c-2.83-1.44-5.15-3.75-6.59-6.59l1.85-1.85c.32-.43.54-1.03.47-1.64l-.29-2.52c-.12-1.01-.97-1.77-1.99-1.77H5.03c-1.13 0-2.07.94-2 2.07.53 8.54 7.36 15.36 15.89 15.89 1.13.07 2.07-.87 2.07-2v-1.73c.01-1.01-.75-1.86-1.76-1.98z"/></svg>
+                    +7 (778) 099-04-59
                 </a>
             </div>
         </div>
     </header>
 
-    <main class="main-content">
-        <div class="container">
-            <h1 class="page-title">Предзаказ фармы в Казахстане</h1>
-            <p class="page-subtitle">Закажите необходимые препараты по специальным ценам до окончания срока предзаказа. Гарантированная поставка и лучшие цены.</p>
+    <div class="calculator-container" id="app" style="display: none;">
+        <h1 style="text-align:center;">Предзаказ Pharmacom</h1>
+        <div class="filter-wrapper">
+            <label for="filterInput" class="visually-hidden">Поиск по прайс-листу</label>
+            <input type="text" class="filter-input" id="filterInput" placeholder="Поиск по названию..." />
+        </div>
+        <div class="table-wrapper">
+            <table id="priceTable">
+                <thead>
+                    <tr>
+                        <th style="border-bottom: none;"></th>
+                        <th style="text-align: center; border-bottom: none; padding-bottom: 4px; color: var(--text-muted-color);" colspan="3">Скидка от суммы заказа</th>
+                        <th style="border-bottom: none;"></th>
+                        <th style="border-bottom: none;"></th>
+                    </tr>
+                    <tr>
+                        <th class="col-name">Препарат</th>
+                        <th class="col-price price-p1-header">до 30000 ₸</th>
+                        <th class="col-price price-p2-header">30000-100000 ₸</th>
+                        <th class="col-price price-p3-header">от 100000 ₸ <span class="profitable-tag">Выгодно</span></th>
+                        <th class="col-qty">Количество</th>
+                        <th class="col-sum">Сумма</th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+        </div>
+        <div class="summary-panel">
+            <div class="totals">
+                <div>Применяется ценовой уровень: <span id="tier">до 30000 ₸</span></div>
+                <div><span class="savings" id="savings">Экономия: 0 ₸</span></div>
+                <div class="kaspi-info" id="kaspi"></div>
+                <div>Итоговая сумма: <span class="final-total" id="total">0 ₸</span></div>
+            </div>
             
-            <section class="how-it-works-section">
-                <h2 class="section-title">Как работает предзаказ?</h2>
-                <div class="steps-container">
-                    <div class="step">
-                        <div class="step-icon"><i class="fas fa-mouse-pointer"></i></div>
-                        <div class="step-content">
-                            <div class="step-number">Шаг 1</div>
-                            <div class="step-description">Выберите товар и укажите нужное количество.</div>
-                        </div>
-                    </div>
-                    <div class="step">
-                        <div class="step-icon"><i class="fab fa-whatsapp"></i></div>
-                         <div class="step-content">
-                            <div class="step-number">Шаг 2</div>
-                            <div class="step-description">Нажмите «Заказать» и отправьте нам готовое сообщение в WhatsApp.</div>
-                        </div>
-                    </div>
-                    <div class="step">
-                        <div class="step-icon"><i class="fas fa-user-check"></i></div>
-                         <div class="step-content">
-                            <div class="step-number">Шаг 3</div>
-                            <div class="step-description">Наш менеджер свяжется с вами для подтверждения заказа и деталей.</div>
-                        </div>
-                    </div>
-                    <div class="step">
-                        <div class="step-icon"><i class="fas fa-shipping-fast"></i></div>
-                         <div class="step-content">
-                            <div class="step-number">Шаг 4</div>
-                            <div class="step-description">Вы получите заказ в указанные сроки.</div>
-                        </div>
-                    </div>
-                </div>
-            </section>
-
-            <div class="preorders-container" id="app">
-                <div class="filter-section">
-                    <div class="filter-wrapper">
-                        <input type="text" class="filter-input" id="filterInput" placeholder="Поиск по названию товара..." aria-label="Поиск товаров"/>
-                        <button class="clear-filter" id="clearFilter" aria-label="Очистить поиск">
-                            <i class="fas fa-times"></i>
-                        </button>
-                    </div>
-                    <div class="results-count" id="resultsCount"></div>
-                </div>
-                <div class="preorders-grid" id="preordersGrid"></div>
+            <div class="order-instructions" style="text-align: center; margin: 15px 0 5px 0; width: 100%;">
+                <p style="margin: 0; color: var(--text-color); font-size: 15px; font-weight: 500;">Готовы оформить заказ?</p>
+                <p style="margin: 5px 0 0 0; color: var(--text-muted-color); font-size: 13px;">Выберите способ оплаты ниже. Ваш заказ будет отправлен в WhatsApp для подтверждения.</p>
             </div>
-
-            <div id="loader">
-                <div class="loader-spinner"></div>
-                <div>Загружаем список предзаказов...</div>
+            <div class="actions">
+                <button class="action-button copy-btn" id="buyInstallmentBtn" onclick="app.sendOrder('installment')">
+                    <svg class="icon" viewBox="0 0 448 512"><path fill="#FFF" d="M380.9 97.1C339 55.1 283.2 32 223.9 32c-122.4 0-222 99.6-222 222 0 39.1 10.2 77.3 29.6 111L0 480l117.7-30.9c32.4 17.7 68.9 27 106.1 27h.1c122.3 0 224.1-99.6 224.1-222 0-59.3-25.2-115-67.1-157zm-157 341.6c-33.8 0-65.7-8.9-94-25.4l-6.7-4-69.8 18.3L72 359.2l-4.4-7c-18.5-29.4-28.2-63.3-28.2-98.2 0-101.7 82.8-184.5 184.6-184.5 49.3 0 95.6 19.2 130.4 54.1 34.8 34.9 56.2 81.2 56.1 130.5 0 101.8-84.9 184.6-186.6 184.6zm101.2-138.2c-5.5-2.8-32.8-16.2-37.9-18-5.1-1.9-8.8-2.8-12.5 2.8-3.7 5.6-14.3 18-17.6 21.8-3.2 3.7-6.5 4.2-12 1.4-32.6-16.3-54-29.1-75.5-66-5.7-9.8 5.7-9.1 16.3-30.3 1.8-3.7.9-6.9-.5-9.7-1.4-2.8-12.5-30.1-17.1-41.2-4.5-10.8-9.1-9.3-12.5-9.5-3.2-.2-6.9-.2-10.6-.2-3.7 0-9.7 1.4-14.8 6.9-5.1 5.6-19.4 19-19.4 46.3 0 27.3 19.9 53.7 22.6 57.4 2.8 3.7 39.1 59.7 94.8 83.8 35.2 15.2 49 16.5 66.6 13.9 10.7-1.6 32.8-13.4 37.4-26.4 4.6-13 4.6-24.1 3.2-26.4-1.3-2.5-5-3.9-10.5-6.6z"></path></svg>
+                    <div style="text-align: left; flex-grow: 1; margin-left: 10px;">
+                        <div>Купить в рассрочку</div>
+                        <div style="font-size:12px; opacity:0.8;">Kaspi 0-0-12</div>
+                    </div>
+                    <strong id="installmentPriceOnBtn">0 ₸</strong>
+                </button>
+                <button class="action-button whatsapp-btn" id="buyDirectBtn" onclick="app.sendOrder('direct')">
+                     <svg class="icon" viewBox="0 0 448 512"><path fill="#FFF" d="M380.9 97.1C339 55.1 283.2 32 223.9 32c-122.4 0-222 99.6-222 222 0 39.1 10.2 77.3 29.6 111L0 480l117.7-30.9c32.4 17.7 68.9 27 106.1 27h.1c122.3 0 224.1-99.6 224.1-222 0-59.3-25.2-115-67.1-157zm-157 341.6c-33.8 0-65.7-8.9-94-25.4l-6.7-4-69.8 18.3L72 359.2l-4.4-7c-18.5-29.4-28.2-63.3-28.2-98.2 0-101.7 82.8-184.5 184.6-184.5 49.3 0 95.6 19.2 130.4 54.1 34.8 34.9 56.2 81.2 56.1 130.5 0 101.8-84.9 184.6-186.6 184.6zm101.2-138.2c-5.5-2.8-32.8-16.2-37.9-18-5.1-1.9-8.8-2.8-12.5 2.8-3.7 5.6-14.3 18-17.6 21.8-3.2 3.7-6.5 4.2-12 1.4-32.6-16.3-54-29.1-75.5-66-5.7-9.8 5.7-9.1 16.3-30.3 1.8-3.7.9-6.9-.5-9.7-1.4-2.8-12.5-30.1-17.1-41.2-4.5-10.8-9.1-9.3-12.5-9.5-3.2-.2-6.9-.2-10.6-.2-3.7 0-9.7 1.4-14.8 6.9-5.1 5.6-19.4 19-19.4 46.3 0 27.3 19.9 53.7 22.6 57.4 2.8 3.7 39.1 59.7 94.8 83.8 35.2 15.2 49 16.5 66.6 13.9 10.7-1.6 32.8-13.4 37.4-26.4 4.6-13 4.6-24.1 3.2-26.4-1.3-2.5-5-3.9-10.5-6.6z"></path></svg>
+                    <div style="text-align: left; flex-grow: 1; margin-left: 10px;">
+                        <div>Оплатить сразу</div>
+                        <div style="font-size:12px; opacity:0.8;">QR / Перевод</div>
+                    </div>
+                    <strong id="directPriceOnBtn">0 ₸</strong>
+                </button>
             </div>
-
-            <section class="pharmacom-section" id="pharmacomApp" style="display: none;">
-                <h2 class="section-title">Предзаказ продукции PHARMACOM LABS</h2>
-                <p class="page-subtitle" style="margin-bottom: 20px;">Соберите корзину и получите скидку в зависимости от общей суммы заказа. Минимальная сумма для предзаказа — 50 000 ₸.</p>
-                
-                <div id="pharmacomCalculator">
-                    </div>
-                
-                <div id="pharmacomSummary" class="pharmacom-summary">
-                    </div>
-            </section>
-            </div>
-    </main>
-
-    <section class="preorder-conditions">
-        <div class="container">
-            <h2 class="section-title">Условия предзаказа</h2>
-            <ul class="conditions-list">
-                <li>
-                    <div class="condition-icon"><i class="fas fa-credit-card"></i></div>
-                    <div class="condition-text">
-                        <strong>Предоплата</strong>
-                        <span>Для подтверждения предзаказа требуется 100% предоплата.</span>
-                    </div>
-                </li>
-                <li>
-                    <div class="condition-icon"><i class="fas fa-receipt"></i></div>
-                    <div class="condition-text">
-                        <strong>Оформление и оплата</strong>
-                        <span>Оплата списывается после подтверждения заказа менеджером. Вы получите электронный чек или подтверждение в WhatsApp.</span>
-                    </div>
-                </li>
-                <li>
-                    <div class="condition-icon"><i class="fas fa-box-open"></i></div>
-                    <div class="condition-text">
-                        <strong>Если товара не будет в наличии</strong>
-                        <span>В редких случаях поставка может быть отменена. Мы немедленно сообщим вам об этом и вернем полную сумму предоплаты либо предложим альтернативу.</span>
-                    </div>
-                </li>
-                <li>
-                    <div class="condition-icon"><i class="fas fa-undo"></i></div>
-                    <div class="condition-text">
-                        <strong>Возврат и отмена</strong>
-                        <span>Возврат денег и отмена предзаказа возможны в любое время. Возврат денежных средства будет осуществлен в течении 48 часов.</span>
-                    </div>
-                </li>
-            </ul>
-        </div>
-    </section>
-
-    <footer class="footer">
-        <div class="container">
-            <div class="footer-content">
-                <div class="footer-logo">Nefarma</div>
-                <a href="https://wa.me/77780990459?text=Здравствуйте!%20У%20меня%20есть%20вопрос%20по%20предзаказу." class="footer-contact-btn" target="_blank" rel="noopener noreferrer">
-                    <i class="fab fa-whatsapp"></i> Остались вопросы? Напишите нам
-                </a>
-                <div class="copyright">
-                    &copy; 2023 Nefarma. Все права защищены.
-                </div>
+            <div class="actions" style="margin-top: 10px; display: grid; grid-template-columns: 1fr 1fr;">
+                <button class="action-button" style="background-color: var(--border-color);" onclick="app.copyOrderForChat()">
+                    <svg class="icon" viewBox="0 0 24 24" width="16" height="16"><path fill="currentColor" d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"></path></svg>
+                    Просто скопировать
+                </button>
+                <button class="action-button clear-btn" onclick="app.clearOrder()">
+                    <svg class="icon" viewBox="0 0 24 24" width="16" height="16"><path fill="currentColor" d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"></path></svg>
+                     Очистить
+                </button>
             </div>
         </div>
-    </footer>
-    
-    <div id="toast" class="toast-notification" role="alert" aria-live="assertive"></div>
-    <div id="cacheInfo" class="cache-info">
-        <span class="cache-indicator" id="cacheIndicator"></span>
-        <span id="cacheText"></span>
     </div>
-    
+    <div id="loader">
+        <div class="loader-spinner"></div>
+        <div>Загрузка прайс-листа...</div>
+    </div>
+    <div id="toast" class="toast-notification"></div>
+    <button class="scroll-top-btn" id="scrollTopBtn" title="Наверх">
+        <svg class="icon" viewBox="0 0 24 24" width="16" height="16"><path fill="#FFF" d="M13 19V7.83l4.59 4.59L19 11l-7-7-7 7 1.41 1.41L11 7.83V19h2z"/></svg>
+    </button>
+
     <script>
-    // ... Ваш JavaScript код остается без изменений ...
-    document.addEventListener('DOMContentLoaded', () => {
-        const app = {
-            config: {
-                individualPreorderCsvPath: "https://docs.google.com/spreadsheets/d/e/2PACX-1vQrt-3Zzbl-WCVOa_owT0fSjKpzDyzBO0UBtFqPHfqRAiQ29uq9OqhqScNclh1zMI6dWRBFKez7pC1y/pub?gid=2024297683&single=true&output=csv",
-                pharmacomCsvPath: "https://docs.google.com/spreadsheets/d/e/2PACX-1vQErW5azg8oxig8j_Jf5-shLlojbKvRWnezDfNSO7hRjIpZqsUFVWbCQmjjgdSa6k7GZ78lAFORZf8O/pub?gid=213278967&single=true&output=csv",
-                whatsAppPhone: "77780990459",
-                cacheKey: 'preordersDataCache_v4',
-                cacheDuration: 5 * 60 * 1000,
-                pharmacomMinOrder: 50000
-            },
-            state: {
-                preorders: [],
-                pharmacomProducts: [],
-                pharmacomCart: {},
-                filter: '',
-                usingCachedData: false,
-                lastCacheUpdate: null,
-                timers: {},
-                searchTimeout: null
-            },
-            elements: {
-                appContainer: document.getElementById('app'),
-                loader: document.getElementById('loader'),
-                preordersGrid: document.getElementById('preordersGrid'),
-                toastEl: document.getElementById("toast"),
-                filterInput: document.getElementById("filterInput"),
-                clearFilter: document.getElementById("clearFilter"),
-                cacheInfoEl: document.getElementById("cacheInfo"),
-                cacheText: document.getElementById("cacheText"),
-                cacheIndicator: document.getElementById("cacheIndicator"),
-                resultsCount: document.getElementById("resultsCount"),
-                pharmacomApp: document.getElementById('pharmacomApp'),
-                pharmacomCalculator: document.getElementById('pharmacomCalculator'),
-                pharmacomSummary: document.getElementById('pharmacomSummary'),
-            },
-            init() {
-                this.loadAllData();
-                this.setupEventListeners();
-            },
-
-            setupEventListeners() {
-                this.elements.filterInput.addEventListener('input', (e) => {
-                    clearTimeout(this.state.searchTimeout);
-                    this.state.searchTimeout = setTimeout(() => {
-                        this.state.filter = e.target.value.toLowerCase();
-                        this.renderPreorders();
-                    }, 300);
-                });
-                
-                this.elements.clearFilter.addEventListener('click', () => {
-                    this.elements.filterInput.value = '';
-                    this.state.filter = '';
-                    this.renderPreorders();
-                    this.elements.filterInput.focus();
-                });
-                
-                this.elements.preordersGrid.addEventListener('click', this.handleCardClick.bind(this));
-                this.elements.preordersGrid.addEventListener('input', this.handleQuantityInput.bind(this));
-                
-                this.elements.pharmacomCalculator.addEventListener('input', this.handlePharmacomQuantityChange.bind(this));
-                this.elements.pharmacomCalculator.addEventListener('click', this.handlePharmacomButtonClick.bind(this));
-                this.elements.pharmacomSummary.addEventListener('click', this.handlePharmacomOrderClick.bind(this));
-            },
-
-            async loadAllData() {
-                const cachedData = this.getCachedData();
-                if (cachedData && this.isCacheValid(cachedData)) {
-                    this.state.preorders = cachedData.data.preorders;
-                    this.state.pharmacomProducts = cachedData.data.pharmacomProducts;
-                    this.state.usingCachedData = true;
-                    this.state.lastCacheUpdate = cachedData.timestamp;
-                    this.displayApp();
-                    this.showToast("Показаны данные из кэша", 'warning');
-                }
-
-                try {
-                    const [individualResponse, pharmacomResponse] = await Promise.all([
-                        fetch(this.config.individualPreorderCsvPath, { cache: "no-store" }),
-                        fetch(this.config.pharmacomCsvPath, { cache: "no-store" })
-                    ]);
-
-                    if (!individualResponse.ok) throw new Error(`Ошибка загрузки поштучных предзаказов: ${individualResponse.status}`);
-                    if (!pharmacomResponse.ok) throw new Error(`Ошибка загрузки каталога Pharmacom: ${pharmacomResponse.status}`);
-
-                    const individualCsv = await individualResponse.text();
-                    const pharmacomCsv = await pharmacomResponse.text();
-
-                    const individualData = await this.parseCsvPromise(individualCsv);
-                    const pharmacomData = await this.parseCsvPromise(pharmacomCsv);
-                    
-                    this.state.preorders = individualData.data
-                        .filter(row => row.product_id && row.product_name)
-                        .map(p => this.processPreorder(p));
-                    
-                    this.state.pharmacomProducts = pharmacomData.data
-                        .filter(row => row.product_name && row.price && (!row.availability || row.availability.toLowerCase() !== 'нет'))
-                        .map((p, index) => ({ id: `pharma-${index}`, name: p.product_name, price: parseInt(p.price) || 0 }));
-
-                    this.saveDataToCache({ preorders: this.state.preorders, pharmacomProducts: this.state.pharmacomProducts });
-                    this.state.usingCachedData = false;
-                    this.state.lastCacheUpdate = Date.now();
-                    this.displayApp();
-
-                } catch (error) {
-                    console.error("Не удалось загрузить данные:", error);
-                    if (!this.state.preorders.length && !this.state.pharmacomProducts.length) {
-                         this.handleDataLoadError();
-                    }
-                }
-            },
-            
-            parseCsvPromise(csvText) {
-                return new Promise((resolve, reject) => {
-                    Papa.parse(csvText, {
-                        header: true,
-                        skipEmptyLines: true,
-                        complete: resolve,
-                        error: (err) => reject(new Error("Ошибка обработки CSV: " + err.message))
-                    });
-                });
-            },
-
-            handleDataLoadError() {
-                this.elements.loader.innerHTML = `
-                    <div class="no-results">
-                        <div class="no-results-icon"><i class="fas fa-exclamation-triangle"></i></div>
-                        <p>Ошибка загрузки данных. Проверьте подключение к интернету.</p>
-                        <button class="preorder-btn" onclick="location.reload()" style="margin-top: 20px;">
-                            <i class="fas fa-sync-alt"></i> Повторить попытку
-                        </button>
-                    </div>`;
-                this.showToast("Ошибка загрузки данных", 'error');
-            },
-
-            displayApp() {
-                this.elements.loader.style.display = 'none';
-                if(this.state.preorders.length > 0) {
-                    this.elements.appContainer.style.display = 'block';
-                    this.renderPreorders();
-                }
-                if(this.state.pharmacomProducts.length > 0) {
-                    this.elements.pharmacomApp.style.display = 'block';
-                    this.renderPharmacomCalculator();
-                }
-                this.updateCacheInfo();
-                if (!this.cacheUpdateInterval) {
-                    this.cacheUpdateInterval = setInterval(() => this.updateCacheInfo(), 60000);
-                }
-            },
-
-            getCachedData() {
-                const cache = localStorage.getItem(this.config.cacheKey);
-                try { return JSON.parse(cache); } catch (e) { return null; }
-            },
-
-            isCacheValid(cachedData) {
-                return (Date.now() - cachedData.timestamp) < this.config.cacheDuration;
-            },
-
-            saveDataToCache(data) {
-                localStorage.setItem(this.config.cacheKey, JSON.stringify({ timestamp: Date.now(), data }));
-            },
-
-            updateCacheInfo() {
-                if (!this.state.lastCacheUpdate) {
-                    this.elements.cacheInfoEl.style.display = 'none';
-                    return;
-                }
-                const minutes = Math.floor((Date.now() - this.state.lastCacheUpdate) / 60000);
-                let statusText = `Обновлено ${minutes > 0 ? minutes + ' мин.' : 'только что'} назад`;
-                this.elements.cacheIndicator.classList.toggle('cached', this.state.usingCachedData);
-                if (this.state.usingCachedData) statusText += " (кэш)";
-                this.elements.cacheText.textContent = statusText;
-                this.elements.cacheInfoEl.style.display = 'flex';
-            },
-
-            processPreorder(preorder) {
-                return {
-                    id: preorder.product_id, name: preorder.product_name, description: preorder.description || '', endDate: new Date(preorder.end_date), price1: parseInt(preorder.price_1) || 0, price3: parseInt(preorder.price_3) || 0, price10: parseInt(preorder.price_10) || 0, minOrder: parseInt(preorder.min_order) || 1
-                };
-            },
-
-            renderPreorders() {
-                Object.values(this.state.timers).forEach(timerId => clearInterval(timerId));
-                this.state.timers = {};
-                const fragment = document.createDocumentFragment();
-                const filtered = this.state.preorders.filter(p => p.name.toLowerCase().includes(this.state.filter));
-                this.elements.resultsCount.textContent = `Найдено товаров: ${filtered.length}`;
-
-                if (filtered.length === 0 && this.state.filter) {
-                    this.elements.preordersGrid.innerHTML = `<div class="no-results"><div class="no-results-icon"><i class="fas fa-search"></i></div><p>По вашему запросу ничего не найдено</p></div>`;
-                    return;
-                }
-                
-                filtered.forEach((preorder, index) => {
-                    const card = document.createElement('div');
-                    card.className = 'preorder-card';
-                    card.dataset.id = preorder.id;
-                    card.style.animationDelay = `${index * 0.05}s`;
-                    const initialTotalPrice = (preorder.price1 || 0) * (preorder.minOrder || 1);
-                    card.innerHTML = `
-                        <div class="card-content">
-                            <h3 class="product-title">${preorder.name}</h3>
-                            <p class="product-description">${preorder.description}</p>
-                            <div class="preorder-timer">
-                                <span class="timer-label">До окончания предзаказа:</span>
-                                <div class="timer-display" id="timer-${preorder.id}"><div class="badge-container"></div></div>
-                            </div>
-                            <div class="pricing-section">
-                                <h4 class="pricing-title">Специальные цены</h4>
-                                ${preorder.price1 > 0 ? `<div class="price-option"><span class="quantity"><i class="fas fa-box quantity-icon"></i> 1 шт.</span><span class="price">${preorder.price1.toLocaleString('ru-RU')} ₸</span></div>` : ''}
-                                ${preorder.price3 > 0 ? `<div class="price-option"><span class="quantity"><i class="fas fa-boxes quantity-icon"></i> от 3 шт.</span><span class="price">${Math.round(preorder.price3/3).toLocaleString('ru-RU')} ₸ <span class="per-item">/шт</span></span></div>` : ''}
-                                ${preorder.price10 > 0 ? `<div class="price-option"><span class="quantity"><i class="fas fa-pallet quantity-icon"></i> от 10 шт.</span><span class="price">${Math.round(preorder.price10/10).toLocaleString('ru-RU')} ₸ <span class="per-item">/шт</span></span></div>` : ''}
-                            </div>
-                            <div class="selected-quantity">
-                                <span class="quantity-label"><i class="fas fa-calculator"></i> Количество:</span>
-                                <div class="quantity-selector">
-                                    <button class="quantity-btn" data-action="decrease">-</button>
-                                    <input type="number" class="quantity-value" value="${preorder.minOrder}" min="${preorder.minOrder}" max="99" aria-label="Количество товара">
-                                    <button class="quantity-btn" data-action="increase">+</button>
-                                </div>
-                            </div>
-                            <div class="total-price">
-                                <i class="fas fa-wallet"></i> Итого: <span id="total-${preorder.id}">${initialTotalPrice.toLocaleString('ru-RU')} ₸</span>
-                            </div>
-                            <div class="card-actions">
-                                <button class="preorder-btn" disabled><i class="fas fa-hourglass-half"></i> Загрузка...</button>
-                                <button class="copy-btn" disabled aria-label="Копировать заказ"><i class="fas fa-copy"></i></button>
-                            </div>
-                        </div>`;
-                    fragment.appendChild(card);
-                });
-                this.elements.preordersGrid.innerHTML = '';
-                this.elements.preordersGrid.appendChild(fragment);
-                filtered.forEach(preorder => this.startTimer(preorder));
-            },
-            
-            startTimer(preorder) {
-                const timerEl = document.getElementById(`timer-${preorder.id}`);
-                const card = timerEl?.closest('.preorder-card');
-                if (!card || !preorder.endDate || isNaN(preorder.endDate)) {
-                    if (card) {
-                        card.querySelectorAll('.preorder-btn, .copy-btn').forEach(b => { b.disabled = true; b.innerHTML = '<i class="fas fa-times-circle"></i>'; });
-                        if(timerEl) timerEl.innerHTML = '<div class="preorder-ended">Некорректная дата</div>';
-                    }
-                    return;
-                }
-                if (preorder.endDate - new Date() <= 0) {
-                    if (timerEl) timerEl.innerHTML = '<div class="preorder-ended">Предзаказ завершён</div>';
-                    if (card) card.querySelectorAll('.preorder-btn, .copy-btn').forEach(b => { b.disabled = true; b.innerHTML = '<i class="fas fa-check-circle"></i> Завершён'; });
-                    return;
-                }
-                this.state.timers[preorder.id] = setInterval(() => this.updateTimer(preorder), 1000);
-                this.updateTimer(preorder);
-            },
-            
-            updateTimer(preorder) {
-                const timerEl = document.getElementById(`timer-${preorder.id}`);
-                if (!timerEl) return;
-                const card = timerEl.closest('.preorder-card');
-                const diff = preorder.endDate - new Date();
-
-                if (diff <= 0) {
-                    clearInterval(this.state.timers[preorder.id]);
-                    timerEl.innerHTML = '<div class="preorder-ended">Предзаказ завершён</div>';
-                    if (card) card.querySelectorAll('.preorder-btn, .copy-btn').forEach(b => { b.disabled = true; b.innerHTML = '<i class="fas fa-check-circle"></i> Завершён'; });
-                    return;
-                }
-
-                if (card) {
-                    card.querySelectorAll('.preorder-btn, .copy-btn').forEach(b => {
-                        if (b.disabled) {
-                            b.disabled = false;
-                            if (b.classList.contains('preorder-btn')) b.innerHTML = `<i class="fab fa-whatsapp"></i> Заказать`;
-                            if (b.classList.contains('copy-btn')) b.innerHTML = `<i class="fas fa-copy"></i>`;
-                        }
-                    });
-                }
-
-                const badgeContainer = timerEl.querySelector('.badge-container');
-                if (badgeContainer) {
-                    if (diff < 24 * 60 * 60 * 1000) {
-                       if (!badgeContainer.querySelector('.ending-soon-badge')) badgeContainer.innerHTML = `<div class="ending-soon-badge">Осталось мало времени!</div>`;
-                    } else {
-                        badgeContainer.innerHTML = '';
-                    }
-                }
-                
-                const d = Math.floor(diff / (86400000));
-                const h = Math.floor((diff % 86400000) / 3600000);
-                const m = Math.floor((diff % 3600000) / 60000);
-                const s = Math.floor((diff % 60000) / 1000);
-                
-                // ОПТИМИЗАЦИЯ: Вместо перерисовки всего блока, обновляем только текст
-                if (timerEl.querySelectorAll('.time-unit').length === 0) {
-                    // Первоначальная отрисовка, если таймера еще нет
-                    timerEl.innerHTML += `
-                        <div class="time-unit" data-unit="days"><span class="time-value">${d.toString().padStart(2, '0')}</span><span class="time-label">дней</span></div>
-                        <div class="time-unit" data-unit="hours"><span class="time-value">${h.toString().padStart(2, '0')}</span><span class="time-label">часов</span></div>
-                        <div class="time-unit" data-unit="minutes"><span class="time-value">${m.toString().padStart(2, '0')}</span><span class="time-label">минут</span></div>
-                        <div class="time-unit" data-unit="seconds"><span class="time-value">${s.toString().padStart(2, '0')}</span><span class="time-label">секунд</span></div>`;
-                } else {
-                    // Быстрое обновление только текста цифр
-                    timerEl.querySelector('[data-unit="days"] .time-value').textContent = d.toString().padStart(2, '0');
-                    timerEl.querySelector('[data-unit="hours"] .time-value').textContent = h.toString().padStart(2, '0');
-                    timerEl.querySelector('[data-unit="minutes"] .time-value').textContent = m.toString().padStart(2, '0');
-                    timerEl.querySelector('[data-unit="seconds"] .time-value').textContent = s.toString().padStart(2, '0');
-                }
-            },
-            
-            getOrderText(card) {
-                const preorderId = card.dataset.id;
-                const preorder = this.state.preorders.find(p => p.id === preorderId);
-                if (!preorder) return null;
-                const quantity = parseInt(card.querySelector('.quantity-value').value);
-                const totalPrice = card.querySelector(`#total-${preorder.id}`).textContent;
-                const pricePerItem = this.calculatePricePerItem(preorder, quantity);
-
-                let orderText = `*Здравствуйте! Хочу оформить предзаказ:*\n\n`;
-                orderText += `*🏷️ Товар:* ${preorder.name}\n`;
-                orderText += `*📦 Количество:* ${quantity} шт.\n`;
-                orderText += `*💰 Цена за штуку:* ${pricePerItem.toLocaleString('ru-RU')} ₸\n`;
-                orderText += `*💳 Итого:* ${totalPrice}\n\n`;
-                orderText += `*⏳ Срок окончания предзаказа:* ${preorder.endDate.toLocaleDateString('ru-RU', { day: 'numeric', month: 'long', year: 'numeric' })}`;
-                return orderText;
-            },
-
-            sendToWhatsApp(card) {
-                const orderText = this.getOrderText(card);
-                if (!orderText) {
-                    this.showToast("Не удалось найти информацию о товаре", "error");
-                    return;
-                }
-                window.open(`https://wa.me/${this.config.whatsAppPhone}?text=${encodeURIComponent(orderText)}`, "_blank", "noopener,noreferrer");
-                this.showToast("Перенаправляем в WhatsApp...", "success");
-            },
-
-            copyOrderToClipboard(card) {
-                const orderText = this.getOrderText(card);
-                if (!orderText) {
-                    this.showToast("Не удалось найти информацию о товаре", "error");
-                    return;
-                }
-                navigator.clipboard.writeText(orderText).then(() => {
-                    this.showToast("Заказ скопирован!", "success");
-                }, () => {
-                    this.showToast("Ошибка копирования", "error");
-                });
-            },
-            
-            handleCardClick(event) {
-                const btn = event.target.closest('.quantity-btn');
-                if (btn) { this.handleQuantityChange(btn); return; }
-                const orderBtn = event.target.closest('.preorder-btn');
-                if (orderBtn) { this.sendToWhatsApp(orderBtn.closest('.preorder-card')); return; }
-                const copyBtn = event.target.closest('.copy-btn');
-                if (copyBtn) { this.copyOrderToClipboard(copyBtn.closest('.preorder-card')); }
-            },
-            handleQuantityInput(e) {
-                if (e.target.closest('.preorder-card') && e.target.classList.contains('quantity-value')) {
-                    const card = e.target.closest('.preorder-card');
-                    const preorder = this.state.preorders.find(p => p.id === card.dataset.id);
-                    if (!preorder) return;
-                    let quantity = parseInt(e.target.value) || preorder.minOrder;
-                    quantity = Math.max(preorder.minOrder, Math.min(quantity, 99));
-                    e.target.value = quantity;
-                    this.updateTotalPrice(card, preorder, quantity);
-                }
-            },
-            handleQuantityChange(btn) {
-                const card = btn.closest('.preorder-card');
-                const preorder = this.state.preorders.find(p => p.id === card.dataset.id);
-                if (!preorder) return;
-                const valueEl = card.querySelector('.quantity-value');
-                let quantity = parseInt(valueEl.value);
-                quantity += (btn.dataset.action === 'increase' ? 1 : -1);
-                quantity = Math.max(preorder.minOrder, Math.min(quantity, 99));
-                valueEl.value = quantity;
-                this.updateTotalPrice(card, preorder, quantity);
-            },
-            calculatePricePerItem(preorder, quantity) {
-                if (quantity >= 10 && preorder.price10 > 0) return Math.round(preorder.price10 / 10);
-                if (quantity >= 3 && preorder.price3 > 0) return Math.round(preorder.price3 / 3);
-                return preorder.price1;
-            },
-            updateTotalPrice(card, preorder, quantity) {
-                const totalEl = card.querySelector(`#total-${preorder.id}`);
-                const pricePerItem = this.calculatePricePerItem(preorder, quantity);
-                totalEl.textContent = (pricePerItem * quantity).toLocaleString('ru-RU') + ' ₸';
-            },
-
-            renderPharmacomCalculator() {
-                const table = document.createElement('table');
-                table.className = 'pharmacom-calculator-table';
-                table.innerHTML = `
-                    <thead><tr><th>Название товара</th><th>Цена</th><th style="text-align:right;">Количество</th></tr></thead>
-                    <tbody>
-                        ${this.state.pharmacomProducts.map(p => `
-                            <tr>
-                                <td data-label="Товар">${p.name}</td>
-                                <td data-label="Цена">${p.price.toLocaleString('ru-RU')} ₸</td>
-                                <td data-label="Количество">
-                                    <div class="quantity-selector">
-                                        <button class="quantity-btn pharma-quantity-btn" data-action="decrease" data-id="${p.id}">-</button>
-                                        <input type="number" class="quantity-value" value="0" min="0" max="99" data-id="${p.id}" placeholder="0">
-                                        <button class="quantity-btn pharma-quantity-btn" data-action="increase" data-id="${p.id}">+</button>
-                                    </div>
-                                </td>
-                            </tr>
-                        `).join('')}
-                    </tbody>`;
-                this.elements.pharmacomCalculator.innerHTML = '';
-                this.elements.pharmacomCalculator.appendChild(table);
-                this.updatePharmacomSummary();
-            },
-            handlePharmacomButtonClick(e) {
-                const btn = e.target.closest('.pharma-quantity-btn');
-                if (!btn) return;
-
-                const id = btn.dataset.id;
-                const input = this.elements.pharmacomCalculator.querySelector(`.quantity-value[data-id="${id}"]`);
-                if (!input) return;
-
-                let quantity = parseInt(input.value) || 0;
-                quantity += (btn.dataset.action === 'increase' ? 1 : -1);
-                quantity = Math.max(0, Math.min(quantity, 99));
-                input.value = quantity;
-                input.dispatchEvent(new Event('input', { bubbles: true }));
-            },
-            handlePharmacomQuantityChange(e) {
-                if (e.target.classList.contains('quantity-value') && e.target.closest('.pharmacom-calculator-table')) {
-                    const id = e.target.dataset.id;
-                    const quantity = parseInt(e.target.value) || 0;
-                    if (quantity > 0) {
-                        this.state.pharmacomCart[id] = quantity;
-                    } else {
-                        delete this.state.pharmacomCart[id];
-                    }
-                    this.updatePharmacomSummary();
-                }
-            },
-            updatePharmacomSummary() {
-                let rawTotal = 0;
-                for (const [id, quantity] of Object.entries(this.state.pharmacomCart)) {
-                    const product = this.state.pharmacomProducts.find(p => p.id === id);
-                    if (product) rawTotal += product.price * quantity;
-                }
-
-                let discountPercent = 0;
-                if (rawTotal >= 300000) discountPercent = 15;
-                else if (rawTotal >= 150000) discountPercent = 10;
-                else if (rawTotal >= this.config.pharmacomMinOrder) discountPercent = 5;
-                
-                const discountAmount = (rawTotal * discountPercent) / 100;
-                const finalTotal = rawTotal - discountAmount;
-                const canOrder = rawTotal >= this.config.pharmacomMinOrder;
-
-                this.elements.pharmacomSummary.innerHTML = `
-                    <div class="summary-row">
-                        <strong>Сумма без скидки:</strong>
-                        <span class="total-raw-price">${rawTotal.toLocaleString('ru-RU')} ₸</span>
-                    </div>
-                    <div class="summary-row">
-                        <strong>Скидка (${discountPercent}%):</strong>
-                        <span class="discount-amount">-${discountAmount.toLocaleString('ru-RU')} ₸</span>
-                    </div>
-                    <div class="summary-row">
-                        <strong>Итого к оплате:</strong>
-                        <span class="final-price">${finalTotal.toLocaleString('ru-RU')} ₸</span>
-                    </div>
-                    ${!canOrder && rawTotal > 0 ? `<div class="min-order-notice">Минимальная сумма предзаказа от ${this.config.pharmacomMinOrder.toLocaleString('ru-RU')} ₸</div>` : ''}
-                    <button class="preorder-btn" id="pharmacomOrderBtn" ${!canOrder ? 'disabled' : ''} style="margin-top: 20px; width: 100%;">
-                        <i class="fab fa-whatsapp"></i> Оформить заказ
-                    </button>`;
-            },
-            handlePharmacomOrderClick(e) {
-                if(e.target.id === 'pharmacomOrderBtn' && !e.target.disabled) {
-                    this.sendPharmacomOrder();
-                }
-            },
-            sendPharmacomOrder() {
-                let orderText = `*Здравствуйте! Хочу оформить предзаказ на продукцию Pharmacom Labs:*\n`;
-                let rawTotal = 0;
-                
-                for (const [id, quantity] of Object.entries(this.state.pharmacomCart)) {
-                    const product = this.state.pharmacomProducts.find(p => p.id === id);
-                    if (product) {
-                        orderText += `\n- *${product.name}*: ${quantity} шт.`;
-                        rawTotal += product.price * quantity;
-                    }
-                }
-
-                let discountPercent = 0;
-                if (rawTotal >= 300000) discountPercent = 15;
-                else if (rawTotal >= 150000) discountPercent = 10;
-                else if (rawTotal >= this.config.pharmacomMinOrder) discountPercent = 5;
-
-                const discountAmount = (rawTotal * discountPercent) / 100;
-                const finalTotal = rawTotal - discountAmount;
-
-                orderText += `\n\n*Сумма без скидки:* ${rawTotal.toLocaleString('ru-RU')} ₸`;
-                orderText += `\n*Скидка (${discountPercent}%):* -${discountAmount.toLocaleString('ru-RU')} ₸`;
-                orderText += `\n*Итого к оплате:* *${finalTotal.toLocaleString('ru-RU')} ₸*`;
-                
-                window.open(`https://wa.me/${this.config.whatsAppPhone}?text=${encodeURIComponent(orderText)}`, "_blank", "noopener,noreferrer");
-            },
-
-            showToast(message, type = 'normal') {
-                const el = this.elements.toastEl;
-                el.className = 'toast-notification';
-                let icon = '<i class="fas fa-info-circle" aria-hidden="true"></i>';
-                if (type === 'success') { icon = '<i class="fas fa-check-circle" aria-hidden="true"></i>'; el.classList.add('success'); }
-                else if (type === 'error') { icon = '<i class="fas fa-exclamation-circle" aria-hidden="true"></i>'; el.classList.add('error'); }
-                else if (type === 'warning') { icon = '<i class="fas fa-exclamation-triangle" aria-hidden="true"></i>'; el.classList.add('warning'); }
-                el.innerHTML = `${icon} <span>${message}</span>`;
-                el.classList.add('show');
-                setTimeout(() => { el.classList.remove('show'); }, 3000);
-            }
-        };
-        app.init();
-    });
+    (function() {
+        const script = document.createElement('script');
+        script.src = "https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js";
+        script.defer = true;
+        document.head.appendChild(script);
+    })();
     </script>
     
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js" defer></script>
+    <script>
+    const app = {
+        config: {
+            csvPath: "https://docs.google.com/spreadsheets/d/e/2PACX-1vTXGkztaAik2l3cvEKopR_VGORxIINNdd2p9gBLM4XgY0XdnKQvJlPw632QC3cMSw9Bt61J53Bg0HCq/pub?gid=1678494563&single=true&output=csv",
+            whatsAppPhone: "77780990459",
+            priceTiers: {
+                tier1: { limit: 0, label: "до 30000 ₸" },
+                tier2: { limit: 30000, label: "30000-100000 ₸" },
+                tier3: { limit: 100000, label: "от 100000 ₸" },
+            },
+            kaspiMultiplier: 1.1,
+            cacheKey: 'preorderPharmacomData_v2', // Changed cache key
+            cacheDuration: 5 * 60 * 1000, // 5 minutes cache
+        },
+        state: {
+            products: [],
+            quantities: {},
+            filter: '',
+            collapsedCategories: new Set(),
+        },
+        elements: {
+            appContainer: document.getElementById('app'),
+            loader: document.getElementById('loader'),
+            tableBody: document.querySelector("#priceTable tbody"),
+            totalEl: document.getElementById("total"),
+            kaspiEl: document.getElementById("kaspi"),
+            savingsEl: document.getElementById("savings"),
+            tierEl: document.getElementById("tier"),
+            toastEl: document.getElementById("toast"),
+            filterInput: document.getElementById("filterInput"),
+            scrollTopBtn: document.getElementById("scrollTopBtn"),
+            installmentPriceOnBtn: document.getElementById('installmentPriceOnBtn'),
+            directPriceOnBtn: document.getElementById('directPriceOnBtn'),
+        },
+        init() {
+            this.bindEvents();
+            this.loadData();
+        },
+
+        bindEvents() {
+            this.elements.filterInput.addEventListener('input', this.handleFilterInput.bind(this));
+            this.elements.tableBody.addEventListener('click', this.handleCategoryClick.bind(this));
+            window.addEventListener('scroll', this.handleScroll.bind(this));
+            this.elements.scrollTopBtn.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
+        },
+        
+        async loadData() {
+            const cachedItem = JSON.parse(localStorage.getItem(this.config.cacheKey));
+            
+            if (cachedItem && (Date.now() - cachedItem.timestamp < this.config.cacheDuration)) {
+                this.processData(cachedItem.products);
+                return;
+            }
+
+            try {
+                const response = await fetch(this.config.csvPath, { cache: "no-store" });
+                if (!response.ok) throw new Error(`Ошибка сети: ${response.status}`);
+                const csvText = await response.text();
+                if (!csvText.trim()) throw new Error("Получен пустой CSV-файл");
+
+                if (window.Papa) {
+                    this.parseCSV(csvText);
+                } else {
+                    window.addEventListener('load', () => this.parseCSV(csvText));
+                }
+            } catch (error) {
+                console.error("Не удалось загрузить свежие данные:", error);
+                const cachedItem = JSON.parse(localStorage.getItem(this.config.cacheKey));
+                if (cachedItem && cachedItem.products) {
+                    this.showToast("Не удалось обновить прайс. Показана сохраненная версия.", 'warning');
+                    this.processData(cachedItem.products);
+                } else {
+                    this.showError();
+                }
+            }
+        },
+
+        parseCSV(csvText) {
+            Papa.parse(csvText, {
+                header: true,
+                skipEmptyLines: true,
+                complete: (results) => {
+                    const products = this.parseProducts(results.data);
+                    if (products.length === 0) {
+                        this.showError();
+                        return;
+                    }
+                     localStorage.setItem(this.config.cacheKey, JSON.stringify({
+                        timestamp: Date.now(),
+                        products: products
+                    }));
+                    this.processData(products);
+                },
+                error: (err) => { 
+                    console.error("Ошибка обработки CSV:", err);
+                    this.showError();
+                }
+            });
+        },
+
+        parseProducts(data) {
+             return data
+                .filter(row => row.Название && row["Цена1"])
+                .map(row => ({
+                    id: row.ID,
+                    name: row.Название?.trim(),
+                    prices: {
+                        p1: parseFloat(row["Цена1"]) || 0,
+                        p2: parseFloat(row["Цена2"]) || 0,
+                        p3: parseFloat(row["Цена3"]) || 0,
+                    },
+                    category: row.Категория?.trim(),
+                    isBestseller: String(row.бестселлер || '').trim().toLowerCase() === 'yes',
+                    isNew: String(row.новинка || '').trim().toLowerCase() === 'yes',
+                    isLowStock: String(row.мало || '').trim().toLowerCase() === 'yes',
+                    isAvailable: (row.наличие || '').trim().toLowerCase() !== 'no'
+                }))
+                .filter(product => product.isAvailable);
+        },
+        
+        processData(products) {
+            this.state.products = products;
+            this.restoreStateFromUrl();
+            this.renderTable();
+            this.restoreState();
+            this.calculate();
+            this.elements.loader.style.display = 'none';
+            this.elements.appContainer.style.display = 'block';
+        },
+
+        renderTable() {
+            const oldTbody = this.elements.tableBody;
+            const newTbody = document.createElement('tbody');
+            oldTbody.parentNode.replaceChild(newTbody, oldTbody);
+            this.elements.tableBody = newTbody;
+
+            let currentCategory = null;
+            const fragment = document.createDocumentFragment();
+            const filter = this.state.filter.toLowerCase();
+
+            this.state.products.forEach(item => {
+                if (filter && !item.name.toLowerCase().includes(filter)) {
+                    return;
+                }
+
+                if (item.category && item.category !== currentCategory) {
+                    currentCategory = item.category;
+                    const row = document.createElement("tr");
+                    row.className = 'category-row';
+                    if (this.state.collapsedCategories.has(currentCategory)) row.classList.add('collapsed');
+                    row.dataset.category = currentCategory;
+                    row.innerHTML = `<td colspan="6">${item.category}</td>`;
+                    fragment.appendChild(row);
+                }
+                const row = document.createElement("tr");
+                row.className = 'product-row';
+                row.dataset.id = item.id;
+                row.dataset.category = currentCategory;
+                if (this.state.collapsedCategories.has(currentCategory)) row.classList.add('hidden');
+                
+                const tagsHtml = `
+                    <div class="tags-container">
+                        ${item.isBestseller ? `<span class="tag tag-bestseller">🔥 HOT</span>` : ''}
+                        ${item.isNew ? `<span class="tag tag-new">✨ NEW</span>` : ''}
+                        ${item.isLowStock ? `<span class="tag tag-low-stock">⏳ Мало</span>` : ''}
+                    </div>
+                `;
+
+                row.innerHTML = `
+                    <td class="col-name">
+                        <span>${item.name}</span>
+                        ${tagsHtml}
+                    </td>
+                    <td class="col-price price-p1">${item.prices.p1.toLocaleString('ru-RU')} ₸</td>
+                    <td class="col-price price-p2">${item.prices.p2.toLocaleString('ru-RU')} ₸</td>
+                    <td class="col-price price-p3">${item.prices.p3.toLocaleString('ru-RU')} ₸</td>
+                    <td class="col-qty">
+                        <div class="quantity-control">
+                            <button class="quantity-btn" data-action="decrease" data-id="${item.id}">-</button>
+                            <input type="number" class="quantity-input" min="0" max="99" value="0" data-id="${item.id}" />
+                            <button class="quantity-btn" data-action="increase" data-id="${item.id}">+</button>
+                        </div>
+                    </td>
+                    <td class="col-sum sum">0 ₸</td>
+                `;
+                fragment.appendChild(row);
+            });
+            this.elements.tableBody.appendChild(fragment);
+            
+            if (this.elements.tableBody.children.length === 0) {
+                this.elements.tableBody.innerHTML = `
+                    <tr>
+                        <td colspan="6" style="text-align: center; padding: 30px; display:flex; flex-direction:column; align-items:center; gap:10px;">
+                            <svg class="icon" style="font-size: 24px; margin:0;" viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/></svg>
+                            По вашему запросу ничего не найдено
+                        </td>
+                    </tr>
+                `;
+            }
+            
+            this.elements.tableBody.addEventListener('click', this.handleQuantityButtonClick.bind(this));
+            this.elements.tableBody.addEventListener('input', this.handleQuantityInput.bind(this));
+            this.restoreQuantities();
+        },
+        handleQuantityButtonClick(event) {
+            const button = event.target.closest('.quantity-btn');
+            if (!button) return;
+            const { action, id } = button.dataset;
+            const input = this.elements.tableBody.querySelector(`input[data-id='${id}']`);
+            if (!input) return;
+            let value = parseInt(input.value, 10) || 0;
+            const max = parseInt(input.max, 10) || 99;
+            if (action === 'increase' && value < max) {
+                value++;
+            } else if (action === 'decrease' && value > 0) {
+                value--;
+            }
+            input.value = value;
+            this.updateAndSave();
+        },
+        handleQuantityInput(event) {
+            const input = event.target;
+            if (!input.classList.contains('quantity-input')) return;
+            const max = parseInt(input.max, 10) || 99;
+            let value = parseInt(input.value, 10) || 0;
+            if (value > max) value = max;
+            if (value < 0) value = 0;
+            input.value = Math.max(0, Math.floor(value));
+            this.updateAndSave();
+        },
+        handleCategoryClick(event) {
+            const row = event.target.closest('.category-row');
+            if (!row) return;
+            const category = row.dataset.category;
+            if (this.state.collapsedCategories.has(category)) {
+                this.state.collapsedCategories.delete(category);
+                row.classList.remove('collapsed');
+                document.querySelectorAll(`.product-row[data-category="${category}"]`).forEach(r => r.classList.remove('hidden'));
+            } else {
+                this.state.collapsedCategories.add(category);
+                row.classList.add('collapsed');
+                document.querySelectorAll(`.product-row[data-category="${category}"]`).forEach(r => r.classList.add('hidden'));
+            }
+        },
+        handleFilterInput(event) {
+            this.state.filter = event.target.value;
+            this.renderTable();
+        },
+        handleScroll() {
+            const btn = this.elements.scrollTopBtn;
+            btn.classList.toggle('visible', window.scrollY > 300);
+        },
+        updateAndSave() {
+            this.calculate();
+            this.saveState();
+        },
+        calculate() {
+            const inputs = this.elements.tableBody.querySelectorAll('.quantity-input');
+            let baseTotal = 0;
+            inputs.forEach(input => {
+                const id = input.dataset.id;
+                const product = this.state.products.find(p => p.id === id);
+                if (product) {
+                    baseTotal += product.prices.p1 * (parseInt(input.value, 10) || 0);
+                }
+            });
+            const { limit: l3, label: label3 } = this.config.priceTiers.tier3;
+            const { limit: l2, label: label2 } = this.config.priceTiers.tier2;
+            const { label: label1 } = this.config.priceTiers.tier1;
+            const tier = baseTotal >= l3 ? 3 : baseTotal >= l2 ? 2 : 1;
+            this.elements.tierEl.textContent = tier === 3 ? label3 : tier === 2 ? label2 : label1;
+            
+            document.querySelectorAll('.price-highlight').forEach(el => el.classList.remove('price-highlight'));
+            const activeHeader = document.querySelector(`.price-p${tier}-header`);
+            if (activeHeader) activeHeader.classList.add('price-highlight');
+
+            let finalTotal = 0;
+            inputs.forEach(input => {
+                const qty = parseInt(input.value, 10) || 0;
+                const row = input.closest('tr');
+                if (!row) return;
+                const id = row.dataset.id;
+                const product = this.state.products.find(p => p.id === id);
+                if (!product) return;
+                const price = product.prices[`p${tier}`];
+                const subtotal = price * qty;
+                finalTotal += subtotal;
+                
+                const sumCell = row.querySelector('.sum');
+                sumCell.textContent = `${subtotal.toLocaleString('ru-RU')} ₸`;
+                row.querySelector(`.price-p${tier}`)?.classList.add('price-highlight');
+                
+                if (qty > 0) {
+                    sumCell.classList.add('summary-highlight');
+                    setTimeout(() => sumCell.classList.remove('summary-highlight'), 1500);
+                }
+            });
+            
+            const savings = baseTotal - finalTotal;
+            this.elements.totalEl.textContent = `${finalTotal.toLocaleString('ru-RU')} ₸`;
+            this.elements.savingsEl.textContent = `Экономия: ${savings.toLocaleString('ru-RU')} ₸`;
+            
+            this.elements.totalEl.classList.add('summary-highlight');
+            setTimeout(() => this.elements.totalEl.classList.remove('summary-highlight'), 1500);
+            
+            const kaspiTotal = Math.round(finalTotal * this.config.kaspiMultiplier);
+            const kaspiMonthly = Math.round(kaspiTotal / 12);
+            this.elements.kaspiEl.innerHTML = `
+                В рассрочку KASPI ≈ <strong>${kaspiTotal.toLocaleString('ru-RU')} ₸</strong>
+                <span style="font-size: 0.9em;">(${kaspiMonthly.toLocaleString('ru-RU')} ₸/мес)</span>
+            `;
+
+            if(this.elements.directPriceOnBtn) {
+                 this.elements.directPriceOnBtn.textContent = `${finalTotal.toLocaleString('ru-RU')} ₸`;
+            }
+            if(this.elements.installmentPriceOnBtn) {
+                this.elements.installmentPriceOnBtn.textContent = `${kaspiTotal.toLocaleString('ru-RU')} ₸`;
+            }
+        },
+        saveState() {
+            const quantities = {};
+            this.elements.tableBody.querySelectorAll('.quantity-input').forEach(input => {
+                const value = parseInt(input.value, 10);
+                if (value > 0) {
+                    quantities[input.dataset.id] = value;
+                }
+            });
+            localStorage.setItem(this.config.cacheKey, JSON.stringify(quantities));
+        },
+        restoreState() {
+            const savedQuantities = JSON.parse(localStorage.getItem(this.config.cacheKey) || '{}');
+            this.state.quantities = savedQuantities;
+            this.restoreQuantities();
+        },
+        restoreQuantities() {
+            Object.keys(this.state.quantities).forEach(id => {
+                const input = this.elements.tableBody.querySelector(`input[data-id='${id}']`);
+                if (input) {
+                    input.value = this.state.quantities[id];
+                }
+            });
+        },
+        restoreStateFromUrl() {
+            const hash = window.location.hash;
+            if (hash && hash.startsWith('#order:')) {
+                const params = hash.substring(7);
+                if (!params) return;
+
+                const urlQuantities = {};
+                params.split(',').forEach(item => {
+                    const parts = item.split('=');
+                    if (parts.length === 2) {
+                        const id = parts[0];
+                        const qty = parseInt(parts[1], 10);
+                        if (id && !isNaN(qty) && qty > 0) {
+                            urlQuantities[id] = qty;
+                        }
+                    }
+                });
+
+                if (Object.keys(urlQuantities).length > 0) {
+                    localStorage.setItem(this.config.cacheKey, JSON.stringify(urlQuantities));
+                    history.replaceState(null, null, ' ');
+                }
+            }
+        },
+        generateOrderData(paymentType) { 
+            const orderItems = [];
+            let baseTotal = 0;
+            this.elements.tableBody.querySelectorAll('.quantity-input').forEach(input => {
+                const qty = parseInt(input.value, 10) || 0;
+                if (qty === 0) return;
+                const id = input.dataset.id;
+                const product = this.state.products.find(p => p.id === id);
+                if (product) {
+                    baseTotal += product.prices.p1 * qty;
+                    orderItems.push({ product, qty });
+                }
+            });
+
+            if (orderItems.length === 0) {
+                return { orderText: "", hasItems: false };
+            }
+
+            const tier = baseTotal >= this.config.priceTiers.tier3.limit
+                            ? 3
+                            : baseTotal >= this.config.priceTiers.tier2.limit ? 2 : 1;
+            let finalTotal = 0;
+            let orderText = "Здравствуйте! Хочу сделать ПРЕДЗАКАЗ Pharmacom:\n\n";
+            const orderParams = [];
+            orderItems.forEach(({ product, qty }) => {
+                const price = product.prices[`p${tier}`];
+                const subtotal = price * qty;
+                finalTotal += subtotal;
+                orderParams.push(`${product.id}=${qty}`);
+                orderText += `• ${product.name} — ${qty} шт × ${price.toLocaleString('ru-RU')} ₸ = ${subtotal.toLocaleString('ru-RU')} ₸\n`;
+            });
+            
+            const kaspiTotal = Math.round(finalTotal * this.config.kaspiMultiplier);
+            
+            let paymentText = "";
+            if (paymentType === 'direct') {
+                paymentText = `\n*Выбранный способ оплаты: Оплатить сразу (QR / Перевод)*\n*Итоговая сумма: ${finalTotal.toLocaleString("ru-RU")} ₸*`;
+            } else if (paymentType === 'installment') {
+                paymentText = `\n*Выбранный способ оплаты: Рассрочка Kaspi 0-0-12*\n*Итоговая сумма: ${kaspiTotal.toLocaleString("ru-RU")} ₸*`;
+            } else {
+                orderText += `\n*Итого без рассрочки: ${finalTotal.toLocaleString("ru-RU")} ₸*`;
+                orderText += `\nСумма через рассрочку KASPI 0-0-12: ${kaspiTotal.toLocaleString("ru-RU")} ₸`;
+            }
+
+            if (paymentText) {
+                orderText += paymentText;
+            }
+            
+            const baseUrl = window.location.href.split("#")[0];
+            const orderLink = `${baseUrl}#order:${orderParams.join(",")}`;
+            orderText += `\n\n(Ссылка для восстановления заказа: ${orderLink})`;
+            orderText += `\n\nПожалуйста, подтвердите наличие и детали заказа.`;
+
+            return { orderText, orderLink, hasItems: orderItems.length > 0 };
+        },
+        sendOrder(paymentType) {
+            const { orderText, hasItems } = this.generateOrderData(paymentType);
+            if (!hasItems) {
+                this.showToast("Сначала добавьте товары в корзину");
+                return;
+            }
+            const encodedText = encodeURIComponent(orderText);
+            const url = `https://wa.me/${this.config.whatsAppPhone}?text=${encodedText}`;
+            window.open(url, "_blank");
+        },
+        copyOrderForChat() {
+            const { orderText, hasItems } = this.generateOrderData(null);
+             if (!hasItems) {
+                this.showToast("Сначала добавьте товары в корзину");
+                return;
+            }
+            navigator.clipboard.writeText(orderText).then(() => {
+                this.showToast("Скопировано! Вставьте в чат WhatsApp ✅", 'success');
+            }).catch(err => {
+                this.showToast("Не удалось скопировать текст");
+                console.error('Ошибка копирования: ', err);
+            });
+        },
+        clearOrder() {
+            if (confirm("Вы уверены, что хотите очистить весь заказ?")) {
+                this.state.quantities = {};
+                localStorage.removeItem(this.config.cacheKey + '_quantities');
+                this.elements.tableBody.querySelectorAll('.quantity-input').forEach(input => {
+                    input.value = 0;
+                });
+                this.calculate();
+                this.saveState();
+                this.showToast("Заказ очищен", 'success');
+            }
+        },
+        showToast(message, type = 'normal') {
+            const icons = {
+                normal: '<svg class="icon" viewBox="0 0 24 24" width="16" height="16"><path fill="currentColor" d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/></svg>',
+                warning: '<svg class="icon" viewBox="0 0 24 24" width="16" height="16"><path fill="currentColor" d="M1 21h22L12 2 1 21zm12-3h-2v-2h2v2zm0-4h-2v-4h2v4z"/></svg>',
+                success: '<svg class="icon" viewBox="0 0 24 24" width="16" height="16"><path fill="currentColor" d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/></svg>'
+            };
+
+            this.elements.toastEl.className = 'toast-notification';
+            this.elements.toastEl.classList.add(type);
+            this.elements.toastEl.innerHTML = (icons[type] || icons['normal']) + ' ' + message;
+            
+            this.elements.toastEl.classList.add('show');
+            setTimeout(() => {
+                this.elements.toastEl.classList.remove('show');
+            }, 4000);
+        },
+        showError() {
+            this.elements.loader.innerHTML = `
+                <div style="color: #ff6b6b; max-width: 400px; display:flex; flex-direction:column; align-items:center; gap: 10px;">
+                     <svg class="icon" style="font-size: 24px;" viewBox="0 0 24 24"><path fill="currentColor" d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/></svg>
+                    <div>Не удалось загрузить прайс-лист. Проверьте интернет-соединение и попробуйте обновить страницу.</div>
+                    <button onclick="location.reload()" style="margin-top: 15px; background: var(--primary-color); color: white; border: none; padding: 10px 20px; border-radius: var(--border-radius); cursor: pointer; display:inline-flex; align-items:center; gap: 8px;">
+                        <svg class="icon" viewBox="0 0 24 24"><path fill="#FFF" d="M17.65 6.35C16.2 4.9 14.21 4 12 4c-4.42 0-7.99 3.58-7.99 8s3.57 8 7.99 8c3.73 0 6.84-2.55 7.73-6h-2.08c-.82 2.33-3.04 4-5.65 4-3.31 0-6-2.69-6-6s2.69-6 6-6c1.66 0 3.14.69 4.22 1.78L13 11h7V4l-2.35 2.35z"/></svg>
+                        Обновить страницу
+                    </button>
+                </div>
+            `;
+        }
+    };
+    app.init();
+    </script>
 </body>
 </html>
