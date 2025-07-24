@@ -41,9 +41,39 @@
         .icon { width: 16px; height: 16px; margin-right: 6px; vertical-align: middle; }
         body { font-family: var(--font-main); background-color: var(--bg-color); color: var(--text-color); margin: 0; padding: 15px; font-size: 16px; }
         .visually-hidden { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0; }
-        .header { background-color: var(--bg-color); padding: 15px 0; margin-bottom: 15px; display: flex; justify-content: space-between; align-items: center; }
-        .header .container { max-width: 1200px; margin: 0 auto; padding: 0 15px; display: flex; justify-content: space-between; align-items: center; width: 100%; }
+        .header { background-color: var(--bg-color); padding: 15px 0; margin-bottom: 15px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; }
+        .header .container { max-width: 1200px; margin: 0 auto; padding: 0 15px; display: flex; justify-content: space-between; align-items: center; width: 100%; flex-wrap: wrap; gap: 15px;}
         .logo img { height: 40px; width: auto; display: block; }
+
+        /* --- СТИЛИ ДЛЯ ТАЙМЕРА --- */
+        #countdown-container {
+            background-color: var(--surface-color);
+            border: 1px solid var(--border-color);
+            border-radius: var(--border-radius);
+            padding: 8px 15px;
+            text-align: center;
+            margin: 10px auto 0;
+            width: fit-content;
+            box-shadow: var(--shadow);
+        }
+        #countdown-container .title {
+            font-size: 12px;
+            text-transform: uppercase;
+            color: var(--text-muted-color);
+            letter-spacing: 0.5px;
+        }
+        #countdown-timer {
+            font-size: 22px;
+            font-weight: 700;
+            color: var(--primary-color);
+            letter-spacing: 1px;
+        }
+        #countdown-container.expired #countdown-timer {
+            color: var(--tag-bestseller-bg);
+            font-size: 16px;
+        }
+        /* --- КОНЕЦ СТИЛЕЙ ДЛЯ ТАЙМЕРА --- */
+
         .calculator-container { max-width: 1200px; margin: auto; animation: fadeIn 0.3s ease-in-out; }
         @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
         .filter-wrapper { margin: 15px 0; max-width: 100%; display: flex; gap: 10px; flex-wrap: wrap; }
@@ -83,7 +113,7 @@
         .savings { color: var(--success-color); font-weight: 600; }
         .kaspi-info { font-size: 12px; color: var(--text-muted-color); margin-top: 5px; }
         .actions { width: 100%; display: flex; gap: 15px; flex-wrap: wrap; }
-        .action-button { padding: 10px 15px; font-size: 16px; font-weight: 600; border: none; border-radius: var(--border-radius); cursor: pointer; text-align: center; flex-grow: 1; display: flex; align-items: center; justify-content: center; gap: 8px; line-height: 1.2; }
+        .action-button { padding: 10px 15px; font-size: 16px; font-weight: 600; border: none; border-radius: var(--border-radius); cursor: pointer; text-align: center; flex-grow: 1; display: flex; align-items: center; justify-content: center; gap: 8px; line-height: 1.2; transition: background-color 0.2s, opacity 0.2s; }
         .action-button:disabled { background-color: #555 !important; cursor: not-allowed; opacity: 0.6; }
         .action-button strong { font-size: 16px; }
         .whatsapp-btn { background-color: var(--success-color); color: white; }
@@ -104,7 +134,7 @@
         .scroll-top-btn.visible { display: block; }
         .summary-highlight { animation: highlight 1.5s ease; }
         @keyframes highlight { 0% { background-color: rgba(0, 170, 255, 0.3); } 100% { background-color: transparent; } }
-        @media (max-width: 768px) { body { padding: 10px; font-size: 14px; } #priceTable th, #priceTable td { padding: 10px; } .summary-panel { flex-direction: column; align-items: stretch; text-align: center; gap: 15px; } .actions { width: 100%; flex-direction: column; gap: 10px; } .action-button { width: 100%; } .filter-wrapper { flex-direction: column; } }
+        @media (max-width: 768px) { body { padding: 10px; font-size: 14px; } #priceTable th, #priceTable td { padding: 10px; } .summary-panel { flex-direction: column; align-items: stretch; text-align: center; gap: 15px; } .actions { width: 100%; flex-direction: column; gap: 10px; } .action-button { width: 100%; } .filter-wrapper { flex-direction: column; } .header .container { justify-content: center; } }
     </style>
 </head>
 <body>
@@ -119,6 +149,10 @@
                     <svg class="icon" viewBox="0 0 24 24" width="16" height="16"><path fill="currentColor" d="M19.23 15.26l-2.54-.29c-.61-.07-1.21.14-1.64.47l-1.84 1.84c-2.83-1.44-5.15-3.75-6.59-6.59l1.85-1.85c.32-.43.54-1.03.47-1.64l-.29-2.52c-.12-1.01-.97-1.77-1.99-1.77H5.03c-1.13 0-2.07.94-2 2.07.53 8.54 7.36 15.36 15.89 15.89 1.13.07 2.07-.87 2.07-2v-1.73c.01-1.01-.75-1.86-1.76-1.98z"/></svg>
                     +7 (778) 099-04-59
                 </a>
+            </div>
+             <div id="countdown-container" style="display: none;">
+                <div class="title">До конца предзаказа</div>
+                <div id="countdown-timer">00:00:00:00</div>
             </div>
         </div>
     </header>
@@ -140,9 +174,9 @@
                     </tr>
                     <tr>
                         <th class="col-name">Препарат</th>
-                        <th class="col-price price-p1-header">30000-70000 ₸</th>
-                        <th class="col-price price-p2-header">70000-100000 ₸</th>
-                        <th class="col-price price-p3-header">от 100000 ₸ <span class="profitable-tag">Выгодно</span></th>
+                        <th class="col-price price-p1-header">от 40000 ₸</th>
+                        <th class="col-price price-p2-header">от 150000 ₸</th>
+                        <th class="col-price price-p3-header">от 300000 ₸ <span class="profitable-tag">Выгодно</span></th>
                         <th class="col-qty">Количество</th>
                         <th class="col-sum">Сумма</th>
                     </tr>
@@ -182,7 +216,6 @@
                 </button>
             </div>
             <div class="actions" style="margin-top: 10px; display: grid; grid-template-columns: 1fr 1fr;">
-                <!-- ИЗМЕНЕНО: Добавлен id="copyOrderBtn" -->
                 <button class="action-button" id="copyOrderBtn" style="background-color: var(--border-color);" onclick="app.copyOrderForChat()">
                     <svg class="icon" viewBox="0 0 24 24" width="16" height="16"><path fill="currentColor" d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"></path></svg>
                     Просто скопировать
@@ -215,15 +248,20 @@
     <script>
     const app = {
         config: {
-            csvPath: "https://docs.google.com/spreadsheets/d/e/2PACX-1vTXGkztaAik2l3cvEKopR_VGORxIINNdd2p9gBLM4XgY0XdnKQvJlPw632QC3cMSw9Bt61J53Bg0HCq/pub?gid=1678494563&single=true&output=csv",
+            // ✔️ ССЫЛКА НА GOOGLE ТАБЛИЦУ С ТОВАРАМИ
+            csvPath: "https://docs.google.com/spreadsheets/d/e/2PACX-1vQZG2MUbk2nVZjRLFdsn-N-Ddxv9mqsR-PM2c6BdAadUou1FoIwAtaoJzhFJWFLqM5z5wR5fRJa9rXu/pub?gid=262462405&single=true&output=csv",
+            
+            // ✔️ ВСТАВЬТЕ СЮДА ССЫЛКУ НА CSV-ФАЙЛ GOOGLE ТАБЛИЦЫ С ДАТОЙ ОКОНЧАНИЯ ТАЙМЕРА
+            timerCsvPath: "https://docs.google.com/spreadsheets/d/e/2PACX-1vSw6H1az1Y8OcTwyavgaWce1Bj9JtvIu3sYpgbSsbWfw_9P06t_9UzJy9KAwUbnAZdwyVa_j7YMmAx9/pub?gid=260582838&single=true&output=csv", // <-- ❗ ВАЖНО: Вставьте вашу ссылку сюда
+
             whatsAppPhone: "77780990459",
             priceTiers: {
-                tier1: { limit: 0, label: "30000-70000 ₸" },
-                tier2: { limit: 70000, label: "70000-100000 ₸" },
-                tier3: { limit: 100000, label: "от 100000 ₸" },
+                tier1: { limit: 0, label: "40000 ₸" },  
+                tier2: { limit: 150000, label: "150000 ₸" },
+                tier3: { limit: 300000, label: "от 300000 ₸" },
             },
             kaspiMultiplier: 1.1,
-            minOrderAmount: 30000,
+            minOrderAmount: 40000,
             productsCacheKey: 'preorderPharmacomProducts_v2',
             quantitiesCacheKey: 'preorderPharmacomQuantities_v2',
             cacheDuration: 5 * 60 * 1000,
@@ -233,6 +271,8 @@
             quantities: {},
             filter: '',
             collapsedCategories: new Set(),
+            countdownInterval: null,
+            preorderActive: true,
         },
         elements: {
             appContainer: document.getElementById('app'),
@@ -249,12 +289,15 @@
             directPriceOnBtn: document.getElementById('directPriceOnBtn'),
             buyDirectBtn: document.getElementById('buyDirectBtn'),
             buyInstallmentBtn: document.getElementById('buyInstallmentBtn'),
-            // ИЗМЕНЕНО: Добавлена кнопка копирования
             copyOrderBtn: document.getElementById('copyOrderBtn'),
             minOrderMessage: document.getElementById('minOrderMessage'),
+            // ✔️ Элементы таймера
+            countdownContainer: document.getElementById('countdown-container'),
+            countdownTimer: document.getElementById('countdown-timer'),
         },
         init() {
             this.bindEvents();
+            this.initTimer(); // ✔️ Запускаем инициализацию таймера
             this.loadData();
         },
 
@@ -265,6 +308,98 @@
             this.elements.scrollTopBtn.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
         },
         
+        // ✔️ НОВАЯ ФУНКЦИЯ: Загрузка и запуск таймера
+        async initTimer() {
+            // Для теста, если нет ссылки. Установите дату в будущем.
+            // const testEndDate = new Date();
+            // testEndDate.setHours(testEndDate.getHours() + 72);
+            // this.startCountdown(testEndDate.toISOString());
+            // return;
+
+            if (!this.config.timerCsvPath) {
+                console.warn("Ссылка на CSV таймера не указана. Таймер не будет показан.");
+                return;
+            }
+            try {
+                const response = await fetch(this.config.timerCsvPath, { cache: "no-store" });
+                if (!response.ok) throw new Error(`Ошибка сети: ${response.status}`);
+                const csvText = await response.text();
+                
+                Papa.parse(csvText, {
+                    header: true,
+                    skipEmptyLines: true,
+                    complete: (results) => {
+                        if (results.data.length > 0 && results.data[0].EndDate) {
+                            const endDateString = results.data[0].EndDate.trim();
+                            this.startCountdown(endDateString);
+                        } else {
+                           throw new Error("Неверный формат CSV или дата не найдена.");
+                        }
+                    },
+                     error: (err) => { throw new Error(err); }
+                });
+            } catch (error) {
+                console.error("Не удалось загрузить данные таймера:", error);
+                this.elements.countdownContainer.style.display = 'none';
+            }
+        },
+
+        // ✔️ НОВАЯ ФУНКЦИЯ: Логика обратного отсчета
+        startCountdown(endDateString) {
+            // --- НАЧАЛО ИСПРАВЛЕНИЯ ---
+            // Преобразуем дату из формата "ДД.ММ.ГГГГ" в "ГГГГ-ММ-ДД"
+            const parts = endDateString.split('.');
+            const formattedDateString = `${parts[2]}-${parts[1]}-${parts[0]}`;
+            const endDate = new Date(formattedDateString);
+            // --- КОНЕЦ ИСПРАВЛЕНИЯ ---
+
+            if (isNaN(endDate.getTime())) {
+                console.error("Неверный формат даты для таймера:", endDateString);
+                return;
+            }
+            this.elements.countdownContainer.style.display = 'block';
+
+            const update = () => {
+                const now = new Date().getTime();
+                const distance = endDate - now;
+
+                if (distance < 0) {
+                    clearInterval(this.state.countdownInterval);
+                    this.elements.countdownTimer.textContent = "ПРЕДЗАКАЗ ЗАВЕРШЕН";
+                    this.elements.countdownContainer.classList.add('expired');
+                    this.disablePreorder();
+                    return;
+                }
+
+                const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+                const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+                const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+                const pad = (num) => num.toString().padStart(2, '0');
+                this.elements.countdownTimer.innerHTML = `${pad(days)}:${pad(hours)}:${pad(minutes)}:${pad(seconds)}`;
+            };
+            
+            update(); // Запускаем сразу
+            this.state.countdownInterval = setInterval(update, 1000);
+        },
+
+        // ✔️ НОВАЯ ФУНКЦИЯ: Отключение кнопок заказа
+        disablePreorder() {
+            this.state.preorderActive = false;
+            this.elements.buyDirectBtn.disabled = true;
+            this.elements.buyInstallmentBtn.disabled = true;
+            this.elements.copyOrderBtn.disabled = true;
+            
+            // Показываем сообщение поверх кнопок
+            const orderInstructions = document.querySelector('.order-instructions');
+            if (orderInstructions) {
+                 orderInstructions.innerHTML = `<p style="color: var(--tag-bestseller-bg); font-weight: 600;">Прием заказов по предзаказу завершен.</p>`;
+            }
+
+            this.showToast("Время предзаказа истекло", 'warning');
+        },
+
         async loadData() {
             const cachedItem = JSON.parse(localStorage.getItem(this.config.productsCacheKey));
             
@@ -539,17 +674,17 @@
                 this.elements.installmentPriceOnBtn.textContent = `${kaspiTotal.toLocaleString('ru-RU')} ₸`;
             }
 
-            // ИЗМЕНЕНО: Логика блокировки кнопок теперь включает кнопку "Копировать"
-            if (finalTotal < this.config.minOrderAmount) {
-                this.elements.buyDirectBtn.disabled = true;
-                this.elements.buyInstallmentBtn.disabled = true;
-                this.elements.copyOrderBtn.disabled = true;
+            // ✔️ Изменена логика блокировки кнопок
+            const buttonsDisabled = finalTotal < this.config.minOrderAmount || !this.state.preorderActive;
+            
+            this.elements.buyDirectBtn.disabled = buttonsDisabled;
+            this.elements.buyInstallmentBtn.disabled = buttonsDisabled;
+            this.elements.copyOrderBtn.disabled = buttonsDisabled;
+
+            if (this.state.preorderActive && finalTotal > 0 && finalTotal < this.config.minOrderAmount) {
                 this.elements.minOrderMessage.textContent = `Минимальная сумма для предзаказа: ${this.config.minOrderAmount.toLocaleString('ru-RU')} ₸`;
                 this.elements.minOrderMessage.style.display = 'block';
             } else {
-                this.elements.buyDirectBtn.disabled = false;
-                this.elements.buyInstallmentBtn.disabled = false;
-                this.elements.copyOrderBtn.disabled = false;
                 this.elements.minOrderMessage.style.display = 'none';
             }
         },
