@@ -9,7 +9,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap">
-    <link rel="preload" as="image" href="logo_calc_optimized.webp">
+    <link rel="preload" as="image" href="logo_calc.webp">
     
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" media="print" onload="this.media='all'">
     <noscript>
@@ -84,6 +84,7 @@
         .kaspi-info { font-size: 12px; color: var(--text-muted-color); margin-top: 5px; }
         .actions { width: 100%; display: flex; gap: 15px; flex-wrap: wrap; }
         .action-button { padding: 10px 15px; font-size: 16px; font-weight: 600; border: none; border-radius: var(--border-radius); cursor: pointer; text-align: center; flex-grow: 1; display: flex; align-items: center; justify-content: center; gap: 8px; line-height: 1.2; }
+        .action-button:disabled { background-color: #555 !important; cursor: not-allowed; opacity: 0.6; }
         .action-button strong { font-size: 16px; }
         .whatsapp-btn { background-color: var(--success-color); color: white; }
         .whatsapp-btn:hover { background-color: #218838; }
@@ -155,6 +156,7 @@
                 <div><span class="savings" id="savings">Экономия: 0 ₸</span></div>
                 <div class="kaspi-info" id="kaspi"></div>
                 <div>Итоговая сумма: <span class="final-total" id="total">0 ₸</span></div>
+                <div id="minOrderMessage" style="color: var(--warning-color); font-weight: 600; margin-top: 10px; display: none;"></div>
             </div>
             
             <div class="order-instructions" style="text-align: center; margin: 15px 0 5px 0; width: 100%;">
@@ -180,7 +182,8 @@
                 </button>
             </div>
             <div class="actions" style="margin-top: 10px; display: grid; grid-template-columns: 1fr 1fr;">
-                <button class="action-button" style="background-color: var(--border-color);" onclick="app.copyOrderForChat()">
+                <!-- ИЗМЕНЕНО: Добавлен id="copyOrderBtn" -->
+                <button class="action-button" id="copyOrderBtn" style="background-color: var(--border-color);" onclick="app.copyOrderForChat()">
                     <svg class="icon" viewBox="0 0 24 24" width="16" height="16"><path fill="currentColor" d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"></path></svg>
                     Просто скопировать
                 </button>
@@ -220,8 +223,10 @@
                 tier3: { limit: 100000, label: "от 100000 ₸" },
             },
             kaspiMultiplier: 1.1,
-            cacheKey: 'preorderPharmacomData_v2', // Changed cache key
-            cacheDuration: 5 * 60 * 1000, // 5 minutes cache
+            minOrderAmount: 30000,
+            productsCacheKey: 'preorderPharmacomProducts_v2',
+            quantitiesCacheKey: 'preorderPharmacomQuantities_v2',
+            cacheDuration: 5 * 60 * 1000,
         },
         state: {
             products: [],
@@ -242,6 +247,11 @@
             scrollTopBtn: document.getElementById("scrollTopBtn"),
             installmentPriceOnBtn: document.getElementById('installmentPriceOnBtn'),
             directPriceOnBtn: document.getElementById('directPriceOnBtn'),
+            buyDirectBtn: document.getElementById('buyDirectBtn'),
+            buyInstallmentBtn: document.getElementById('buyInstallmentBtn'),
+            // ИЗМЕНЕНО: Добавлена кнопка копирования
+            copyOrderBtn: document.getElementById('copyOrderBtn'),
+            minOrderMessage: document.getElementById('minOrderMessage'),
         },
         init() {
             this.bindEvents();
@@ -256,7 +266,7 @@
         },
         
         async loadData() {
-            const cachedItem = JSON.parse(localStorage.getItem(this.config.cacheKey));
+            const cachedItem = JSON.parse(localStorage.getItem(this.config.productsCacheKey));
             
             if (cachedItem && (Date.now() - cachedItem.timestamp < this.config.cacheDuration)) {
                 this.processData(cachedItem.products);
@@ -276,7 +286,7 @@
                 }
             } catch (error) {
                 console.error("Не удалось загрузить свежие данные:", error);
-                const cachedItem = JSON.parse(localStorage.getItem(this.config.cacheKey));
+                const cachedItem = JSON.parse(localStorage.getItem(this.config.productsCacheKey));
                 if (cachedItem && cachedItem.products) {
                     this.showToast("Не удалось обновить прайс. Показана сохраненная версия.", 'warning');
                     this.processData(cachedItem.products);
@@ -296,7 +306,7 @@
                         this.showError();
                         return;
                     }
-                     localStorage.setItem(this.config.cacheKey, JSON.stringify({
+                     localStorage.setItem(this.config.productsCacheKey, JSON.stringify({
                         timestamp: Date.now(),
                         products: products
                     }));
@@ -516,6 +526,7 @@
             
             const kaspiTotal = Math.round(finalTotal * this.config.kaspiMultiplier);
             const kaspiMonthly = Math.round(kaspiTotal / 12);
+
             this.elements.kaspiEl.innerHTML = `
                 В рассрочку KASPI ≈ <strong>${kaspiTotal.toLocaleString('ru-RU')} ₸</strong>
                 <span style="font-size: 0.9em;">(${kaspiMonthly.toLocaleString('ru-RU')} ₸/мес)</span>
@@ -527,6 +538,20 @@
             if(this.elements.installmentPriceOnBtn) {
                 this.elements.installmentPriceOnBtn.textContent = `${kaspiTotal.toLocaleString('ru-RU')} ₸`;
             }
+
+            // ИЗМЕНЕНО: Логика блокировки кнопок теперь включает кнопку "Копировать"
+            if (finalTotal < this.config.minOrderAmount) {
+                this.elements.buyDirectBtn.disabled = true;
+                this.elements.buyInstallmentBtn.disabled = true;
+                this.elements.copyOrderBtn.disabled = true;
+                this.elements.minOrderMessage.textContent = `Минимальная сумма для предзаказа: ${this.config.minOrderAmount.toLocaleString('ru-RU')} ₸`;
+                this.elements.minOrderMessage.style.display = 'block';
+            } else {
+                this.elements.buyDirectBtn.disabled = false;
+                this.elements.buyInstallmentBtn.disabled = false;
+                this.elements.copyOrderBtn.disabled = false;
+                this.elements.minOrderMessage.style.display = 'none';
+            }
         },
         saveState() {
             const quantities = {};
@@ -536,10 +561,10 @@
                     quantities[input.dataset.id] = value;
                 }
             });
-            localStorage.setItem(this.config.cacheKey, JSON.stringify(quantities));
+            localStorage.setItem(this.config.quantitiesCacheKey, JSON.stringify(quantities));
         },
         restoreState() {
-            const savedQuantities = JSON.parse(localStorage.getItem(this.config.cacheKey) || '{}');
+            const savedQuantities = JSON.parse(localStorage.getItem(this.config.quantitiesCacheKey) || '{}');
             this.state.quantities = savedQuantities;
             this.restoreQuantities();
         },
@@ -570,7 +595,7 @@
                 });
 
                 if (Object.keys(urlQuantities).length > 0) {
-                    localStorage.setItem(this.config.cacheKey, JSON.stringify(urlQuantities));
+                    localStorage.setItem(this.config.quantitiesCacheKey, JSON.stringify(urlQuantities));
                     history.replaceState(null, null, ' ');
                 }
             }
@@ -656,7 +681,7 @@
         clearOrder() {
             if (confirm("Вы уверены, что хотите очистить весь заказ?")) {
                 this.state.quantities = {};
-                localStorage.removeItem(this.config.cacheKey + '_quantities');
+                localStorage.removeItem(this.config.quantitiesCacheKey);
                 this.elements.tableBody.querySelectorAll('.quantity-input').forEach(input => {
                     input.value = 0;
                 });
