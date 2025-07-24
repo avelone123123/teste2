@@ -344,19 +344,46 @@
             }
         },
 
-        // ✔️ НОВАЯ ФУНКЦИЯ: Логика обратного отсчета
+// ✔️ НОВАЯ ФУНКЦИЯ: Логика обратного отсчета
         startCountdown(endDateString) {
-            // --- НАЧАЛО ИСПРАВЛЕНИЯ ---
-            // Преобразуем дату из формата "ДД.ММ.ГГГГ" в "ГГГГ-ММ-ДД"
-            const parts = endDateString.split('.');
-            const formattedDateString = `${parts[2]}-${parts[1]}-${parts[0]}`;
-            const endDate = new Date(formattedDateString);
-            // --- КОНЕЦ ИСПРАВЛЕНИЯ ---
+            let endDate;
+            try {
+                // --- НАЧАЛО ИСПРАВЛЕНИЯ (универсальная версия) ---
+                // Заменяем пробел на "T" для лучшей совместимости и пытаемся создать дату
+                // Этот формат (YYYY-MM-DDTHH:mm:ss) является стандартом ISO 8601 и лучше всего поддерживается
+                const isoDateString = endDateString.trim().replace(' ', 'T');
+                endDate = new Date(isoDateString);
 
-            if (isNaN(endDate.getTime())) {
-                console.error("Неверный формат даты для таймера:", endDateString);
-                return;
+                // ПРОВЕРКА НА ОШИБКУ: Если дата невалидна, используем ручной разбор
+                if (isNaN(endDate.getTime())) {
+                    console.warn("ISO parsing failed, falling back to manual parsing.");
+                    // Разбираем дату и время вручную для максимальной надежности
+                    const dateTimeParts = endDateString.trim().split(' ');
+                    const dateParts = dateTimeParts[0].split('-'); // [ГГГГ, ММ, ДД]
+                    const timeParts = dateTimeParts.length > 1 ? dateTimeParts[1].split(':') : [0, 0, 0]; // [ЧЧ, ММ, СС]
+
+                    const year = parseInt(dateParts[0], 10);
+                    const month = parseInt(dateParts[1], 10) - 1; // Месяцы в JS с 0
+                    const day = parseInt(dateParts[2], 10);
+
+                    const hours = parseInt(timeParts[0], 10) || 0;
+                    const minutes = parseInt(timeParts[1], 10) || 0;
+                    const seconds = parseInt(timeParts[2], 10) || 0;
+
+                    endDate = new Date(year, month, day, hours, minutes, seconds);
+                }
+                // --- КОНЕЦ ИСПРАВЛЕНИЯ ---
+
+                // Финальная проверка
+                if (isNaN(endDate.getTime())) {
+                   throw new Error("Manual parsing also failed.");
+                }
+
+            } catch (error) {
+                 console.error("Не удалось обработать дату для таймера:", endDateString, error);
+                 return;
             }
+            
             this.elements.countdownContainer.style.display = 'block';
 
             const update = () => {
