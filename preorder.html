@@ -252,7 +252,7 @@
             csvPath: "https://docs.google.com/spreadsheets/d/e/2PACX-1vQZG2MUbk2nVZjRLFdsn-N-Ddxv9mqsR-PM2c6BdAadUou1FoIwAtaoJzhFJWFLqM5z5wR5fRJa9rXu/pub?gid=262462405&single=true&output=csv",
             
             // ✔️ ВСТАВЬТЕ СЮДА ССЫЛКУ НА CSV-ФАЙЛ GOOGLE ТАБЛИЦЫ С ДАТОЙ ОКОНЧАНИЯ ТАЙМЕРА
-            timerCsvPath: "https://docs.google.com/spreadsheets/d/e/2PACX-1vRLUoXcenRKtKu-MmGVihwZxtUTaH41r9C-SP1kOJTPKmNcspGMgq5CNeACEsPgwKtveSwuERVMfflx/pub?gid=1417893585&single=true&output=csv", // <-- ❗ ВАЖНО: Вставьте вашу ссылку сюда
+            timerCsvPath: "https://docs.google.com/spreadsheets/d/e/2PACX-1vRLUoXcenRKtKu-MmGVihwZxtUTaH41r9C-SP1kOJTPKmNcspGMgq5CNeACEsPgwKtveSwuERVMfflx/pub?gid=1417893585&single=true&output=csv", 
 
             whatsAppPhone: "77780990459",
             priceTiers: {
@@ -291,13 +291,12 @@
             buyInstallmentBtn: document.getElementById('buyInstallmentBtn'),
             copyOrderBtn: document.getElementById('copyOrderBtn'),
             minOrderMessage: document.getElementById('minOrderMessage'),
-            // ✔️ Элементы таймера
             countdownContainer: document.getElementById('countdown-container'),
             countdownTimer: document.getElementById('countdown-timer'),
         },
         init() {
             this.bindEvents();
-            this.initTimer(); // ✔️ Запускаем инициализацию таймера
+            this.initTimer();
             this.loadData();
         },
 
@@ -308,14 +307,7 @@
             this.elements.scrollTopBtn.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
         },
         
-        // ✔️ НОВАЯ ФУНКЦИЯ: Загрузка и запуск таймера
         async initTimer() {
-            // Для теста, если нет ссылки. Установите дату в будущем.
-            // const testEndDate = new Date();
-            // testEndDate.setHours(testEndDate.getHours() + 72);
-            // this.startCountdown(testEndDate.toISOString());
-            // return;
-
             if (!this.config.timerCsvPath) {
                 console.warn("Ссылка на CSV таймера не указана. Таймер не будет показан.");
                 return;
@@ -344,43 +336,61 @@
             }
         },
 
-// ✔️ НОВАЯ ФУНКЦИЯ: Логика обратного отсчета
         startCountdown(endDateString) {
             let endDate;
+            const trimmedDate = endDateString.trim();
+
             try {
-                // --- НАЧАЛО ИСПРАВЛЕНИЯ (универсальная версия) ---
-                // Заменяем пробел на "T" для лучшей совместимости и пытаемся создать дату
-                // Этот формат (YYYY-MM-DDTHH:mm:ss) является стандартом ISO 8601 и лучше всего поддерживается
-                const isoDateString = endDateString.trim().replace(' ', 'T');
-                endDate = new Date(isoDateString);
+                // --- НАЧАЛО ИСПРАВЛЕНИЯ ---
+                // Попытка 1: Разобрать дату формата ДД.ММ.ГГГГ
+                let parts = trimmedDate.split(' ')[0].split('.');
+                if (parts.length === 3) {
+                    const day = parseInt(parts[0], 10);
+                    const month = parseInt(parts[1], 10) - 1; // Месяцы в JS начинаются с 0
+                    const year = parseInt(parts[2], 10);
 
-                // ПРОВЕРКА НА ОШИБКУ: Если дата невалидна, используем ручной разбор
-                if (isNaN(endDate.getTime())) {
-                    console.warn("ISO parsing failed, falling back to manual parsing.");
-                    // Разбираем дату и время вручную для максимальной надежности
-                    const dateTimeParts = endDateString.trim().split(' ');
-                    const dateParts = dateTimeParts[0].split('-'); // [ГГГГ, ММ, ДД]
-                    const timeParts = dateTimeParts.length > 1 ? dateTimeParts[1].split(':') : [0, 0, 0]; // [ЧЧ, ММ, СС]
+                    // Проверяем, что год выглядит корректно
+                    if (year > 1970) {
+                        const timeParts = trimmedDate.split(' ')[1]?.split(':') || [0, 0, 0];
+                        endDate = new Date(
+                            year,
+                            month,
+                            day,
+                            parseInt(timeParts[0], 10) || 0,
+                            parseInt(timeParts[1], 10) || 0,
+                            parseInt(timeParts[2], 10) || 0
+                        );
+                    }
+                }
 
-                    const year = parseInt(dateParts[0], 10);
-                    const month = parseInt(dateParts[1], 10) - 1; // Месяцы в JS с 0
-                    const day = parseInt(dateParts[2], 10);
-
-                    const hours = parseInt(timeParts[0], 10) || 0;
-                    const minutes = parseInt(timeParts[1], 10) || 0;
-                    const seconds = parseInt(timeParts[2], 10) || 0;
-
-                    endDate = new Date(year, month, day, hours, minutes, seconds);
+                // Попытка 2: Разобрать дату формата ГГГГ-ММ-ДД (на всякий случай)
+                if (!endDate || isNaN(endDate.getTime())) {
+                    parts = trimmedDate.split(' ')[0].split('-');
+                    if (parts.length === 3) {
+                        const year = parseInt(parts[0], 10);
+                        if (year > 1970) {
+                            const timeParts = trimmedDate.split(' ')[1]?.split(':') || [0, 0, 0];
+                            endDate = new Date(
+                                year,
+                                parseInt(parts[1], 10) - 1, // Месяцы в JS начинаются с 0
+                                parseInt(parts[2], 10),
+                                parseInt(timeParts[0], 10) || 0,
+                                parseInt(timeParts[1], 10) || 0,
+                                parseInt(timeParts[2], 10) || 0
+                            );
+                        }
+                    }
                 }
                 // --- КОНЕЦ ИСПРАВЛЕНИЯ ---
-
-                // Финальная проверка
-                if (isNaN(endDate.getTime())) {
-                   throw new Error("Manual parsing also failed.");
+                
+                // Финальная проверка, что дата в итоге стала корректной
+                if (!endDate || isNaN(endDate.getTime())) {
+                    throw new Error(`Не удалось распознать формат даты: ${endDateString}`);
                 }
 
             } catch (error) {
-                 console.error("Не удалось обработать дату для таймера:", endDateString, error);
+                 console.error("Не удалось обработать дату для таймера:", error);
+                 this.elements.countdownContainer.style.display = 'none';
                  return;
             }
             
@@ -411,14 +421,12 @@
             this.state.countdownInterval = setInterval(update, 1000);
         },
 
-        // ✔️ НОВАЯ ФУНКЦИЯ: Отключение кнопок заказа
         disablePreorder() {
             this.state.preorderActive = false;
             this.elements.buyDirectBtn.disabled = true;
             this.elements.buyInstallmentBtn.disabled = true;
             this.elements.copyOrderBtn.disabled = true;
             
-            // Показываем сообщение поверх кнопок
             const orderInstructions = document.querySelector('.order-instructions');
             if (orderInstructions) {
                  orderInstructions.innerHTML = `<p style="color: var(--tag-bestseller-bg); font-weight: 600;">Прием заказов по предзаказу завершен.</p>`;
@@ -701,7 +709,6 @@
                 this.elements.installmentPriceOnBtn.textContent = `${kaspiTotal.toLocaleString('ru-RU')} ₸`;
             }
 
-            // ✔️ Изменена логика блокировки кнопок
             const buttonsDisabled = finalTotal < this.config.minOrderAmount || !this.state.preorderActive;
             
             this.elements.buyDirectBtn.disabled = buttonsDisabled;
