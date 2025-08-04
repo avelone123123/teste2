@@ -1,0 +1,754 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="format-detection" content="telephone=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+    <title>Предзаказ фармы в Казахстане</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap">
+    
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" media="print" onload="this.media='all'">
+    <noscript>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap">
+    </noscript>
+    
+    <link rel="icon" type="image/x-icon" href="/favicon.ico">
+    
+    <style>
+        :root {
+            --bg-color: #1a1a1a;
+            --surface-color: #2c2c2c;
+            --primary-color: #00aaff;
+            --primary-hover-color: #0088cc;
+            --text-color: #f0f0f0;
+            --text-muted-color: #a0a0a0;
+            --border-color: #444;
+            --success-color: #28a745;
+            --warning-color: #ffc107;
+            --highlight-bg: rgba(0, 170, 255, 0.1);
+            --font-main: 'Inter', system-ui, -apple-system, sans-serif;
+            --border-radius: 12px;
+            --shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+            --tag-bestseller-bg: #e74c3c;
+            --tag-new-bg: #2a527a;
+            --tag-low-stock-bg: #8c5a03;
+            --tag-text-color: #ffffff;
+        }
+        .icon { width: 1em; height: 1em; margin-right: 8px; vertical-align: middle; }
+        body { font-family: var(--font-main); background-color: var(--bg-color); color: var(--text-color); margin: 0; padding: 15px; font-size: 16px; }
+        .visually-hidden { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0; }
+        .header { background-color: var(--bg-color); padding: 15px 0; margin-bottom: 15px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; }
+        .header .container { max-width: 1200px; margin: 0 auto; padding: 0 15px; display: flex; justify-content: space-between; align-items: center; width: 100%; flex-wrap: wrap; gap: 15px;}
+        .logo img { height: 40px; width: auto; display: block; }
+
+        #countdown-container {
+            background-color: var(--surface-color);
+            border: 1px solid var(--border-color);
+            border-radius: var(--border-radius);
+            padding: 8px 15px;
+            text-align: center;
+            margin: 10px auto 0;
+            width: fit-content;
+            box-shadow: var(--shadow);
+        }
+        #countdown-container .title { font-size: 12px; text-transform: uppercase; color: var(--text-muted-color); letter-spacing: 0.5px; }
+        #countdown-timer { font-size: 22px; font-weight: 700; color: var(--primary-color); letter-spacing: 1px; }
+        #countdown-container.expired #countdown-timer { color: var(--tag-bestseller-bg); font-size: 16px; }
+        
+        .calculator-container { max-width: 1200px; margin: auto; animation: fadeIn 0.3s ease-in-out; }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        .filter-wrapper { margin: 15px 0; max-width: 100%; display: flex; gap: 10px; flex-wrap: wrap; }
+        .filter-input { flex-grow: 1; padding: 12px 15px; background: var(--surface-color); color: var(--text-color); border: 1px solid var(--border-color); border-radius: var(--border-radius); font-size: 16px; box-sizing: border-box; min-width: 200px; }
+        .filter-input::placeholder { color: var(--text-muted-color); }
+
+        /* --- Improved Product Grid Styles --- */
+        .product-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+        .product-card {
+            background: var(--surface-color);
+            border-radius: var(--border-radius);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+        .product-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 6px 16px rgba(0,0,0,0.3);
+        }
+        .product-card-image-wrapper {
+            position: relative;
+            background-color: #333;
+        }
+        .product-card-image {
+            width: 100%;
+            height: auto;
+            aspect-ratio: 1 / 1;
+            object-fit: cover;
+            display: block;
+        }
+        .tags-container {
+            position: absolute;
+            top: 12px;
+            left: 12px;
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+        .tag { font-size: 11px; font-weight: 700; padding: 4px 10px; border-radius: 8px; color: var(--tag-text-color); text-transform: uppercase; letter-spacing: 0.5px; }
+        .tag-bestseller { background-color: var(--tag-bestseller-bg); }
+        .tag-new { background-color: var(--tag-new-bg); }
+        .tag-low-stock { background-color: var(--tag-low-stock-bg); }
+
+        .product-card-content {
+            padding: 16px;
+            display: flex;
+            flex-direction: column;
+            flex-grow: 1;
+        }
+        .product-card-name {
+            font-size: 18px;
+            font-weight: 600;
+            margin: 0 0 12px 0;
+            flex-grow: 1;
+            line-height: 1.4;
+        }
+        .product-card-prices {
+            display: grid;
+            gap: 8px;
+            margin-bottom: 16px;
+            font-size: 13px;
+        }
+        .price-tier {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 10px;
+            border-radius: 8px;
+            background-color: rgba(0,0,0,0.1);
+            transition: background-color 0.3s ease, border 0.3s ease;
+            border: 1px solid transparent;
+        }
+        .price-tier.active {
+            background-color: var(--highlight-bg);
+            border-color: var(--primary-color);
+        }
+        .price-tier-label { color: var(--text-muted-color); }
+        .price-tier-value { font-weight: 700; color: var(--text-color); }
+        .price-tier.active .price-tier-value { color: var(--primary-color); }
+
+        .product-card-footer {
+            margin-top: auto;
+            padding-top: 16px;
+            border-top: 1px solid var(--border-color);
+        }
+        .quantity-control { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
+        .quantity-btn { background: var(--border-color); color: var(--text-color); border: none; width: 44px; height: 44px; border-radius: 50%; font-size: 24px; font-weight: bold; cursor: pointer; display: flex; align-items: center; justify-content: center; line-height: 1; transition: background-color 0.2s; }
+        .quantity-btn:hover { background: var(--primary-hover-color); }
+        .quantity-input { width: 100%; height: 44px; text-align: center; background: var(--bg-color); color: var(--text-color); border: 1px solid var(--border-color); border-radius: var(--border-radius); font-size: 16px; font-weight: 500; -moz-appearance: textfield; }
+        .quantity-input::-webkit-outer-spin-button, .quantity-input::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
+        .subtotal {
+            margin-top: 12px;
+            text-align: right;
+            font-size: 16px;
+            font-weight: 600;
+        }
+        .subtotal-label { font-weight: 400; color: var(--text-muted-color); }
+
+        /* --- Summary & Actions --- */
+        .summary-panel { background: var(--surface-color); border-radius: var(--border-radius); padding: 20px; margin-top: 20px; box-shadow: var(--shadow); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 15px; }
+        .totals { font-size: 14px; line-height: 1.6; flex-grow: 1; width: 100%; }
+        .totals #tier { font-weight: 600; color: var(--primary-color); }
+        .final-total { font-size: 24px; font-weight: 700; }
+        .savings { color: var(--success-color); font-weight: 600; }
+        .actions { width: 100%; display: flex; gap: 15px; flex-wrap: wrap; }
+        .action-button { padding: 12px 18px; font-size: 16px; font-weight: 600; border: none; border-radius: var(--border-radius); cursor: pointer; text-align: center; flex-grow: 1; display: flex; align-items: center; justify-content: center; gap: 8px; line-height: 1.2; transition: background-color 0.2s, opacity 0.2s; }
+        .action-button:disabled { background-color: #555 !important; cursor: not-allowed; opacity: 0.6; }
+        .whatsapp-btn { background-color: var(--success-color); color: white; }
+        .whatsapp-btn:hover:not(:disabled) { background-color: #218838; }
+        .clear-btn { background-color: var(--tag-bestseller-bg); color: white; }
+        .clear-btn:hover:not(:disabled) { background-color: #c0392b; }
+        #copyOrderBtn { background-color: #555; color: white; }
+        #copyOrderBtn:hover:not(:disabled) { background-color: #666; }
+        
+        #loader { text-align: center; padding: 40px; font-size: 16px; color: var(--text-muted-color); display: flex; flex-direction: column; align-items: center; gap: 20px; }
+        .loader-spinner { width: 50px; height: 50px; border: 5px solid rgba(255,255,255,0.1); border-radius: 50%; border-top-color: var(--primary-color); animation: spin 1s linear infinite; }
+        @keyframes spin { to { transform: rotate(360deg); } }
+        .toast-notification { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); background-color: var(--primary-color); color: white; padding: 12px 25px; border-radius: var(--border-radius); box-shadow: var(--shadow); z-index: 1000; opacity: 0; visibility: hidden; transition: opacity 0.3s ease, transform 0.3s ease; transform: translateX(-50%) translateY(20px); display: flex; align-items: center; gap: 10px; }
+        .toast-notification.warning { background-color: var(--tag-low-stock-bg); }
+        .toast-notification.success { background-color: var(--success-color); }
+        .toast-notification.show { opacity: 1; visibility: visible; transform: translateX(-50%) translateY(0); }
+        .scroll-top-btn { display: none; position: fixed; bottom: 70px; right: 15px; background: var(--primary-color); color: white; width: 44px; height: 44px; border-radius: 50%; border: none; font-size: 24px; cursor: pointer; z-index: 1000; opacity: 0.8; }
+        .scroll-top-btn:hover { opacity: 1; }
+        .scroll-top-btn.visible { display: block; }
+        
+        /* --- Mobile Optimization --- */
+        @media (max-width: 768px) { 
+            body { padding: 10px; font-size: 14px; } 
+            .product-grid { grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); }
+            .summary-panel { flex-direction: column; align-items: stretch; text-align: center; gap: 15px; } 
+            .actions { width: 100%; flex-direction: column; gap: 10px; } 
+            .action-button { width: 100%; padding: 14px 18px; font-size: 16px; } 
+            .filter-wrapper { flex-direction: column; } 
+            .header .container { justify-content: center; text-align: center; } 
+        }
+         @media (max-width: 480px) {
+            .product-grid {
+                grid-template-columns: 1fr; /* One column on small screens */
+            }
+            .product-card-name { font-size: 17px; }
+            #countdown-timer { font-size: 18px; }
+        }
+    </style>
+</head>
+<body>
+
+    <header class="header">
+        <div class="container">
+            <a href="index.html" class="logo" aria-label="На главную">
+                <img src="logo.webp" alt="Логотип" width="286" height="40" loading="eager">
+            </a>
+             <div id="countdown-container" style="display: none;">
+                <div class="title">До конца предзаказа</div>
+                <div id="countdown-timer">00:00:00:00</div>
+            </div>
+        </div>
+    </header>
+
+    <div class="calculator-container" id="app" style="display: none;">
+        <h1 style="text-align:center;">Предзаказ фармы в Казахстане</h1>
+        <div class="filter-wrapper">
+            <label for="filterInput" class="visually-hidden">Поиск по прайс-листу</label>
+            <input type="text" class="filter-input" id="filterInput" placeholder="🔍 Поиск по названию..." />
+        </div>
+        
+        <div id="product-grid" class="product-grid">
+            </div>
+
+        <div class="preorder-conditions" style="margin-top: 20px; padding: 20px; background-color: var(--surface-color); border-radius: var(--border-radius); box-shadow: var(--shadow);">
+            <h2 style="text-align:center; margin-top:0; font-size: 18px; color: var(--text-color);">Условия предзаказа</h2>
+            <ul style="padding-left: 20px; margin-bottom: 0; line-height: 1.7; list-style-type: '✔ '; font-size: 14px; color: var(--text-muted-color);">
+                <li style="padding-left: 10px; margin-bottom: 12px;"><strong style="color: var(--text-color);">Сроки доставки:</strong> Вы получите заказ в указанные сроки.</li>
+                <li style="padding-left: 10px; margin-bottom: 12px;"><strong style="color: var(--text-color);">Условия оплаты:</strong> Для подтверждения предзаказа требуется 100% предоплата.</li>
+                <li style="padding-left: 10px; margin-bottom: 12px;"><strong style="color: var(--text-color);">Если товара не будет в наличии:</strong> В редких случаях поставка может быть отменена. Мы немедленно сообщим вам об этом и вернем полную сумму предоплаты либо предложим альтернативу.</li>
+                <li style="padding-left: 10px; margin-bottom: 12px;"><strong style="color: var(--text-color);">Отмена и возврат:</strong> Возврат денег и отмена предзаказа возможны в любое время. Возврат денежных средств будет осуществлен в течении 48 часов.</li>
+            </ul>
+        </div>
+        
+        <div class="summary-panel">
+            <div class="totals">
+                <div>Применяется ценовой уровень: <span id="tier">до 30 000 ₸</span></div>
+                <div><span class="savings" id="savings">Экономия: 0 ₸</span></div>
+                <div>Итоговая сумма: <span class="final-total" id="total">0 ₸</span></div>
+                <div id="minOrderMessage" style="color: var(--warning-color); font-weight: 600; margin-top: 10px; display: none;"></div>
+            </div>
+            
+            <div class="order-instructions" style="text-align: center; margin: 15px 0 5px 0; width: 100%;">
+                <p style="margin: 0; color: var(--text-color); font-size: 15px; font-weight: 500;">Готовы оформить заказ?</p>
+                <p style="margin: 5px 0 0 0; color: var(--text-muted-color); font-size: 13px;">Нажмите на кнопку "Оформить в WhatsApp" или "Копировать заказ", чтобы отправить его нам.</p>
+            </div>
+            <div class="actions">
+                <button class="action-button whatsapp-btn" id="buyDirectBtn" onclick="app.sendOrder()">
+                     <svg class="icon" viewBox="0 0 448 512" width="20" height="20"><path fill="currentColor" d="M380.9 97.1C339 55.1 283.2 32 223.9 32c-122.4 0-222 99.6-222 222 0 39.1 10.2 77.3 29.6 111L0 480l117.7-30.9c32.4 17.7 68.9 27 106.1 27h.1c122.3 0 224.1-99.6 224.1-222 0-59.3-25.2-115-67.1-157zm-157 341.6c-33.8 0-65.7-8.9-94-25.4l-6.7-4-69.8 18.3L72 359.2l-4.4-7c-18.5-29.4-28.2-63.3-28.2-98.2 0-101.7 82.8-184.5 184.6-184.5 49.3 0 95.6 19.2 130.4 54.1 34.8 34.9 56.2 81.2 56.1 130.5 0 101.8-84.9 184.6-186.6 184.6zm101.2-138.2c-5.5-2.8-32.8-16.2-37.9-18-5.1-1.9-8.8-2.8-12.5 2.8-3.7 5.6-14.3 18-17.6 21.8-3.2 3.7-6.5 4.2-12 1.4-32.6-16.3-54-29.1-75.5-66-5.7-9.8 5.7-9.1 16.3-30.3 1.8-3.7.9-6.9-.5-9.7-1.4-2.8-12.5-30.1-17.1-41.2-4.5-10.8-9.1-9.3-12.5-9.5-3.2-.2-6.9-.2-10.6-.2-3.7 0-9.7 1.4-14.8 6.9-5.1 5.6-19.4 19-19.4 46.3 0 27.3 19.9 53.7 22.6 57.4 2.8 3.7 39.1 59.7 94.8 83.8 35.2 15.2 49 16.5 66.6 13.9 10.7-1.6 32.8-13.4 37.4-26.4 4.6-13 4.6-24.1 3.2-26.4-1.3-2.5-5-3.9-10.5-6.6z"></path></svg>
+                    Оформить в WhatsApp
+                </button>
+            </div>
+            <div class="actions" style="margin-top: 10px; display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
+                <button class="action-button" id="copyOrderBtn" onclick="app.copyOrderForChat()">
+                    <svg class="icon" viewBox="0 0 24 24" width="16" height="16"><path fill="currentColor" d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"></path></svg>
+                    Копировать
+                </button>
+                <button class="action-button clear-btn" onclick="app.clearOrder()">
+                    <svg class="icon" viewBox="0 0 24 24" width="16" height="16"><path fill="currentColor" d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"></path></svg>
+                     Очистить
+                </button>
+            </div>
+        </div>
+    </div>
+    <div id="loader">
+        <div class="loader-spinner"></div>
+        <div>Загрузка прайс-листа...</div>
+    </div>
+    <div id="toast" class="toast-notification"></div>
+    <button class="scroll-top-btn" id="scrollTopBtn" title="Наверх">
+        <svg class="icon" viewBox="0 0 24 24" width="24" height="24"><path fill="currentColor" d="M13 19V7.83l4.59 4.59L19 11l-7-7-7 7 1.41 1.41L11 7.83V19h2z"/></svg>
+    </button>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
+    
+    <script>
+    const app = {
+    config: {
+        // ... (все ваши предыдущие настройки остаются без изменений)
+        csvPath: "https://docs.google.com/spreadsheets/d/e/2PACX-1vQI2bGdcahnckfFw6gHrlGKzRjDhd44aW-gldKzyAHOV5hORd01B9cyNmdbxRK1-rhmEXIvJXzm8Jpi/pub?gid=1694766191&single=true&output=csv",
+        timerCsvPath: "https://docs.google.com/spreadsheets/d/e/2PACX-1vRtICMIFejfBnz0vzhtxHdGYwzgiNEFxwmJ2Ho8f74D-AcNV03bNJFg-u5CdFoCej53D6_eBMwRco2e/pub?gid=1867747407&single=true&output=csv", 
+        whatsAppPhone: "77780990459",
+        priceTiers: {
+            tier1: { limit: 30000, label: "до 30 000 ₸" },  
+            tier2: { limit: 150000, label: "от 150 000 ₸" },
+            tier3: { limit: 300000, label: "от 300 000 ₸" },
+        },
+        minOrderAmount: 30000,
+        productsCacheKey: 'preorderPharmaProducts_v5_cards',
+        quantitiesCacheKey: 'preorderPharmaQuantities_v5_cards',
+        cacheDuration: 5 * 60 * 1000,
+
+        localImagePath: '',
+
+        localImageMapping: {
+             "hcg-5000": "photo_5222374297576798738_y.png",
+             "test-e": "Abur_test_e-1000x750.jpg",
+             "anastrozole-1": "anastrozol-ozone-film-coated-tablets-1-mg-n30.jpg",
+             "hgh-jin": "jin.jpeg",
+
+
+        },
+    },
+        state: {
+            products: [],
+            quantities: {},
+            filter: '',
+            countdownInterval: null,
+            preorderActive: true,
+        },
+        elements: {
+            appContainer: document.getElementById('app'),
+            loader: document.getElementById('loader'),
+            productGrid: document.getElementById("product-grid"),
+            totalEl: document.getElementById("total"),
+            savingsEl: document.getElementById("savings"),
+            tierEl: document.getElementById("tier"),
+            toastEl: document.getElementById("toast"),
+            filterInput: document.getElementById("filterInput"),
+            scrollTopBtn: document.getElementById("scrollTopBtn"),
+            buyDirectBtn: document.getElementById('buyDirectBtn'),
+            copyOrderBtn: document.getElementById('copyOrderBtn'),
+            minOrderMessage: document.getElementById('minOrderMessage'),
+            countdownContainer: document.getElementById('countdown-container'),
+            countdownTimer: document.getElementById('countdown-timer'),
+        },
+        init() {
+            this.bindEvents();
+            this.initTimer();
+            this.loadData();
+        },
+
+        bindEvents() {
+            this.elements.filterInput.addEventListener('input', (e) => {
+                this.state.filter = e.target.value;
+                this.renderProducts();
+            });
+            this.elements.productGrid.addEventListener('click', this.handleQuantityButtonClick.bind(this));
+            this.elements.productGrid.addEventListener('change', this.handleQuantityInput.bind(this));
+            window.addEventListener('scroll', () => {
+                this.elements.scrollTopBtn.classList.toggle('visible', window.scrollY > 300);
+            });
+            this.elements.scrollTopBtn.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
+        },
+        
+        async initTimer() {
+            if (!this.config.timerCsvPath) return;
+            try {
+                const response = await fetch(this.config.timerCsvPath, { cache: "no-store" });
+                if (!response.ok) throw new Error(`Network error: ${response.status}`);
+                const csvText = await response.text();
+                Papa.parse(csvText, {
+                    header: true,
+                    skipEmptyLines: true,
+                    complete: (results) => {
+                        if (results.data.length > 0 && results.data[0].EndDate) {
+                            this.startCountdown(results.data[0].EndDate.trim());
+                        } else {
+                           this.elements.countdownContainer.style.display = 'none';
+                        }
+                    }
+                });
+            } catch (error) {
+                console.error("Failed to load timer data:", error);
+                this.elements.countdownContainer.style.display = 'none';
+            }
+        },
+
+        startCountdown(endDateString) {
+            let endDate;
+            try {
+                const parts = endDateString.split(' ')[0].split('.');
+                if (parts.length !== 3) throw new Error('Invalid date format');
+                const day = parseInt(parts[0], 10), month = parseInt(parts[1], 10) - 1, year = parseInt(parts[2], 10);
+                const timeParts = endDateString.split(' ')[1]?.split(':') || [0, 0, 0];
+                endDate = new Date(year, month, day, parseInt(timeParts[0], 10) || 0, parseInt(timeParts[1], 10) || 0, parseInt(timeParts[2], 10) || 0);
+                if (isNaN(endDate.getTime())) throw new Error('Invalid date value');
+            } catch (error) {
+                 this.elements.countdownContainer.style.display = 'none';
+                 return;
+            }
+            
+            this.elements.countdownContainer.style.display = 'block';
+            const update = () => {
+                const distance = endDate - new Date().getTime();
+                if (distance < 0) {
+                    clearInterval(this.state.countdownInterval);
+                    this.elements.countdownTimer.textContent = "ПРЕДЗАКАЗ ЗАВЕРШЕН";
+                    this.elements.countdownContainer.classList.add('expired');
+                    this.disablePreorder();
+                    return;
+                }
+                const days = Math.floor(distance / 86400000), hours = Math.floor((distance % 86400000) / 3600000), minutes = Math.floor((distance % 3600000) / 60000), seconds = Math.floor((distance % 60000) / 1000);
+                const pad = (num) => num.toString().padStart(2, '0');
+                this.elements.countdownTimer.innerHTML = `${pad(days)}:${pad(hours)}:${pad(minutes)}:${pad(seconds)}`;
+            };
+            update();
+            this.state.countdownInterval = setInterval(update, 1000);
+        },
+
+        disablePreorder() {
+            this.state.preorderActive = false;
+            this.elements.buyDirectBtn.disabled = true;
+            this.elements.copyOrderBtn.disabled = true;
+            const orderInstructions = document.querySelector('.order-instructions');
+            if (orderInstructions) {
+                 orderInstructions.innerHTML = `<p style="color: var(--tag-bestseller-bg); font-weight: 600;">Прием заказов завершен.</p>`;
+            }
+            this.showToast("Время предзаказа истекло", 'warning');
+        },
+
+        async loadData() {
+            const cachedItem = JSON.parse(localStorage.getItem(this.config.productsCacheKey));
+            if (cachedItem && (Date.now() - cachedItem.timestamp < this.config.cacheDuration)) {
+                this.processData(cachedItem.products);
+                return;
+            }
+            try {
+                const response = await fetch(this.config.csvPath, { cache: "no-store" });
+                if (!response.ok) throw new Error(`Network error: ${response.status}`);
+                const csvText = await response.text();
+                if (!csvText.trim()) throw new Error("Received empty CSV file");
+                this.parseCSV(csvText);
+            } catch (error) {
+                console.error("Failed to load fresh data:", error);
+                if (cachedItem && cachedItem.products) {
+                    this.showToast("Не удалось обновить прайс. Показана сохраненная версия.", 'warning');
+                    this.processData(cachedItem.products);
+                } else {
+                    this.showError();
+                }
+            }
+        },
+
+        parseCSV(csvText) {
+            Papa.parse(csvText, {
+                header: true,
+                skipEmptyLines: true,
+                complete: (results) => {
+                    const products = this.parseProducts(results.data);
+                    if (products.length === 0) {
+                        this.showError("Прайс-лист пуст или не удалось обработать данные.");
+                        return;
+                    }
+                     localStorage.setItem(this.config.productsCacheKey, JSON.stringify({
+                        timestamp: Date.now(),
+                        products: products
+                    }));
+                    this.processData(products);
+                },
+                error: (err) => { 
+                    this.showError();
+                }
+            });
+        },
+
+        // ИЗМЕНЕНА ФУНКЦИЯ parseProducts
+        parseProducts(data) {
+             return data
+                .filter(row => row.Название && row["Цена1"] && row.ID) // Убедимся, что ID есть
+                .map((row) => {
+                    const id = row.ID.trim();
+                    // Проверяем, есть ли для этого ID специальное имя файла в `localImageMapping`
+                    // Если нет, предполагаем, что имя файла совпадает с ID (например, "primo.png")
+                    const imageName = this.config.localImageMapping[id] || `${id}.png`;
+                    const imagePath = `${this.config.localImagePath}${imageName}`;
+
+                    return {
+                        id: id,
+                        name: row.Название?.trim(),
+                        prices: {
+                            p1: parseFloat(row["Цена1"]) || 0,
+                            p2: parseFloat(row["Цена2"]) || 0,
+                            p3: parseFloat(row["Цена3"]) || 0,
+                        },
+                        // ИСПОЛЬЗУЕМ ЛОКАЛЬНЫЙ ПУТЬ
+                        image: imagePath, 
+                        isBestseller: String(row.бестселлер || '').trim().toLowerCase() === 'yes',
+                        isNew: String(row.новинка || '').trim().toLowerCase() === 'yes',
+                        isLowStock: String(row.мало || '').trim().toLowerCase() === 'yes',
+                        isAvailable: (row.наличие || 'yes').trim().toLowerCase() !== 'no'
+                    };
+                })
+                .filter(product => product.isAvailable);
+        },
+        
+        processData(products) {
+            this.state.products = products;
+            this.restoreState();
+            this.renderProducts();
+            this.calculate();
+            this.elements.loader.style.display = 'none';
+            this.elements.appContainer.style.display = 'block';
+        },
+
+        renderProducts() {
+            this.elements.productGrid.innerHTML = '';
+            const fragment = document.createDocumentFragment();
+            const filter = this.state.filter.toLowerCase();
+            const { tier1, tier2, tier3 } = this.config.priceTiers;
+
+            this.state.products.forEach(item => {
+                if (filter && !item.name.toLowerCase().includes(filter)) return;
+
+                const card = document.createElement("div");
+                card.className = 'product-card';
+                card.dataset.id = item.id;
+                
+                const tagsHtml = `
+                    <div class="tags-container">
+                        ${item.isBestseller ? `<span class="tag tag-bestseller">🔥 ХИТ</span>` : ''}
+                        ${item.isNew ? `<span class="tag tag-new">✨ НОВИНКА</span>` : ''}
+                        ${item.isLowStock ? `<span class="tag tag-low-stock">⏳ МАЛО</span>` : ''}
+                    </div>`;
+                
+                // ИЗМЕНЕНА ЛОГИКА ЗАПАСНОГО ИЗОБРАЖЕНИЯ
+                const placeholderImg = `https://placehold.co/300x300/2c2c2c/f0f0f0?text=${encodeURIComponent(item.name.substring(0,3))}`;
+                const quantity = this.state.quantities[item.id] || 0;
+
+                // onerror теперь заменяет неработающую ссылку на placeholder
+                card.innerHTML = `
+                    <div class="product-card-image-wrapper">
+                        <img src="${item.image}" class="product-card-image" alt="${item.name}" loading="lazy" onerror="this.onerror=null; this.src='${placeholderImg}';">
+                        ${tagsHtml}
+                    </div>
+                    <div class="product-card-content">
+                        <h3 class="product-card-name">${item.name}</h3>
+                        <div class="product-card-prices">
+                             <div class="price-tier price-tier-1">
+                                <span class="price-tier-label">${tier1.label}</span>
+                                <span class="price-tier-value">${item.prices.p1.toLocaleString('ru-RU')} ₸</span>
+                            </div>
+                            <div class="price-tier price-tier-2">
+                                <span class="price-tier-label">${tier2.label}</span>
+                                <span class="price-tier-value">${item.prices.p2.toLocaleString('ru-RU')} ₸</span>
+                            </div>
+                             <div class="price-tier price-tier-3">
+                                <span class="price-tier-label">${tier3.label}</span>
+                                <span class="price-tier-value">${item.prices.p3.toLocaleString('ru-RU')} ₸</span>
+                            </div>
+                        </div>
+                        <div class="product-card-footer">
+                            <div class="quantity-control">
+                                <button class="quantity-btn" aria-label="Уменьшить количество" data-action="decrease" data-id="${item.id}">-</button>
+                                <input type="number" class="quantity-input" min="0" max="99" value="${quantity}" aria-label="Количество" data-id="${item.id}" />
+                                <button class="quantity-btn" aria-label="Увеличить количество" data-action="increase" data-id="${item.id}">+</button>
+                            </div>
+                            <div class="subtotal">
+                                <span class="subtotal-label">Сумма:</span> 
+                                <span class="subtotal-value">0 ₸</span>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                fragment.appendChild(card);
+            });
+            
+            this.elements.productGrid.appendChild(fragment);
+            if (this.elements.productGrid.children.length === 0) {
+                this.elements.productGrid.innerHTML = `<p style="text-align: center; grid-column: 1 / -1; padding: 20px;">По вашему запросу ничего не найдено.</p>`;
+            }
+            this.calculate();
+        },
+        handleQuantityButtonClick(event) {
+            const button = event.target.closest('.quantity-btn');
+            if (!button) return;
+            const { action, id } = button.dataset;
+            const input = this.elements.productGrid.querySelector(`.product-card[data-id='${id}'] .quantity-input`);
+            if (!input) return;
+            let value = parseInt(input.value, 10) || 0;
+            if (action === 'increase' && value < 99) value++;
+            else if (action === 'decrease' && value > 0) value--;
+            input.value = value;
+            this.updateAndSave();
+        },
+        handleQuantityInput(event) {
+            const input = event.target;
+            if (!input.classList.contains('quantity-input')) return;
+            let value = parseInt(input.value, 10) || 0;
+            input.value = Math.max(0, Math.min(99, isNaN(value) ? 0 : Math.floor(value)));
+            this.updateAndSave();
+        },
+        updateAndSave() {
+            this.saveState();
+            this.calculate();
+        },
+        calculate() {
+            const cards = this.elements.productGrid.querySelectorAll('.product-card');
+            let baseTotal = 0;
+            Object.entries(this.state.quantities).forEach(([id, qty]) => {
+                const product = this.state.products.find(p => p.id === id);
+                if (product) {
+                    baseTotal += product.prices.p1 * qty;
+                }
+            });
+
+            const { tier1, tier2, tier3 } = this.config.priceTiers;
+            const tier = baseTotal >= tier3.limit ? 3 : baseTotal >= tier2.limit ? 2 : 1;
+            let currentTierLabel = "Базовый";
+            if(tier === 1) currentTierLabel = tier1.label;
+            if(tier === 2) currentTierLabel = tier2.label;
+            if(tier === 3) currentTierLabel = tier3.label;
+            this.elements.tierEl.textContent = currentTierLabel;
+            
+            let finalTotal = 0;
+            cards.forEach(card => {
+                const id = card.dataset.id;
+                const product = this.state.products.find(p => p.id === id);
+                if (!product) return;
+
+                const qty = this.state.quantities[id] || 0;
+                const price = product.prices[`p${tier}`] || product.prices.p1;
+                const subtotal = price * qty;
+                finalTotal += subtotal;
+                
+                card.querySelector('.subtotal-value').textContent = `${subtotal.toLocaleString('ru-RU')} ₸`;
+                
+                card.querySelectorAll('.price-tier').forEach(el => el.classList.remove('active'));
+                const activePriceTier = card.querySelector(`.price-tier-${tier}`);
+                if(activePriceTier) activePriceTier.classList.add('active');
+            });
+            
+            const savings = baseTotal - finalTotal;
+            this.elements.totalEl.textContent = `${finalTotal.toLocaleString('ru-RU')} ₸`;
+            this.elements.savingsEl.textContent = `Экономия: ${savings.toLocaleString('ru-RU')} ₸`;
+            
+            const buttonsDisabled = finalTotal < this.config.minOrderAmount || !this.state.preorderActive || finalTotal === 0;
+            this.elements.buyDirectBtn.disabled = buttonsDisabled;
+            this.elements.copyOrderBtn.disabled = buttonsDisabled;
+
+            if (this.state.preorderActive && finalTotal > 0 && finalTotal < this.config.minOrderAmount) {
+                this.elements.minOrderMessage.textContent = `Минимальная сумма для предзаказа: ${this.config.minOrderAmount.toLocaleString('ru-RU')} ₸`;
+                this.elements.minOrderMessage.style.display = 'block';
+            } else {
+                this.elements.minOrderMessage.style.display = 'none';
+            }
+        },
+        saveState() {
+            const quantities = {};
+            this.elements.productGrid.querySelectorAll('.quantity-input').forEach(input => {
+                const value = parseInt(input.value, 10);
+                if (value > 0) {
+                    quantities[input.dataset.id] = value;
+                }
+            });
+            this.state.quantities = quantities;
+            localStorage.setItem(this.config.quantitiesCacheKey, JSON.stringify(quantities));
+        },
+        restoreState() {
+            this.state.quantities = JSON.parse(localStorage.getItem(this.config.quantitiesCacheKey) || '{}');
+        },
+        generateOrderData() { 
+            const orderItems = [];
+            let baseTotal = 0;
+            Object.entries(this.state.quantities).forEach(([id, qty]) => {
+                 if (qty === 0) return;
+                const product = this.state.products.find(p => p.id === id);
+                if (product) {
+                    baseTotal += product.prices.p1 * qty;
+                    orderItems.push({ product, qty });
+                }
+            });
+
+            if (orderItems.length === 0) return { orderText: "", hasItems: false };
+
+            const { tier1, tier2, tier3 } = this.config.priceTiers;
+            const tier = baseTotal >= tier3.limit ? 3 : baseTotal >= tier2.limit ? 2 : 1;
+            let finalTotal = 0;
+            let orderText = "Здравствуйте! Хочу сделать предзаказ:\n\n";
+            
+            orderItems.forEach(({ product, qty }) => {
+                const price = product.prices[`p${tier}`] || product.prices.p1;
+                const subtotal = price * qty;
+                finalTotal += subtotal;
+                orderText += `• ${product.name} — ${qty} шт × ${price.toLocaleString('ru-RU')} ₸ = ${subtotal.toLocaleString('ru-RU')} ₸\n`;
+            });
+            
+            orderText += `\n*Итоговая сумма: ${finalTotal.toLocaleString("ru-RU")} ₸*`;
+            orderText += `\n\nПожалуйста, подтвердите наличие и детали заказа.`;
+
+            return { orderText, hasItems: true };
+        },
+        sendOrder() {
+            const { orderText, hasItems } = this.generateOrderData();
+            if (!hasItems) {
+                this.showToast("Сначала добавьте товары в корзину");
+                return;
+            }
+            const url = `https://wa.me/${this.config.whatsAppPhone}?text=${encodeURIComponent(orderText)}`;
+            window.open(url, "_blank");
+        },
+        copyOrderForChat() {
+            const { orderText, hasItems } = this.generateOrderData();
+             if (!hasItems) {
+                this.showToast("Сначала добавьте товары в корзину");
+                return;
+            }
+            navigator.clipboard.writeText(orderText).then(() => {
+                this.showToast("Заказ скопирован! Вставьте его в чат WhatsApp.", 'success');
+            }).catch(err => {
+                this.showToast("Не удалось скопировать текст");
+            });
+        },
+        clearOrder() {
+            if (Object.keys(this.state.quantities).length === 0) {
+                this.showToast("Корзина уже пуста");
+                return;
+            }
+            if (window.confirm("Вы уверены, что хотите очистить весь заказ?")) {
+                this.state.quantities = {};
+                localStorage.removeItem(this.config.quantitiesCacheKey);
+                // Reset input values on the screen
+                this.elements.productGrid.querySelectorAll('.quantity-input').forEach(input => input.value = 0);
+                this.updateAndSave(); // Recalculate and re-render
+                this.showToast("Заказ очищен", 'success');
+            }
+        },
+        showToast(message, type = 'normal') {
+            const icons = { success: '✅', warning: '⚠️', normal: 'ℹ️' };
+            this.elements.toastEl.className = 'toast-notification';
+            this.elements.toastEl.classList.add(type);
+            this.elements.toastEl.innerHTML = (icons[type] || icons['normal']) + ' ' + message;
+            this.elements.toastEl.classList.add('show');
+            setTimeout(() => {
+                this.elements.toastEl.classList.remove('show');
+            }, 4000);
+        },
+        showError(message = "Не удалось загрузить прайс-лист.") {
+            this.elements.loader.innerHTML = `
+                <div style="color: #ff6b6b; max-width: 400px; text-align: center;">
+                    <p><strong>Ошибка</strong></p>
+                    <p>${message}</p>
+                    <p>Проверьте интернет-соединение и попробуйте обновить страницу.</p>
+                    <button onclick="location.reload()" style="margin-top: 15px; background: var(--primary-color); color: white; border: none; padding: 10px 20px; border-radius: var(--border-radius); cursor: pointer;">
+                        Обновить
+                    </button>
+                </div>
+            `;
+        }
+    };
+    app.init();
+    </script>
+</body>
+</html>
