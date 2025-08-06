@@ -4,7 +4,9 @@
     <meta charset="UTF-8" />
     <meta name="format-detection" content="telephone=no">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
-    <title>Предзаказ фармы в Казахстане</title>
+    
+    <title>Предзаказ Фармаком — анаболики в Казахстане</title>
+    <meta name="description" content="Лучшие препараты от Фармаком по предзаказу. Низкие цены, гарантия качества, доставка по Казахстану.">
     
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -244,8 +246,8 @@
         
         <div class="summary-panel">
             <div class="totals">
-                <div>Применяется ценовой уровень: <span id="tier">до 30 000 ₸</span></div>
-                <div><span class="savings" id="savings">Экономия: 0 ₸</span></div>
+                <div style="display: none;">Применяется ценовой уровень: <span id="tier"></span></div>
+                <div style="display: none;"><span class="savings" id="savings">Экономия: 0 ₸</span></div>
                 <div>Итоговая сумма: <span class="final-total" id="total">0 ₸</span></div>
                 <div id="minOrderMessage" style="color: var(--warning-color); font-weight: 600; margin-top: 10px; display: none;"></div>
             </div>
@@ -286,29 +288,19 @@
     <script>
     const app = {
     config: {
-        // ... (все ваши предыдущие настройки остаются без изменений)
         csvPath: "https://docs.google.com/spreadsheets/d/e/2PACX-1vQI2bGdcahnckfFw6gHrlGKzRjDhd44aW-gldKzyAHOV5hORd01B9cyNmdbxRK1-rhmEXIvJXzm8Jpi/pub?gid=1694766191&single=true&output=csv",
         timerCsvPath: "https://docs.google.com/spreadsheets/d/e/2PACX-1vRtICMIFejfBnz0vzhtxHdGYwzgiNEFxwmJ2Ho8f74D-AcNV03bNJFg-u5CdFoCej53D6_eBMwRco2e/pub?gid=1867747407&single=true&output=csv", 
         whatsAppPhone: "77780990459",
-        priceTiers: {
-            tier1: { limit: 30000, label: "до 30 000 ₸" },  
-            tier2: { limit: 150000, label: "от 150 000 ₸" },
-            tier3: { limit: 300000, label: "от 300 000 ₸" },
-        },
         minOrderAmount: 30000,
         productsCacheKey: 'preorderPharmaProducts_v5_cards',
         quantitiesCacheKey: 'preorderPharmaQuantities_v5_cards',
         cacheDuration: 5 * 60 * 1000,
-
         localImagePath: '',
-
         localImageMapping: {
              "hcg-5000": "photo_5222374297576798738_y.png",
              "test-e": "Abur_test_e-1000x750.jpg",
              "anastrozole-1": "anastrozol-ozone-film-coated-tablets-1-mg-n30.jpg",
              "hgh-jin": "jin.jpeg",
-
-
         },
     },
         state: {
@@ -463,15 +455,12 @@
                 }
             });
         },
-
-        // ИЗМЕНЕНА ФУНКЦИЯ parseProducts
+        
         parseProducts(data) {
              return data
-                .filter(row => row.Название && row["Цена1"] && row.ID) // Убедимся, что ID есть
+                .filter(row => row.Название && row["Цена1"] && row.ID)
                 .map((row) => {
                     const id = row.ID.trim();
-                    // Проверяем, есть ли для этого ID специальное имя файла в `localImageMapping`
-                    // Если нет, предполагаем, что имя файла совпадает с ID (например, "primo.png")
                     const imageName = this.config.localImageMapping[id] || `${id}.png`;
                     const imagePath = `${this.config.localImagePath}${imageName}`;
 
@@ -483,7 +472,6 @@
                             p2: parseFloat(row["Цена2"]) || 0,
                             p3: parseFloat(row["Цена3"]) || 0,
                         },
-                        // ИСПОЛЬЗУЕМ ЛОКАЛЬНЫЙ ПУТЬ
                         image: imagePath, 
                         isBestseller: String(row.бестселлер || '').trim().toLowerCase() === 'yes',
                         isNew: String(row.новинка || '').trim().toLowerCase() === 'yes',
@@ -507,7 +495,6 @@
             this.elements.productGrid.innerHTML = '';
             const fragment = document.createDocumentFragment();
             const filter = this.state.filter.toLowerCase();
-            const { tier1, tier2, tier3 } = this.config.priceTiers;
 
             this.state.products.forEach(item => {
                 if (filter && !item.name.toLowerCase().includes(filter)) return;
@@ -523,11 +510,9 @@
                         ${item.isLowStock ? `<span class="tag tag-low-stock">⏳ МАЛО</span>` : ''}
                     </div>`;
                 
-                // ИЗМЕНЕНА ЛОГИКА ЗАПАСНОГО ИЗОБРАЖЕНИЯ
                 const placeholderImg = `https://placehold.co/300x300/2c2c2c/f0f0f0?text=${encodeURIComponent(item.name.substring(0,3))}`;
                 const quantity = this.state.quantities[item.id] || 0;
 
-                // onerror теперь заменяет неработающую ссылку на placeholder
                 card.innerHTML = `
                     <div class="product-card-image-wrapper">
                         <img src="${item.image}" class="product-card-image" alt="${item.name}" loading="lazy" onerror="this.onerror=null; this.src='${placeholderImg}';">
@@ -537,15 +522,15 @@
                         <h3 class="product-card-name">${item.name}</h3>
                         <div class="product-card-prices">
                              <div class="price-tier price-tier-1">
-                                <span class="price-tier-label">${tier1.label}</span>
+                                <span class="price-tier-label">от 1 шт.</span>
                                 <span class="price-tier-value">${item.prices.p1.toLocaleString('ru-RU')} ₸</span>
                             </div>
                             <div class="price-tier price-tier-2">
-                                <span class="price-tier-label">${tier2.label}</span>
+                                <span class="price-tier-label">от 3 шт.</span>
                                 <span class="price-tier-value">${item.prices.p2.toLocaleString('ru-RU')} ₸</span>
                             </div>
                              <div class="price-tier price-tier-3">
-                                <span class="price-tier-label">${tier3.label}</span>
+                                <span class="price-tier-label">от 5 шт.</span>
                                 <span class="price-tier-value">${item.prices.p3.toLocaleString('ru-RU')} ₸</span>
                             </div>
                         </div>
@@ -595,45 +580,45 @@
             this.calculate();
         },
         calculate() {
-            const cards = this.elements.productGrid.querySelectorAll('.product-card');
-            let baseTotal = 0;
-            Object.entries(this.state.quantities).forEach(([id, qty]) => {
-                const product = this.state.products.find(p => p.id === id);
-                if (product) {
-                    baseTotal += product.prices.p1 * qty;
+            let finalTotal = 0;
+            
+            // Скрываем ненужные элементы из старой логики
+            this.elements.tierEl.parentElement.style.display = 'none';
+            this.elements.savingsEl.parentElement.style.display = 'none';
+
+            this.state.products.forEach(product => {
+                const card = this.elements.productGrid.querySelector(`.product-card[data-id='${product.id}']`);
+                const qty = this.state.quantities[product.id] || 0;
+                
+                let price = product.prices.p1;
+                let activeTier = 1;
+
+                if (qty >= 5) {
+                    price = product.prices.p3;
+                    activeTier = 3;
+                } else if (qty >= 3) {
+                    price = product.prices.p2;
+                    activeTier = 2;
+                }
+
+                const subtotal = price * qty;
+                finalTotal += subtotal;
+
+                if (card) { // Обновляем карточку, только если она отображается на экране
+                    card.querySelector('.subtotal-value').textContent = `${subtotal.toLocaleString('ru-RU')} ₸`;
+                    
+                    card.querySelectorAll('.price-tier').forEach(el => el.classList.remove('active'));
+                    if (qty > 0) {
+                        const activePriceTierEl = card.querySelector(`.price-tier-${activeTier}`);
+                        if (activePriceTierEl) {
+                            activePriceTierEl.classList.add('active');
+                        }
+                    }
                 }
             });
 
-            const { tier1, tier2, tier3 } = this.config.priceTiers;
-            const tier = baseTotal >= tier3.limit ? 3 : baseTotal >= tier2.limit ? 2 : 1;
-            let currentTierLabel = "Базовый";
-            if(tier === 1) currentTierLabel = tier1.label;
-            if(tier === 2) currentTierLabel = tier2.label;
-            if(tier === 3) currentTierLabel = tier3.label;
-            this.elements.tierEl.textContent = currentTierLabel;
-            
-            let finalTotal = 0;
-            cards.forEach(card => {
-                const id = card.dataset.id;
-                const product = this.state.products.find(p => p.id === id);
-                if (!product) return;
-
-                const qty = this.state.quantities[id] || 0;
-                const price = product.prices[`p${tier}`] || product.prices.p1;
-                const subtotal = price * qty;
-                finalTotal += subtotal;
-                
-                card.querySelector('.subtotal-value').textContent = `${subtotal.toLocaleString('ru-RU')} ₸`;
-                
-                card.querySelectorAll('.price-tier').forEach(el => el.classList.remove('active'));
-                const activePriceTier = card.querySelector(`.price-tier-${tier}`);
-                if(activePriceTier) activePriceTier.classList.add('active');
-            });
-            
-            const savings = baseTotal - finalTotal;
             this.elements.totalEl.textContent = `${finalTotal.toLocaleString('ru-RU')} ₸`;
-            this.elements.savingsEl.textContent = `Экономия: ${savings.toLocaleString('ru-RU')} ₸`;
-            
+
             const buttonsDisabled = finalTotal < this.config.minOrderAmount || !this.state.preorderActive || finalTotal === 0;
             this.elements.buyDirectBtn.disabled = buttonsDisabled;
             this.elements.copyOrderBtn.disabled = buttonsDisabled;
@@ -661,25 +646,26 @@
         },
         generateOrderData() { 
             const orderItems = [];
-            let baseTotal = 0;
             Object.entries(this.state.quantities).forEach(([id, qty]) => {
-                 if (qty === 0) return;
+                 if (qty <= 0) return;
                 const product = this.state.products.find(p => p.id === id);
                 if (product) {
-                    baseTotal += product.prices.p1 * qty;
                     orderItems.push({ product, qty });
                 }
             });
 
             if (orderItems.length === 0) return { orderText: "", hasItems: false };
 
-            const { tier1, tier2, tier3 } = this.config.priceTiers;
-            const tier = baseTotal >= tier3.limit ? 3 : baseTotal >= tier2.limit ? 2 : 1;
             let finalTotal = 0;
             let orderText = "Здравствуйте! Хочу сделать предзаказ:\n\n";
             
             orderItems.forEach(({ product, qty }) => {
-                const price = product.prices[`p${tier}`] || product.prices.p1;
+                let price = product.prices.p1;
+                if (qty >= 5) {
+                    price = product.prices.p3;
+                } else if (qty >= 3) {
+                    price = product.prices.p2;
+                }
                 const subtotal = price * qty;
                 finalTotal += subtotal;
                 orderText += `• ${product.name} — ${qty} шт × ${price.toLocaleString('ru-RU')} ₸ = ${subtotal.toLocaleString('ru-RU')} ₸\n`;
@@ -719,9 +705,8 @@
             if (window.confirm("Вы уверены, что хотите очистить весь заказ?")) {
                 this.state.quantities = {};
                 localStorage.removeItem(this.config.quantitiesCacheKey);
-                // Reset input values on the screen
                 this.elements.productGrid.querySelectorAll('.quantity-input').forEach(input => input.value = 0);
-                this.updateAndSave(); // Recalculate and re-render
+                this.updateAndSave();
                 this.showToast("Заказ очищен", 'success');
             }
         },
