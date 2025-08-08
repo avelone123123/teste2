@@ -9,7 +9,6 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap">
-    <!-- Исправлено: путь к изображению для предзагрузки теперь совпадает с используемым -->
     <link rel="preload" as="image" href="logo_calc.webp">
     
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" media="print" onload="this.media='all'">
@@ -516,6 +515,7 @@
             100% { background-color: transparent; }
         }
 
+        /* --- ИЗМЕНЕНИЯ ДЛЯ МОДАЛЬНОГО ОКНА ВЫБОРА ГОРОДА --- */
         .modal-overlay {
             position: fixed;
             top: 0;
@@ -528,28 +528,35 @@
             justify-content: center;
             z-index: 2000;
             backdrop-filter: blur(5px);
+            padding: 15px;
         }
 
         .modal-content {
             background: var(--surface-color);
-            padding: 30px;
+            padding: 25px;
             border-radius: var(--border-radius);
             box-shadow: var(--shadow);
             text-align: center;
-            max-width: 90%;
-            width: 400px;
+            width: 100%;
+            max-width: 800px; /* Увеличил максимальную ширину для ПК */
+            max-height: 90vh; /* Ограничил высоту */
+            display: flex;
+            flex-direction: column;
         }
 
         .modal-content h2 {
             margin-top: 0;
+            margin-bottom: 20px;
             color: var(--text-color);
         }
 
         .city-selection-buttons {
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-            margin-top: 20px;
+            display: grid;
+            /* Создаем адаптивные колонки: минимум 160px, максимум 1fr (равномерно заполняют пространство) */
+            grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+            gap: 12px;
+            overflow-y: auto; /* Добавляем прокрутку, если контент не помещается */
+            padding-right: 10px; /* Небольшой отступ для скроллбара */
         }
 
         .city-btn {
@@ -558,15 +565,17 @@
             border: none;
             padding: 15px;
             border-radius: var(--border-radius);
-            font-size: 16px;
-            font-weight: 600;
+            font-size: 15px;
+            font-weight: 500;
             cursor: pointer;
-            transition: background-color 0.2s ease;
+            transition: background-color 0.2s ease, transform 0.2s ease;
         }
 
         .city-btn:hover {
             background: var(--primary-hover-color);
+            transform: translateY(-2px); /* Приподнимаем кнопку при наведении */
         }
+        /* --- КОНЕЦ ИЗМЕНЕНИЙ --- */
 
         .city-display-wrapper {
             background: var(--surface-color);
@@ -632,6 +641,16 @@
                 font-size: 12px;
                 padding: 6px 10px;
             }
+            
+            /* Адаптация модального окна для мобильных */
+            .modal-content {
+                padding: 20px;
+            }
+            .city-selection-buttons {
+                /* На мобильных устройствах колонки будут чуть меньше */
+                grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+                gap: 10px;
+            }
         }
     </style>
 </head>
@@ -661,9 +680,23 @@
         <div class="modal-content">
             <h2>Выберите ваш город</h2>
             <div id="citySelectionButtons" class="city-selection-buttons">
+                <button class="city-btn" data-city="Актау">Актау</button>
+                <button class="city-btn" data-city="Актобе">Актобе</button>
+                <button class="city-btn" data-city="Алматинская обл.">Алматинская обл.</button>
                 <button class="city-btn" data-city="Алматы">Алматы</button>
                 <button class="city-btn" data-city="Астана">Астана</button>
+                <button class="city-btn" data-city="Атырау">Атырау</button>
+                <button class="city-btn" data-city="Караганда">Караганда</button>
+                <button class="city-btn" data-city="Кокшетау">Кокшетау</button>
+                <button class="city-btn" data-city="Костанай">Костанай</button>
+                <button class="city-btn" data-city="Оскемен">Оскемен</button>
+                <button class="city-btn" data-city="Павлодар">Павлодар</button>
+                <button class="city-btn" data-city="Петропавловск">Петропавловск</button>
+                <button class="city-btn" data-city="Семей">Семей</button>
+                <button class="city-btn" data-city="Тараз">Тараз</button>
+                <button class="city-btn" data-city="Темиртау">Темиртау</button>
                 <button class="city-btn" data-city="Шымкент">Шымкент</button>
+                <button class="city-btn" data-city="Экибастуз">Экибастуз</button>
                 <button class="city-btn" data-city="Другой город/поселок">Другой город/поселок</button>
             </div>
         </div>
@@ -776,9 +809,9 @@
                 tier3: { limit: 100000, label: "от 100000 ₸" },
             },
             priceTiersOther: {
-                tier1: { limit: 0, label: "до 50000 ₸" },
-                tier2: { limit: 50000, label: "50000-70000 ₸" },
-                tier3: { limit: 70000, label: "от 70000 ₸" },
+                tier1: { limit: 0, label: "до 60000 ₸" },
+                tier2: { limit: 60000, label: "60000-100000 ₸" },
+                tier3: { limit: 100000, label: "от 100000 ₸" },
             },
             priceTiers: {}, 
             kaspiMultiplier: 1.1,
