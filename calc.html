@@ -39,7 +39,6 @@
             --tag-text-color: #ffffff;
         }
 
-        /* Упрощенные иконки */
         .icon {
             width: 16px;
             height: 16px;
@@ -515,6 +514,92 @@
             0% { background-color: rgba(0, 170, 255, 0.3); }
             100% { background-color: transparent; }
         }
+
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 2000;
+            backdrop-filter: blur(5px);
+        }
+
+        .modal-content {
+            background: var(--surface-color);
+            padding: 30px;
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow);
+            text-align: center;
+            max-width: 90%;
+            width: 400px;
+        }
+
+        .modal-content h2 {
+            margin-top: 0;
+            color: var(--text-color);
+        }
+
+        .city-selection-buttons {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        .city-btn {
+            background: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 15px;
+            border-radius: var(--border-radius);
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.2s ease;
+        }
+
+        .city-btn:hover {
+            background: var(--primary-hover-color);
+        }
+
+        .city-display-wrapper {
+            background: var(--surface-color);
+            border-radius: var(--border-radius);
+            padding: 10px 15px;
+            margin-bottom: 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 14px;
+        }
+        
+        #currentCityDisplay {
+            color: var(--text-muted-color);
+        }
+
+        #currentCityDisplay strong {
+            color: var(--primary-color);
+            font-weight: 600;
+        }
+
+        #changeCityBtn {
+            background: none;
+            border: 1px solid var(--border-color);
+            color: var(--text-color);
+            border-radius: 5px;
+            padding: 5px 10px;
+            cursor: pointer;
+            font-size: 12px;
+        }
+
+        #changeCityBtn:hover {
+            background: var(--border-color);
+        }
         
         /* --- Адаптивность --- */
         @media (max-width: 768px) {
@@ -571,7 +656,24 @@
         </div>
     </header>
 
+    <div id="cityModal" class="modal-overlay" style="display: none;">
+        <div class="modal-content">
+            <h2>Выберите ваш город</h2>
+            <div id="citySelectionButtons" class="city-selection-buttons">
+                <button class="city-btn" data-city="Алматы">Алматы</button>
+                <button class="city-btn" data-city="Астана">Астана</button>
+                <button class="city-btn" data-city="Шымкент">Шымкент</button>
+                <button class="city-btn" data-city="Другой город/поселок">Другой город/поселок</button>
+            </div>
+        </div>
+    </div>
+
     <div class="calculator-container" id="app" style="display: none;">
+        <div class="city-display-wrapper" id="cityDisplay" style="display: none;">
+            <span id="currentCityDisplay">Прайс-лист для города: <strong></strong></span>
+            <button id="changeCityBtn">Сменить город</button>
+        </div>
+        
         <div class="filter-wrapper">
             <label for="filterInput" class="visually-hidden">Поиск по прайс-листу</label>
             <input type="text" class="filter-input" id="filterInput" placeholder="Поиск по названию или бренду..." />
@@ -589,9 +691,9 @@
                     <tr>
                         <th class="col-name">Препарат</th>
                         <th class="col-brand">Бренд</th>
-                        <th class="col-price price-p1-header">до 60000 ₸</th>
-                        <th class="col-price price-p2-header">60000-100000 ₸</th>
-                        <th class="col-price price-p3-header">от 100000 ₸ <span class="profitable-tag">Выгодно</span></th>
+                        <th class="col-price price-p1-header"></th>
+                        <th class="col-price price-p2-header"></th>
+                        <th class="col-price price-p3-header"></th>
                         <th class="col-qty">Количество</th>
                         <th class="col-sum">Сумма</th>
                     </tr>
@@ -601,7 +703,7 @@
         </div>
         <div class="summary-panel">
             <div class="totals">
-                <div>Применяется ценовой уровень: <span id="tier">до 60000 ₸</span></div>
+                <div>Применяется ценовой уровень: <span id="tier"></span></div>
                 <div><span class="savings" id="savings">Экономия: 0 ₸</span></div>
                 <div class="kaspi-info" id="kaspi"></div>
                 <div>Итоговая сумма: <span class="final-total" id="total">0 ₸</span></div>
@@ -634,7 +736,7 @@
                     <svg class="icon" viewBox="0 0 24 24" width="16" height="16"><path fill="currentColor" d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"></path></svg>
                     Просто скопировать
                 </button>
-                <button class="action-button clear-btn" onclick="app.clearOrder()">
+                <button class="action-button clear-btn" onclick="app.clearOrder(true)">
                     <svg class="icon" viewBox="0 0 24 24" width="16" height="16"><path fill="currentColor" d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"></path></svg>
                      Очистить
                 </button>
@@ -662,15 +764,27 @@
     <script>
     const app = {
         config: {
-            csvPath: "https://docs.google.com/spreadsheets/d/e/2PACX-1vRX6c66tG6qBDrcCrkRsGaoG7o-OjwLgyggjnaY2oyZJ2pkcASi5HCSCt8q8A4cxHVGtq1MyaxEE45Q/pub?gid=1898551688&single=true&output=csv",
+            // CSV-файлы для разных городов
+            csvPaths: {
+                almaty: "https://docs.google.com/spreadsheets/d/e/2PACX-1vRX6c66tG6qBDrcCrkRsGaoG7o-OjwLgyggjnaY2oyZJ2pkcASi5HCSCt8q8A4cxHVGtq1MyaxEE45Q/pub?gid=1898551688&single=true&output=csv",
+                other: "https://docs.google.com/spreadsheets/d/e/2PACX-1vTB2wjRJweDyeI740-wfWqodtco7h3Qbcz2CxxjCewbR5fti8ZJUzFuNcOVg3HnjM7c_4E9NyfeP4JK/pub?gid=1060323005&single=true&output=csv"
+            },
             whatsAppPhone: "77780990459",
-            priceTiers: {
+            // Пороги цен для Алматы
+            priceTiersAlmaty: {
                 tier1: { limit: 0, label: "до 60000 ₸" },
                 tier2: { limit: 60000, label: "60000-100000 ₸" },
                 tier3: { limit: 100000, label: "от 100000 ₸" },
             },
+            // Пороги цен для остальных городов
+            priceTiersOther: {
+                tier1: { limit: 0, label: "до 50000 ₸" },
+                tier2: { limit: 50000, label: "50000-70000 ₸" },
+                tier3: { limit: 70000, label: "от 70000 ₸" },
+            },
+            priceTiers: {}, // Динамический объект, будет установлен при выборе города
             kaspiMultiplier: 1.1,
-            cacheKey: 'priceListData_v1',
+            cacheKeyPrefix: 'priceListData_v3_', // Обновляем версию кеша
             cacheDuration: 5 * 60 * 1000,
         },
         state: {
@@ -678,6 +792,7 @@
             quantities: {},
             filter: '',
             collapsedCategories: new Set(),
+            selectedCity: null, 
         },
         elements: {
             appContainer: document.getElementById('app'),
@@ -692,10 +807,21 @@
             scrollTopBtn: document.getElementById("scrollTopBtn"),
             installmentPriceOnBtn: document.getElementById('installmentPriceOnBtn'),
             directPriceOnBtn: document.getElementById('directPriceOnBtn'),
+            cityModal: document.getElementById('cityModal'),
+            citySelectionButtons: document.getElementById('citySelectionButtons'),
+            cityDisplay: document.getElementById('cityDisplay'),
+            currentCityDisplay: document.querySelector('#currentCityDisplay strong'),
+            changeCityBtn: document.getElementById('changeCityBtn'),
         },
         init() {
             this.bindEvents();
-            this.loadData();
+            
+            const savedCity = localStorage.getItem('selectedCity');
+            if (savedCity) {
+                this.setCityAndLoad(savedCity);
+            } else {
+                this.showCityModal();
+            }
         },
 
         bindEvents() {
@@ -703,10 +829,64 @@
             this.elements.tableBody.addEventListener('click', this.handleCategoryClick.bind(this));
             window.addEventListener('scroll', this.handleScroll.bind(this));
             this.elements.scrollTopBtn.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
+
+            this.elements.citySelectionButtons.addEventListener('click', this.handleCitySelection.bind(this));
+            this.elements.changeCityBtn.addEventListener('click', this.showCityModal.bind(this));
+        },
+        
+        showCityModal() {
+            this.elements.cityModal.style.display = 'flex';
+        },
+        
+        handleCitySelection(event) {
+            const city = event.target.dataset.city;
+            if (!city) return;
+
+            const hasItems = Object.keys(this.state.quantities).length > 0;
+            if (hasItems && city !== this.state.selectedCity) {
+                if (!confirm("Смена города очистит ваш текущий заказ. Продолжить?")) {
+                    this.elements.cityModal.style.display = 'none'; 
+                    return;
+                }
+            }
+            
+            this.clearOrder(false); 
+            this.setCityAndLoad(city);
+        },
+        
+        setCityAndLoad(city) {
+            this.state.selectedCity = city;
+            localStorage.setItem('selectedCity', city);
+            
+            // *** ГЛАВНОЕ ИЗМЕНЕНИЕ: Установка правильных порогов цен ***
+            if (city === 'Алматы') {
+                this.config.priceTiers = this.config.priceTiersAlmaty;
+            } else {
+                this.config.priceTiers = this.config.priceTiersOther;
+            }
+            // *** КОНЕЦ ИЗМЕНЕНИЯ ***
+
+            this.updateTableHeaders(); // Обновляем заголовки в таблице
+            
+            this.elements.currentCityDisplay.textContent = city;
+            this.elements.cityDisplay.style.display = 'flex';
+            this.elements.cityModal.style.display = 'none';
+            this.elements.appContainer.style.display = 'none';
+            this.elements.loader.style.display = 'flex';
+            
+            this.loadData();
+        },
+
+        updateTableHeaders() {
+            const { tier1, tier2, tier3 } = this.config.priceTiers;
+            document.querySelector('.price-p1-header').innerHTML = tier1.label;
+            document.querySelector('.price-p2-header').innerHTML = tier2.label;
+            document.querySelector('.price-p3-header').innerHTML = `${tier3.label} <span class="profitable-tag">Выгодно</span>`;
         },
 
         async loadData() {
-            const cachedItem = JSON.parse(localStorage.getItem(this.config.cacheKey));
+            const cacheKey = this.config.cacheKeyPrefix + this.state.selectedCity;
+            const cachedItem = JSON.parse(localStorage.getItem(cacheKey));
             
             if (cachedItem && (Date.now() - cachedItem.timestamp < this.config.cacheDuration)) {
                 this.processData(cachedItem.products);
@@ -714,7 +894,11 @@
             }
 
             try {
-                const response = await fetch(this.config.csvPath, { cache: "no-store" });
+                const city = this.state.selectedCity;
+                // Определяем, какой CSV-файл использовать
+                const csvPath = (city === 'Алматы') ? this.config.csvPaths.almaty : this.config.csvPaths.other;
+                
+                const response = await fetch(csvPath, { cache: "no-store" });
                 if (!response.ok) throw new Error(`Ошибка сети: ${response.status}`);
                 const csvText = await response.text();
                 if (!csvText.trim()) throw new Error("Получен пустой CSV-файл");
@@ -722,11 +906,16 @@
                 if (window.Papa) {
                     this.parseCSV(csvText);
                 } else {
-                    window.addEventListener('load', () => this.parseCSV(csvText));
+                    const checkPapa = setInterval(() => {
+                        if (window.Papa) {
+                            clearInterval(checkPapa);
+                            this.parseCSV(csvText);
+                        }
+                    }, 100);
                 }
             } catch (error) {
                 console.error("Не удалось загрузить свежие данные:", error);
-                const cachedItem = JSON.parse(localStorage.getItem(this.config.cacheKey));
+                const cachedItem = JSON.parse(localStorage.getItem(cacheKey));
                 if (cachedItem && cachedItem.products) {
                     this.showToast("Не удалось обновить прайс. Показана сохраненная версия.", 'warning');
                     this.processData(cachedItem.products);
@@ -746,7 +935,8 @@
                         this.showError();
                         return;
                     }
-                    localStorage.setItem(this.config.cacheKey, JSON.stringify({
+                    const cacheKey = this.config.cacheKeyPrefix + this.state.selectedCity;
+                    localStorage.setItem(cacheKey, JSON.stringify({
                         timestamp: Date.now(),
                         products: products
                     }));
@@ -791,7 +981,6 @@
         },
 
         renderTable() {
-            // FIX: Replace tbody to remove old event listeners and prevent duplication
             const oldTbody = this.elements.tableBody;
             const newTbody = document.createElement('tbody');
             oldTbody.parentNode.replaceChild(newTbody, oldTbody);
@@ -923,18 +1112,24 @@
         calculate() {
             const inputs = this.elements.tableBody.querySelectorAll('.quantity-input');
             let baseTotal = 0;
+            
+            this.state.quantities = {};
             inputs.forEach(input => {
+                const qty = parseInt(input.value, 10) || 0;
+                if (qty > 0) {
+                    this.state.quantities[input.dataset.id] = qty;
+                }
                 const id = input.dataset.id;
                 const product = this.state.products.find(p => p.id === id);
                 if (product) {
-                    baseTotal += product.prices.p1 * (parseInt(input.value, 10) || 0);
+                    baseTotal += product.prices.p1 * qty;
                 }
             });
-            const { limit: l3, label: label3 } = this.config.priceTiers.tier3;
-            const { limit: l2, label: label2 } = this.config.priceTiers.tier2;
-            const { label: label1 } = this.config.priceTiers.tier1;
-            const tier = baseTotal >= l3 ? 3 : baseTotal >= l2 ? 2 : 1;
-            this.elements.tierEl.textContent = tier === 3 ? label3 : tier === 2 ? label2 : label1;
+            
+            // Расчет будет использовать актуальные пороги из this.config.priceTiers
+            const { tier1, tier2, tier3 } = this.config.priceTiers;
+            const tier = baseTotal >= tier3.limit ? 3 : baseTotal >= tier2.limit ? 2 : 1;
+            this.elements.tierEl.textContent = tier === 3 ? tier3.label : tier === 2 ? tier2.label : tier1.label;
             
             document.querySelectorAll('.price-highlight').forEach(el => el.classList.remove('price-highlight'));
             const activeHeader = document.querySelector(`.price-p${tier}-header`);
@@ -984,14 +1179,7 @@
             }
         },
         saveState() {
-            const quantities = {};
-            this.elements.tableBody.querySelectorAll('.quantity-input').forEach(input => {
-                const value = parseInt(input.value, 10);
-                if (value > 0) {
-                    quantities[input.dataset.id] = value;
-                }
-            });
-            localStorage.setItem('orderQuantities', JSON.stringify(quantities));
+            localStorage.setItem('orderQuantities', JSON.stringify(this.state.quantities));
         },
         restoreState() {
             const savedQuantities = JSON.parse(localStorage.getItem('orderQuantities') || '{}');
@@ -1025,6 +1213,7 @@
                 });
 
                 if (Object.keys(urlQuantities).length > 0) {
+                    this.state.quantities = urlQuantities;
                     localStorage.setItem('orderQuantities', JSON.stringify(urlQuantities));
                     history.replaceState(null, null, ' ');
                 }
@@ -1033,27 +1222,29 @@
         generateOrderData(paymentType) { 
             const orderItems = [];
             let baseTotal = 0;
-            this.elements.tableBody.querySelectorAll('.quantity-input').forEach(input => {
-                const qty = parseInt(input.value, 10) || 0;
-                if (qty === 0) return;
-                const id = input.dataset.id;
+
+            for (const id in this.state.quantities) {
+                const qty = this.state.quantities[id];
+                if (qty === 0) continue;
+                
                 const product = this.state.products.find(p => p.id === id);
                 if (product) {
                     baseTotal += product.prices.p1 * qty;
                     orderItems.push({ product, qty });
                 }
-            });
+            }
 
             if (orderItems.length === 0) {
                 return { orderText: "", hasItems: false };
             }
+            
+            let orderText = `Здравствуйте! Хочу сделать заказ:\n*Город: ${this.state.selectedCity}*\n\n`;
 
-            const tier = baseTotal >= this.config.priceTiers.tier3.limit
-                            ? 3
-                            : baseTotal >= this.config.priceTiers.tier2.limit ? 2 : 1;
+            const { tier1, tier2, tier3 } = this.config.priceTiers;
+            const tier = baseTotal >= tier3.limit ? 3 : baseTotal >= tier2.limit ? 2 : 1;
             let finalTotal = 0;
-            let orderText = "Здравствуйте! Хочу сделать заказ:\n\n";
             const orderParams = [];
+
             orderItems.forEach(({ product, qty }) => {
                 const price = product.prices[`p${tier}`];
                 const subtotal = price * qty;
@@ -1108,15 +1299,25 @@
                 console.error('Ошибка копирования: ', err);
             });
         },
-        clearOrder() {
-            if (confirm("Вы уверены, что хотите очистить весь заказ?")) {
+        clearOrder(withConfirmation) {
+            const doClear = () => {
                 this.state.quantities = {};
                 this.elements.tableBody.querySelectorAll('.quantity-input').forEach(input => {
                     input.value = 0;
                 });
                 this.calculate();
                 this.saveState();
-                this.showToast("Заказ очищен", 'success');
+                if (withConfirmation) { 
+                    this.showToast("Заказ очищен", 'success');
+                }
+            };
+
+            if (withConfirmation) {
+                if (confirm("Вы уверены, что хотите очистить весь заказ?")) {
+                    doClear();
+                }
+            } else {
+                doClear();
             }
         },
         showToast(message, type = 'normal') {
@@ -1146,6 +1347,7 @@
                     </button>
                 </div>
             `;
+            this.elements.appContainer.style.display = 'none';
         }
     };
     app.init();
