@@ -764,27 +764,24 @@
     <script>
     const app = {
         config: {
-            // CSV-файлы для разных городов
             csvPaths: {
                 almaty: "https://docs.google.com/spreadsheets/d/e/2PACX-1vRX6c66tG6qBDrcCrkRsGaoG7o-OjwLgyggjnaY2oyZJ2pkcASi5HCSCt8q8A4cxHVGtq1MyaxEE45Q/pub?gid=1898551688&single=true&output=csv",
                 other: "https://docs.google.com/spreadsheets/d/e/2PACX-1vTB2wjRJweDyeI740-wfWqodtco7h3Qbcz2CxxjCewbR5fti8ZJUzFuNcOVg3HnjM7c_4E9NyfeP4JK/pub?gid=1060323005&single=true&output=csv"
             },
             whatsAppPhone: "77780990459",
-            // Пороги цен для Алматы
             priceTiersAlmaty: {
                 tier1: { limit: 0, label: "до 60000 ₸" },
                 tier2: { limit: 60000, label: "60000-100000 ₸" },
                 tier3: { limit: 100000, label: "от 100000 ₸" },
             },
-            // Пороги цен для остальных городов
             priceTiersOther: {
                 tier1: { limit: 0, label: "до 50000 ₸" },
                 tier2: { limit: 50000, label: "50000-70000 ₸" },
                 tier3: { limit: 70000, label: "от 70000 ₸" },
             },
-            priceTiers: {}, // Динамический объект, будет установлен при выборе города
+            priceTiers: {}, 
             kaspiMultiplier: 1.1,
-            cacheKeyPrefix: 'priceListData_v3_', // Обновляем версию кеша
+            cacheKeyPrefix: 'priceListData_v3_', 
             cacheDuration: 5 * 60 * 1000,
         },
         state: {
@@ -839,8 +836,13 @@
         },
         
         handleCitySelection(event) {
-            const city = event.target.dataset.city;
-            if (!city) return;
+            // *** ИСПРАВЛЕНИЕ ДЛЯ МОБИЛЬНЫХ УСТРОЙСТВ ***
+            // Используем .closest(), чтобы гарантированно найти кнопку, даже при неточном касании
+            const button = event.target.closest('.city-btn');
+            if (!button) return; // Если клик был не по кнопке или ее содержимому, выходим
+
+            const city = button.dataset.city;
+            // *** КОНЕЦ ИСПРАВЛЕНИЯ ***
 
             const hasItems = Object.keys(this.state.quantities).length > 0;
             if (hasItems && city !== this.state.selectedCity) {
@@ -858,15 +860,13 @@
             this.state.selectedCity = city;
             localStorage.setItem('selectedCity', city);
             
-            // *** ГЛАВНОЕ ИЗМЕНЕНИЕ: Установка правильных порогов цен ***
             if (city === 'Алматы') {
                 this.config.priceTiers = this.config.priceTiersAlmaty;
             } else {
                 this.config.priceTiers = this.config.priceTiersOther;
             }
-            // *** КОНЕЦ ИЗМЕНЕНИЯ ***
 
-            this.updateTableHeaders(); // Обновляем заголовки в таблице
+            this.updateTableHeaders();
             
             this.elements.currentCityDisplay.textContent = city;
             this.elements.cityDisplay.style.display = 'flex';
@@ -895,7 +895,6 @@
 
             try {
                 const city = this.state.selectedCity;
-                // Определяем, какой CSV-файл использовать
                 const csvPath = (city === 'Алматы') ? this.config.csvPaths.almaty : this.config.csvPaths.other;
                 
                 const response = await fetch(csvPath, { cache: "no-store" });
@@ -1126,7 +1125,6 @@
                 }
             });
             
-            // Расчет будет использовать актуальные пороги из this.config.priceTiers
             const { tier1, tier2, tier3 } = this.config.priceTiers;
             const tier = baseTotal >= tier3.limit ? 3 : baseTotal >= tier2.limit ? 2 : 1;
             this.elements.tierEl.textContent = tier === 3 ? tier3.label : tier === 2 ? tier2.label : tier1.label;
