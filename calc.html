@@ -9,7 +9,8 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap">
-    <link rel="preload" as="image" href="logo_calc_optimized.webp">
+    <!-- Исправлено: путь к изображению для предзагрузки теперь совпадает с используемым -->
+    <link rel="preload" as="image" href="logo_calc.webp">
     
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" media="print" onload="this.media='all'">
     <noscript>
@@ -836,13 +837,10 @@
         },
         
         handleCitySelection(event) {
-            // *** ИСПРАВЛЕНИЕ ДЛЯ МОБИЛЬНЫХ УСТРОЙСТВ ***
-            // Используем .closest(), чтобы гарантированно найти кнопку, даже при неточном касании
             const button = event.target.closest('.city-btn');
-            if (!button) return; // Если клик был не по кнопке или ее содержимому, выходим
+            if (!button) return; 
 
             const city = button.dataset.city;
-            // *** КОНЕЦ ИСПРАВЛЕНИЯ ***
 
             const hasItems = Object.keys(this.state.quantities).length > 0;
             if (hasItems && city !== this.state.selectedCity) {
@@ -1109,6 +1107,13 @@
             this.saveState();
         },
         calculate() {
+            // *** ИСПРАВЛЕНО: Добавлена проверка, чтобы избежать ошибки при смене города ***
+            // Если ценовые уровни еще не определены, выходим из функции.
+            if (!this.config.priceTiers || !this.config.priceTiers.tier1) {
+                return; 
+            }
+            // *** КОНЕЦ ИСПРАВЛЕНИЯ ***
+
             const inputs = this.elements.tableBody.querySelectorAll('.quantity-input');
             let baseTotal = 0;
             
@@ -1311,8 +1316,10 @@
             };
 
             if (withConfirmation) {
-                if (confirm("Вы уверены, что хотите очистить весь заказ?")) {
+                if (Object.keys(this.state.quantities).length > 0 && confirm("Вы уверены, что хотите очистить весь заказ?")) {
                     doClear();
+                } else if (Object.keys(this.state.quantities).length === 0) {
+                     this.showToast("Заказ уже пуст");
                 }
             } else {
                 doClear();
@@ -1348,7 +1355,11 @@
             this.elements.appContainer.style.display = 'none';
         }
     };
-    app.init();
+    
+    // Ожидаем полной загрузки DOM перед инициализацией
+    document.addEventListener('DOMContentLoaded', () => {
+        app.init();
+    });
     </script>
 </body>
 </html>
