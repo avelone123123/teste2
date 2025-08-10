@@ -298,7 +298,7 @@
           var day = parseInt(parts[0], 10);
           var month = parseInt(parts[1], 10) - 1;
           var year = parseInt(parts[2], 10);
-          var timePartsFull = String(endDateString).split(" ")[1] ? String(endDateString).split(" ")[1].split(":") : ["0","0","0"];
+          var timePartsFull = String(endDateString).split(" ")[1] ? String(endDateString).split(":") : ["0","0","0"];
           endDate = new Date(year, month, day, parseInt(timePartsFull[0] || "0", 10), parseInt(timePartsFull[1] || "0", 10), parseInt(timePartsFull[2] || "0", 10));
           if (isNaN(endDate.getTime())) throw new Error("Invalid date value");
         } catch (err) {
@@ -529,7 +529,8 @@
       restoreState: function() {
         try { this.state.quantities = JSON.parse(localStorage.getItem(this.config.quantitiesCacheKey) || "{}"); } catch(e){ this.state.quantities = {}; }
       },
-      generateOrderData: function(orderType) {
+      // UPDATED: added kaspiMarkup flag (boolean). If true, add 10% to unit price before totals.
+      generateOrderData: function(orderType, kaspiMarkup) {
         var orderItems = [];
         for (var id in this.state.quantities) {
           var qty = this.state.quantities[id];
@@ -541,7 +542,7 @@
         
         var finalTotal = 0;
         var headerText = orderType === 'kaspi'
-          ? "Здравствуйте! Хочу сделать предзаказ в рассрочку Kaspi 0-0-12:\n"
+          ? "Здравствуйте! Хочу сделать предзаказ в рассрочку Kaspi 0-0-12 (цены с наценкой 10%):\n"
           : "Здравствуйте! Хочу сделать предзаказ:\n";
 
         var lines = [headerText];
@@ -551,6 +552,10 @@
           var price = product.prices.p1;
           if (qty >= 5) price = product.prices.p3;
           else if (qty >= 3) price = product.prices.p2;
+          // Apply 10% markup for Kaspi
+          if (kaspiMarkup) {
+            price = Math.round(price * 1.10);
+          }
           var subtotal = price * qty;
           finalTotal += subtotal;
           lines.push("• " + product.name + " — " + qty + " шт × " + price.toLocaleString("ru-RU") + " ₸ = " + subtotal.toLocaleString("ru-RU") + " ₸");
@@ -562,19 +567,20 @@
         return { orderText: lines.join("\n"), hasItems: true };
       },
       sendOrder: function() {
-        var obj = this.generateOrderData('whatsapp');
+        var obj = this.generateOrderData('whatsapp', false);
         if (!obj.hasItems) { this.showToast("Сначала добавьте товары в корзину"); return; }
         var url = "https://wa.me/" + this.config.whatsAppPhone + "?text=" + encodeURIComponent(obj.orderText);
         window.open(url, "_blank");
       },
       sendKaspiOrder: function() {
-        var obj = this.generateOrderData('kaspi');
+        // UPDATED: pass kaspiMarkup=true
+        var obj = this.generateOrderData('kaspi', true);
         if (!obj.hasItems) { this.showToast("Сначала добавьте товары в корзину"); return; }
         var url = "https://wa.me/" + this.config.whatsAppPhone + "?text=" + encodeURIComponent(obj.orderText);
         window.open(url, "_blank");
       },
       copyOrderForChat: function() {
-        var obj = this.generateOrderData('whatsapp');
+        var obj = this.generateOrderData('whatsapp', false);
         if (!obj.hasItems) { this.showToast("Сначала добавьте товары в корзину"); return; }
         navigator.clipboard.writeText(obj.orderText).then(() => {
           this.showToast("Заказ скопирован! Вставьте его в чат WhatsApp.", "success");
