@@ -1,18 +1,19 @@
-<!DOCTYPE html> 
+<!DOCTYPE html>
+
 <html lang="ru">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="format-detection" content="telephone=no">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
-  <title>СПОРТИВНАЯ FARMA ПО ВСЕМУ КАЗАХСТАНУ</title>
-  <meta name="description" content="Лучшие препараты от Фармаком по предзаказу. Низкие цены, гарантия качества, доставка по Казахстану.">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap">
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" media="print" onload="this.media='all'">
-  <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"></noscript>
-  <link rel="icon" type="image/x-icon" href="/favicon.ico">
-  <style>
+<meta charset="utf-8"/>
+<meta content="telephone=no" name="format-detection"/>
+<meta content="width=device-width, initial-scale=1.0, user-scalable=yes" name="viewport">
+<title>Nefarma | Купить стероиды и фарму в Алматы, Казахстане с доставкой</title>
+<meta content="Лучшие препараты от Pharmacom labs по предзаказу. Низкие цены, гарантия качества, доставка по Казахстану." name="description"/>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link as="style" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="preload"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" media="print" onload="this.media='all'" rel="stylesheet"/>
+<noscript><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/></noscript>
+<link href="/favicon.ico" rel="icon" type="image/x-icon"/>
+<style>
     :root {
       --bg-color: #0f1115;
       --surface-color: #1a1f29;
@@ -103,10 +104,6 @@
     .totals #tier { font-weight: 600; color: var(--primary-color); }
     .final-total { font-size: 24px; font-weight: 800; }
     .savings { color: var(--success-color); font-weight: 600; }
-    .kaspi-total-row { margin-top: 6px; font-size: 15px; }
-    .kaspi-total-label { color: var(--text-muted-color); font-weight: 600; }
-    .kaspi-total-value { font-weight: 800; color: var(--kaspi-color); }
-
     .actions { width: 100%; display: flex; gap: 15px; flex-wrap: wrap; }
     .action-button { padding: 12px 18px; font-size: 16px; font-weight: 700; border: none; border-radius: 12px; cursor: pointer; text-align: center; flex-grow: 1; display: flex; align-items: center; justify-content: center; gap: 8px; line-height: 1.2; transition: transform 0.15s ease, opacity 0.2s, box-shadow 0.2s; }
     .action-button:disabled { background-color: #3b4658 !important; background-image: none !important; cursor: not-allowed; opacity: 0.6; }
@@ -118,6 +115,9 @@
     .clear-btn:hover:not(:disabled) { transform: translateY(-2px); }
     #copyOrderBtn { background: linear-gradient(90deg, #3b82f6, #8b5cf6); color: white; box-shadow: 0 6px 20px rgba(59,130,246,0.25); }
     #copyOrderBtn:hover:not(:disabled) { transform: translateY(-2px); }
+
+    .btn-amount { font-weight: 800; margin-left: 6px; }
+    .btn-amount.muted { opacity: .85; font-weight: 700; }
 
     #loader { text-align: center; padding: 40px; font-size: 16px; color: var(--text-muted-color); display: flex; flex-direction: column; align-items: center; gap: 20px; }
     .loader-spinner { width: 50px; height: 50px; border: 5px solid rgba(255,255,255,0.1); border-radius: 50%; border-top-color: var(--primary-color); animation: spin 1s linear infinite; }
@@ -145,100 +145,82 @@
       #countdown-timer { font-size: 18px; }
     }
   </style>
-</head>
-
+</meta></head>
 <body>
-  <header class="header">
-    <div class="container">
-      <a href="index.html" class="logo" aria-label="На главную">
-        <img src="logo.webp" alt="Логотип" width="286" height="40" loading="eager">
-      </a>
-      <div id="countdown-container" style="display: none;">
-        <div class="title">До конца предзаказа</div>
-        <div id="countdown-timer">00:00:00:00</div>
-      </div>
-    </div>
-  </header>
-
-  <div class="calculator-container" id="app" style="display: none;">
-    <h1 style="text-align:center;">Предзаказ фармы в Казахстане</h1>
-    <div class="filter-wrapper">
-      <label for="filterInput" class="visually-hidden">Поиск по прайс-листу</label>
-      <input type="text" class="filter-input" id="filterInput" placeholder="🔍 Поиск по названию...">
-    </div>
-    <div id="product-grid" class="product-grid"></div>
-
-    <div class="preorder-conditions" style="margin-top: 20px; padding: 20px; background-color: var(--surface-color); border-radius: var(--border-radius); box-shadow: var(--shadow);">
-      <h2 style="text-align:center; margin-top:0; font-size: 18px; color: var(--text-color);">Условия предзаказа</h2>
-      <ul style="padding-left: 20px; margin-bottom: 0; line-height: 1.7; list-style-type: '✔ '; font-size: 14px; color: var(--text-muted-color);">
-        <li style="padding-left: 10px; margin-bottom: 12px; color: var(--warning-color);"><strong style="color: var(--text-color);">Срок ожидания:</strong> Пожалуйста, обратите внимание, что срок ожидания заказа с момента оплаты составляет <strong style="color: #f59e0b;">3-4 недели</strong>.</li>
-        <li style="padding-left: 10px; margin-bottom: 12px;"><strong style="color: var(--text-color);">Условия оплаты:</strong> Для подтверждения предзаказа требуется 100% предоплата.</li>
-        <li style="padding-left: 10px; margin-bottom: 12px;"><strong style="color: var(--text-color);">Если товара не будет в наличии:</strong> В редких случаях поставка может быть отменена. Мы немедленно сообщим вам об этом и вернем полную сумму предоплаты либо предложим альтернативу.</li>
-        <li style="padding-left: 10px; margin-bottom: 12px;"><strong style="color: var(--text-color);">Отмена и возврат:</strong> Возврат денег и отмена предзаказа возможны в любое время. Возврат денежных средств будет осуществлен в течение 48 часов.</li>
-      </ul>
-    </div>
-
-    <div class="summary-panel">
-      <div class="totals">
-        <div style="display:none;">Применяется ценовой уровень: <span id="tier"></span></div>
-        <div style="display:none;"><span class="savings" id="savings">Экономия: 0 ₸</span></div>
-        <div>Итоговая сумма: <span class="final-total" id="total">0 ₸</span></div>
-
-        <!-- НОВОЕ: сумма рассрочки с наценкой 10% -->
-        <div id="kaspiTotalRow" class="kaspi-total-row" style="display:none;">
-          <span class="kaspi-total-label">Рассрочка Kaspi 0-0-12 (10%):</span>
-          <span class="kaspi-total-value" id="kaspiTotal">0 ₸</span>
-        </div>
-
-        <div id="minOrderMessage" style="color: var(--warning-color); font-weight: 700; margin-top: 10px; display: none;"></div>
-      </div>
-
-      <div class="order-instructions" style="text-align: center; margin: 15px 0 5px 0; width: 100%;">
-        <p style="margin: 0; color: var(--text-color); font-size: 15px; font-weight: 600;">Выберите способ оформления заказа:</p>
-        <p style="margin: 5px 0 0 0; color: var(--text-muted-color); font-size: 13px;">Нажмите на одну из кнопок, чтобы отправить заказ нам в WhatsApp.</p>
-      </div>
-
-      <div class="actions" style="grid-template-columns: 1fr 1fr; display: grid;">
-        <button class="action-button whatsapp-btn" id="buyDirectBtn" onclick="app.sendOrder()">
-          <svg class="icon" viewBox="0 0 448 512" width="20" height="20"><path fill="currentColor" d="M380.9 97.1C339 55.1 283.2 32 223.9 32c-122.4 0-222 99.6-222 222 0 39.1 10.2 77.3 29.6 111L0 480l117.7-30.9c32.4 17.7 68.9 27 106.1 27h.1c122.3 0 224.1-99.6 224.1-222 0-59.3-25.2-115-67.1-157zm-157 341.6c-33.8 0-65.7-8.9-94-25.4l-6.7-4-69.8 18.3L72 359.2l-4.4-7c-18.5-29.4-28.2-63.3-28.2-98.2 0-101.7 82.8-184.5 184.6-184.5 49.3 0 95.6 19.2 130.4 54.1 34.8 34.9 56.2 81.2 56.1 130.5 0 101.8-84.9 184.6-186.6 184.6zm101.2-138.2c-5.5-2.8-32.8-16.2-37.9-18-5.1-1.9-8.8-2.8-12.5 2.8-3.7 5.6-14.3 18-17.6 21.8-3.2 3.7-6.5 4.2-12 1.4-32.6-16.3-54-29.1-75.5-66-5.7-9.8 5.7-9.1 16.3-30.3 1.8-3.7.9-6.9-.5-9.7-1.4-2.8-12.5-30.1-17.1-41.2-4.5-10.8-9.1-9.3-12.5-9.5-3.2-.2-6.9-.2-10.6-.2-3.7 0-9.7 1.4-14.8 6.9-5.1 5.6-19.4 19-19.4 46.3 0 27.3 19.9 53.7 22.6 57.4 2.8 3.7 39.1 59.7 94.8 83.8 35.2 15.2 49 16.5 66.6 13.9 10.7-1.6 32.8-13.4 37.4-26.4 4.6-13 4.6-24.1 3.2-26.4-1.3-2.5-5-3.9-10.5-6.6z"></path></svg>
-          Оформить в WhatsApp
-        </button>
-        <button class="action-button kaspi-btn" id="kaspiBtn" onclick="app.sendKaspiOrder()">
-          <svg class="icon" viewBox="0 0 448 512" width="20" height="20"><path fill="currentColor" d="M380.9 97.1C339 55.1 283.2 32 223.9 32c-122.4 0-222 99.6-222 222 0 39.1 10.2 77.3 29.6 111L0 480l117.7-30.9c32.4 17.7 68.9 27 106.1 27h.1c122.3 0 224.1-99.6 224.1-222 0-59.3-25.2-115-67.1-157zm-157 341.6c-33.8 0-65.7-8.9-94-25.4l-6.7-4-69.8 18.3L72 359.2l-4.4-7c-18.5-29.4-28.2-63.3-28.2-98.2 0-101.7 82.8-184.5 184.6-184.5 49.3 0 95.6 19.2 130.4 54.1 34.8 34.9 56.2 81.2 56.1 130.5 0 101.8-84.9 184.6-186.6 184.6zm101.2-138.2c-5.5-2.8-32.8-16.2-37.9-18-5.1-1.9-8.8-2.8-12.5 2.8-3.7 5.6-14.3 18-17.6 21.8-3.2 3.7-6.5 4.2-12 1.4-32.6-16.3-54-29.1-75.5-66-5.7-9.8 5.7-9.1 16.3-30.3 1.8-3.7.9-6.9-.5-9.7-1.4-2.8-12.5-30.1-17.1-41.2-4.5-10.8-9.1-9.3-12.5-9.5-3.2-.2-6.9-.2-10.6-.2-3.7 0-9.7 1.4-14.8 6.9-5.1 5.6-19.4 19-19.4 46.3 0 27.3 19.9 53.7 22.6 57.4 2.8 3.7 39.1 59.7 94.8 83.8 35.2 15.2 49 16.5 66.6 13.9 10.7-1.6 32.8-13.4 37.4-26.4 4.6-13 4.6-24.1 3.2-26.4-1.3-2.5-5-3.9-10.5-6.6z"></path></svg>
-          Kaspi 0-0-12
-        </button>
-      </div>
-
-      <div class="actions" style="margin-top: 10px; display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
-        <button class="action-button" id="copyOrderBtn" onclick="app.copyOrderForChat()">
-          <svg class="icon" viewBox="0 0 24 24" width="16" height="16"><path fill="currentColor" d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"></path></svg>
+<header class="header">
+<div class="container">
+<a aria-label="На главную" class="logo" href="index.html">
+<img alt="Логотип" height="40" loading="eager" src="logo.webp" width="286"/>
+</a>
+<div id="countdown-container" style="display: none;">
+<div class="title">До конца предзаказа</div>
+<div id="countdown-timer">00:00:00:00</div>
+</div>
+</div>
+</header>
+<div class="calculator-container" id="app" style="display: none;">
+<h1 style="text-align:center;">Предзаказ фармы в Казахстане</h1>
+<div class="filter-wrapper">
+<label class="visually-hidden" for="filterInput">Поиск по прайс-листу</label>
+<input class="filter-input" id="filterInput" placeholder="🔍 Поиск по названию..." type="text"/>
+</div>
+<div class="product-grid" id="product-grid"></div>
+<div class="preorder-conditions" style="margin-top: 20px; padding: 20px; background-color: var(--surface-color); border-radius: var(--border-radius); box-shadow: var(--shadow);">
+<h2 style="text-align:center; margin-top:0; font-size: 18px; color: var(--text-color);">Условия предзаказа</h2>
+<ul style="padding-left: 20px; margin-bottom: 0; line-height: 1.7; list-style-type: '✔ '; font-size: 14px; color: var(--text-muted-color);">
+<li style="padding-left: 10px; margin-bottom: 12px; color: var(--warning-color);"><strong style="color: var(--text-color);">Срок ожидания:</strong> Пожалуйста, обратите внимание, что срок ожидания заказа с момента оплаты составляет <strong style="color: #f59e0b;">3-4 недели</strong>.</li>
+<li style="padding-left: 10px; margin-bottom: 12px;"><strong style="color: var(--text-color);">Условия оплаты:</strong> Для подтверждения предзаказа требуется 100% предоплата.</li>
+<li style="padding-left: 10px; margin-bottom: 12px;"><strong style="color: var(--text-color);">Если товара не будет в наличии:</strong> В редких случаях поставка может быть отменена. Мы немедленно сообщим вам об этом и вернем полную сумму предоплаты либо предложим альтернативу.</li>
+<li style="padding-left: 10px; margin-bottom: 12px;"><strong style="color: var(--text-color);">Отмена и возврат:</strong> Возврат денег и отмена предзаказа возможны в любое время. Возврат денежных средств будет осуществлен в течение 48 часов.</li>
+</ul>
+</div>
+<div class="summary-panel">
+<div class="totals">
+<div style="display:none;">Применяется ценовой уровень: <span id="tier"></span></div>
+<div style="display:none;"><span class="savings" id="savings">Экономия: 0 ₸</span></div>
+<div>Итоговая сумма: <span class="final-total" id="total">0 ₸</span></div>
+<div>В рассрочку KASPI ≈ <span id="kaspiTotal">0 ₸</span> (<span id="kaspiMonthly">0 ₸</span>/мес)</div></div>
+<div class="order-instructions" style="text-align: center; margin: 15px 0 5px 0; width: 100%;">
+<p style="margin: 0; color: var(--text-color); font-size: 15px; font-weight: 600;">Выберите способ оформления заказа:</p>
+<p style="margin: 5px 0 0 0; color: var(--text-muted-color); font-size: 13px;">Нажмите на одну из кнопок, чтобы отправить заказ нам в WhatsApp.</p>
+</div>
+<div class="actions" style="grid-template-columns: 1fr 1fr; display: grid;">
+<button class="action-button whatsapp-btn" id="buyDirectBtn" onclick="app.sendOrder()">
+<svg class="icon" height="20" viewbox="0 0 448 512" width="20"><path d="M380.9 97.1C339 55.1 283.2 32 223.9 32c-122.4 0-222 99.6-222 222 0 39.1 10.2 77.3 29.6 111L0 480l117.7-30.9c32.4 17.7 68.9 27 106.1 27h.1c122.3 0 224.1-99.6 224.1-222 0-59.3-25.2-115-67.1-157zm-157 341.6c-33.8 0-65.7-8.9-94-25.4l-6.7-4-69.8 18.3L72 359.2l-4.4-7c-18.5-29.4-28.2-63.3-28.2-98.2 0-101.7 82.8-184.5 184.6-184.5 49.3 0 95.6 19.2 130.4 54.1 34.8 34.9 56.2 81.2 56.1 130.5 0 101.8-84.9 184.6-186.6 184.6zm101.2-138.2c-5.5-2.8-32.8-16.2-37.9-18-5.1-1.9-8.8-2.8-12.5 2.8-3.7 5.6-14.3 18-17.6 21.8-3.2 3.7-6.5 4.2-12 1.4-32.6-16.3-54-29.1-75.5-66-5.7-9.8 5.7-9.1 16.3-30.3 1.8-3.7.9-6.9-.5-9.7-1.4-2.8-12.5-30.1-17.1-41.2-4.5-10.8-9.1-9.3-12.5-9.5-3.2-.2-6.9-.2-10.6-.2-3.7 0-9.7 1.4-14.8 6.9-5.1 5.6-19.4 19-19.4 46.3 0 27.3 19.9 53.7 22.6 57.4 2.8 3.7 39.1 59.7 94.8 83.8 35.2 15.2 49 16.5 66.6 13.9 10.7-1.6 32.8-13.4 37.4-26.4 4.6-13 4.6-24.1 3.2-26.4-1.3-2.5-5-3.9-10.5-6.6z" fill="currentColor"></path></svg>
+          Оформить в WhatsApp <span class="btn-amount muted" id="btnDirectAmount">— 0 ₸</span>
+</button>
+<button class="action-button kaspi-btn" id="kaspiBtn" onclick="app.sendKaspiOrder()">
+<svg class="icon" height="20" viewbox="0 0 448 512" width="20"><path d="M380.9 97.1C339 55.1 283.2 32 223.9 32c-122.4 0-222 99.6-222 222 0 39.1 10.2 77.3 29.6 111L0 480l117.7-30.9c32.4 17.7 68.9 27 106.1 27h.1c122.3 0 224.1-99.6 224.1-222 0-59.3-25.2-115-67.1-157zm-157 341.6c-33.8 0-65.7-8.9-94-25.4l-6.7-4-69.8 18.3L72 359.2l-4.4-7c-18.5-29.4-28.2-63.3-28.2-98.2 0-101.7 82.8-184.5 184.6-184.5 49.3 0 95.6 19.2 130.4 54.1 34.8 34.9 56.2 81.2 56.1 130.5 0 101.8-84.9 184.6-186.6 184.6zm101.2-138.2c-5.5-2.8-32.8-16.2-37.9-18-5.1-1.9-8.8-2.8-12.5 2.8-3.7 5.6-14.3 18-17.6 21.8-3.2 3.7-6.5 4.2-12 1.4-32.6-16.3-54-29.1-75.5-66-5.7-9.8 5.7-9.1 16.3-30.3 1.8-3.7.9-6.9-.5-9.7-1.4-2.8-12.5-30.1-17.1-41.2-4.5-10.8-9.1-9.3-12.5-9.5-3.2-.2-6.9-.2-10.6-.2-3.7 0-9.7 1.4-14.8 6.9-5.1 5.6-19.4 19-19.4 46.3 0 27.3 19.9 53.7 22.6 57.4 2.8 3.7 39.1 59.7 94.8 83.8 35.2 15.2 49 16.5 66.6 13.9 10.7-1.6 32.8-13.4 37.4-26.4 4.6-13 4.6-24.1 3.2-26.4-1.3-2.5-5-3.9-10.5-6.6z" fill="currentColor"></path></svg>
+          Kaspi 0-0-12 <span class="btn-amount" id="btnKaspiAmount">— 0 ₸</span>
+</button>
+</div>
+<div class="actions" style="margin-top: 10px; display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
+<button class="action-button" id="copyOrderBtn" onclick="app.copyOrderForChat()">
+<svg class="icon" height="16" viewbox="0 0 24 24" width="16"><path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z" fill="currentColor"></path></svg>
           Копировать
         </button>
-        <button class="action-button clear-btn" onclick="app.clearOrder()">
-          <svg class="icon" viewBox="0 0 24 24" width="16" height="16"><path fill="currentColor" d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"></path></svg>
+<button class="action-button clear-btn" onclick="app.clearOrder()">
+<svg class="icon" height="16" viewbox="0 0 24 24" width="16"><path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14В4z" fill="currentColor"></path></svg>
           Очистить
         </button>
-      </div>
-    </div>
-  </div>
-
-  <div id="loader">
-    <div class="loader-spinner"></div>
-    <div>Загрузка прайс-листа...</div>
-  </div>
-  <div id="toast" class="toast-notification"></div>
-  <button class="scroll-top-btn" id="scrollTopBtn" title="Наверх">
-    <svg class="icon" viewBox="0 0 24 24" width="24" height="24"><path fill="currentColor" d="M13 19V7.83l4.59 4.59L19 11l-7-7-7 7 1.41 1.41L11 7.83V19h2z"></path></svg>
-  </button>
-
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
-  <script>
+</div>
+</div>
+</div>
+<div id="loader">
+<div class="loader-spinner"></div>
+<div>Загрузка прайс-листа...</div>
+</div>
+<div class="toast-notification" id="toast"></div>
+<button class="scroll-top-btn" id="scrollTopBtn" title="Наверх">
+<svg class="icon" height="24" viewbox="0 0 24 24" width="24"><path d="M13 19V7.83l4.59 4.59L19 11l-7-7-7 7 1.41 1.41L11 7.83V19h2z" fill="currentColor"></path></svg>
+</button>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
+<script>
     const app = {
       config: {
         csvPath: "https://docs.google.com/spreadsheets/d/e/2PACX-1vRbJ43MOGmEjMaB6PV8j3tr63nnErTHxCH431JvdqWZCvtQYXWhzGl_RS05qLBC81QT60aIBsmfVX2c/pub?output=csv",
         timerCsvPath: "https://docs.google.com/spreadsheets/d/e/2PACX-1vSdZbVTUwj1zR_y-FcneMiKDd20ezwM3XaGM8hRY7ja4IzRieyonxS0OYQHa3tTadeCTmMLvLvhQqaQ/pub?output=csv",
         whatsAppPhone: "77780990459",
-        minOrderAmount: 30000,
         productsCacheKey: "preorderPharmaProducts_v5_cards",
         quantitiesCacheKey: "preorderPharmaQuantities_v5_cards",
         cacheDuration: 300000,
@@ -259,11 +241,12 @@
         buyDirectBtn: document.getElementById("buyDirectBtn"),
         copyOrderBtn: document.getElementById("copyOrderBtn"),
         kaspiBtn: document.getElementById("kaspiBtn"),
-        minOrderMessage: document.getElementById("minOrderMessage"),
-        countdownContainer: document.getElementById("countdown-container"),
-        countdownTimer: document.getElementById("countdown-timer"),
-        kaspiTotalRow: document.getElementById("kaspiTotalRow"),
+        btnDirectAmount: document.getElementById("btnDirectAmount"),
+        btnKaspiAmount: document.getElementById("btnKaspiAmount"),
         kaspiTotalEl: document.getElementById("kaspiTotal"),
+        kaspiMonthlyEl: document.getElementById("kaspiMonthly"),
+        countdownContainer: document.getElementById("countdown-container"),
+        countdownTimer: document.getElementById("countdown-timer")
       },
       init: function() {
         this.bindEvents();
@@ -496,11 +479,31 @@
         this.saveState();
         this.calculate();
       },
-      calculate: function() {
-        var finalTotal = 0;
-        if (this.elements.tierEl && this.elements.tierEl.parentElement) this.elements.tierEl.parentElement.style.display = "none";
-        if (this.elements.savingsEl && this.elements.savingsEl.parentElement) this.elements.savingsEl.parentElement.style.display = "none";
+      // аккуратно считаем обе суммы: обычную и каспи с 10% (округление по каждой позиции)
+      getCurrentTotals: function() {
+        var directTotal = 0;
+        var kaspiTotal = 0;
+        this.state.products.forEach((product) => {
+          var qty = this.state.quantities[product.id] || 0;
+          if (!qty) return;
+          var unit = product.prices.p1;
+          if (qty >= 5) unit = product.prices.p3;
+          else if (qty >= 3) unit = product.prices.p2;
 
+          var subtotal = unit * qty;
+          directTotal += subtotal;
+
+          // для каспи округляем цену за единицу после наценки, как в generateOrderData
+          var kaspiUnit = Math.round(unit * 1.10);
+          kaspiTotal += kaspiUnit * qty;
+        });
+        return { directTotal, kaspiTotal };
+      },
+      calculate: function() {
+        var totals = this.getCurrentTotals();
+        var finalTotal = totals.directTotal;
+
+        // обновляем карточки (подсветка и субтоталы)
         this.state.products.forEach((product) => {
           var card = this.elements.productGrid.querySelector(".product-card[data-id='"+ product.id +"']");
           var qty = this.state.quantities[product.id] || 0;
@@ -509,7 +512,6 @@
           if (qty >= 5) { price = product.prices.p3; activeTier = 3; }
           else if (qty >= 3) { price = product.prices.p2; activeTier = 2; }
           var subtotal = price * qty;
-          finalTotal += subtotal;
           if (card) {
             var subtotalEl = card.querySelector(".subtotal-value");
             if (subtotalEl) subtotalEl.textContent = subtotal.toLocaleString("ru-RU") + " ₸";
@@ -521,29 +523,26 @@
           }
         });
 
-        // Итог без наценки
         if (this.elements.totalEl) this.elements.totalEl.textContent = finalTotal.toLocaleString("ru-RU") + " ₸";
-
-        // НОВОЕ: показать сумму рассрочки с наценкой 10%
-        var kaspiTotalValue = Math.round(finalTotal * 1.10);
-        if (finalTotal > 0) {
-          this.elements.kaspiTotalRow.style.display = "block";
-          this.elements.kaspiTotalEl.textContent = kaspiTotalValue.toLocaleString("ru-RU") + " ₸";
-        } else {
-          this.elements.kaspiTotalRow.style.display = "none";
-          this.elements.kaspiTotalEl.textContent = "0 ₸";
+        if (this.elements.kaspiTotalEl) {
+          this.elements.kaspiTotalEl.textContent = totals.kaspiTotal.toLocaleString("ru-RU") + " ₸";
+        }
+        if (this.elements.kaspiMonthlyEl) {
+          var monthly = Math.round(totals.kaspiTotal / 12);
+          this.elements.kaspiMonthlyEl.textContent = monthly.toLocaleString("ru-RU") + " ₸";
         }
 
-        var buttonsDisabled = (finalTotal < this.config.minOrderAmount) || !this.state.preorderActive || (finalTotal === 0);
+        var buttonsDisabled = (!this.state.preorderActive || (finalTotal === 0));
         this.elements.buyDirectBtn.disabled = buttonsDisabled;
         this.elements.copyOrderBtn.disabled = buttonsDisabled;
         this.elements.kaspiBtn.disabled = buttonsDisabled;
 
-        if (this.state.preorderActive && finalTotal > 0 && finalTotal < this.config.minOrderAmount) {
-          this.elements.minOrderMessage.textContent = "Минимальная сумма для предзаказа: " + this.config.minOrderAmount.toLocaleString("ru-RU") + " ₸";
-          this.elements.minOrderMessage.style.display = "block";
-        } else {
-          this.elements.minOrderMessage.style.display = "none";
+        // обновляем суммы на кнопках
+        if (this.elements.btnDirectAmount) {
+          this.elements.btnDirectAmount.textContent = "— " + finalTotal.toLocaleString("ru-RU") + " ₸";
+        }
+        if (this.elements.btnKaspiAmount) {
+          this.elements.btnKaspiAmount.textContent = "— " + totals.kaspiTotal.toLocaleString("ru-RU") + " ₸";
         }
       },
       saveState: function() {
@@ -558,7 +557,7 @@
       restoreState: function() {
         try { this.state.quantities = JSON.parse(localStorage.getItem(this.config.quantitiesCacheKey) || "{}"); } catch(e){ this.state.quantities = {}; }
       },
-      // UPDATED: added kaspiMarkup flag (boolean). If true, add 10% to unit price before totals.
+      // генерация текста заказа (для Kaspi — с наценкой 10% на единицу)
       generateOrderData: function(orderType, kaspiMarkup) {
         var orderItems = [];
         for (var id in this.state.quantities) {
@@ -581,10 +580,7 @@
           var price = product.prices.p1;
           if (qty >= 5) price = product.prices.p3;
           else if (qty >= 3) price = product.prices.p2;
-          // Apply 10% markup for Kaspi
-          if (kaspiMarkup) {
-            price = Math.round(price * 1.10);
-          }
+          if (kaspiMarkup) price = Math.round(price * 1.10);
           var subtotal = price * qty;
           finalTotal += subtotal;
           lines.push("• " + product.name + " — " + qty + " шт × " + price.toLocaleString("ru-RU") + " ₸ = " + subtotal.toLocaleString("ru-RU") + " ₸");
@@ -602,7 +598,6 @@
         window.open(url, "_blank");
       },
       sendKaspiOrder: function() {
-        // UPDATED: pass kaspiMarkup=true
         var obj = this.generateOrderData('kaspi', true);
         if (!obj.hasItems) { this.showToast("Сначала добавьте товары в корзину"); return; }
         var url = "https://wa.me/" + this.config.whatsAppPhone + "?text=" + encodeURIComponent(obj.orderText);
