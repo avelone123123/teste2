@@ -1,0 +1,444 @@
+<!DOCTYPE html>
+<html lang="ru" data-theme="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="format-detection" content="telephone=no" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>Тирзепатид (Мунджаро): Калькулятор и инструкция | Nefarma</title>
+
+  <meta name="description" content="Быстрый калькулятор разведения пептида Тирзепатид: мг↔мкг, мл↔U‑100, дозы, курс, экспорт CSV. Тёмная/светлая тема, офлайн-доступ." />
+  <meta property="og:title" content="Калькулятор пептидов Nefarma" />
+  <meta property="og:description" content="Считает концентрацию (мг/мл), объём инъекции (мл, U‑100) и число доз. Есть пресеты, экспорт, шаринг в WhatsApp и офлайн." />
+  <meta property="og:type" content="website" />
+  <meta property="og:image" content="/og-card.jpg" />
+  <meta property="og:locale" content="ru_RU" />
+  <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preload" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap&subset=cyrillic" as="style" onload="this.onload=null;this.rel='stylesheet'">
+  <noscript>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap&subset=cyrillic">
+  </noscript>
+
+  <style>
+    :root{
+      --bg:#0f1012; --surf:#181a1f; --text:#f4f6f8; --muted:#aeb6c2;
+      --primary:#00aaff; --primary-2:#0088cc; --warn:#ffc107; --ok:#19c37d; --border:#2a2f36;
+      --r:14px; --shadow:0 8px 28px rgba(0,0,0,.25);
+      --tap:48px; /* min tap target */
+    }
+    html[data-theme="light"]{
+      --bg:#ffffff; --surf:#f6f7f9; --text:#0f1115; --muted:#4b5563; --border:#e5e7eb;
+      --shadow:0 10px 24px rgba(0,0,0,.08);
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{margin:0; font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,sans-serif; background:var(--bg); color:var(--text); line-height:1.6}
+
+    /* Layout */
+    .container{max-width:980px; margin:0 auto; padding: clamp(12px, 4vw, 24px)}
+    header{position:sticky; top:0; z-index:40; background:rgba(15,16,18,.75); backdrop-filter:saturate(130%) blur(8px); border-bottom:1px solid var(--border)}
+    html[data-theme="light"] header{background:rgba(255,255,255,.85)}
+    .hdr{display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:12px; min-height:60px; padding:8px 12px}
+    .logo{display:flex; align-items:center; gap:10px; color:inherit; text-decoration:none}
+    .logo img{height:32px; width:auto}
+    html[data-theme="light"] .logo img {filter: invert(1);}
+
+    .row{display:flex; align-items:center; gap:10px}
+
+    /* Responsive header buttons */
+    @media (max-width: 640px) {
+      .hdr .row {
+        flex-basis: 100%;
+        justify-content: flex-end;
+      }
+    }
+
+    .card{background:var(--surf); border:1px solid var(--border); border-radius:var(--r); box-shadow:var(--shadow)}
+    .section{padding: clamp(14px, 3.2vw, 22px)}
+    h1{margin:8px 0 12px; font-size:clamp(22px, 6vw, 32px)}
+    h2{margin:0 0 12px; font-size:clamp(18px, 5vw, 24px)}
+    .muted{color:var(--muted)}
+
+    /* Grid */
+    .grid{display:grid; gap:14px}
+    @media (min-width:780px){.grid-2{grid-template-columns:1fr 1fr}}
+
+    /* Inputs */
+    .label{display:block; font-weight:600; font-size:13px; color:#e7e7e7; margin-bottom:6px}
+    html[data-theme="light"] .label{color:#2a2e35}
+    .input{width:100%; background:#111318; color:var(--text); border:1px solid var(--border); border-radius:12px; padding:12px 14px; font-size:16px; min-height:var(--tap)}
+    html[data-theme="light"] .input{background:#fff}
+    .input:focus{outline:none; border-color:var(--primary); box-shadow:0 0 0 3px rgba(0,170,255,.25)}
+    input[type=number]{appearance:textfield}
+    input[type=number]::-webkit-outer-spin-button, input[type=number]::-webkit-inner-spin-button{appearance:none; margin:0}
+    .seg{display:inline-flex; border:1px solid var(--border); border-radius:12px; overflow:hidden}
+    .seg button{min-height:var(--tap); padding:8px 12px; background:transparent; color:var(--text); border:0; cursor:pointer; font-weight:600}
+    .seg button[aria-pressed="true"]{background:var(--primary); color:#fff}
+    html[data-theme="light"] .seg button[aria-pressed="true"]{color:#fff}
+
+    /* Stats */
+    .stats{display:grid; gap:10px; margin-top:10px}
+    @media (min-width:680px){.stats{grid-template-columns:repeat(3,1fr)}}
+    .stat{border:1px dashed var(--border); border-radius:12px; background:#0c0e12; padding:12px; position:relative}
+    html[data-theme="light"] .stat{background:#fff}
+    .stat .k{font-size:12px; color:var(--muted)}
+    .stat .v{font-size:clamp(22px, 6vw, 28px); font-weight:800}
+    .stat .u{font-size:14px; color:var(--muted); font-weight:600; margin-left:6px}
+    .pulse{animation:pulse .9s ease}
+    @keyframes pulse{from{box-shadow:0 0 0 0 rgba(0,170,255,.35)} to{box-shadow:0 0 0 10px rgba(0,170,255,0)}}
+
+    /* Buttons */
+    .btns{display:flex; flex-wrap:wrap; gap:10px; margin-top:10px}
+    .btn{min-height:var(--tap); padding:10px 14px; border-radius:12px; border:1px solid var(--border); background:#0c0e12; color:var(--text); font-weight:700; cursor:pointer; text-decoration: none; display: inline-flex; align-items: center; justify-content: center;}
+    html[data-theme="light"] .btn{background:var(--surf); color: var(--text);}
+    .btn:hover{filter:brightness(1.05)}
+    html[data-theme="light"] .btn:hover{filter:brightness(0.95)}
+    .btn.primary{background:var(--primary); border-color:var(--primary); color:#fff}
+    html[data-theme="light"] .btn.primary{color:#fff;}
+    .btn.success{background:var(--ok); border-color:var(--ok); color:#0b1c14}
+    html[data-theme="light"] .btn.success{color:#fff;}
+
+
+    /* Accordion */
+    .acc .item{border-top:1px solid var(--border)}
+    .acc .head{width:100%; text-align:left; background:transparent; border:0; color:var(--text); padding:16px 0; font-weight:700; display:flex; align-items:center; justify-content:space-between; cursor:pointer; min-height:var(--tap)}
+    .acc .icon{transition:transform .25s ease}
+    .acc .body{max-height:0; overflow:hidden; transition:max-height .35s ease}
+    .acc .inner{padding:0 2px 14px; color:var(--muted)}
+    .acc .item.active .icon{transform:rotate(45deg)}
+
+    /* Dock for mobile */
+    .dock{position:sticky; bottom:0; z-index:30; padding:8px; margin-top:12px; background:linear-gradient(to top, rgba(0,0,0,.35), rgba(0,0,0,0))}
+    html[data-theme="light"] .dock{background:linear-gradient(to top, rgba(255,255,255,.6), rgba(255,255,255,0))}
+    .dock .bar{display:flex; gap:8px; background:#0f1117; border:1px solid var(--border); border-radius:14px; padding:8px}
+    html[data-theme="light"] .dock .bar{background:#fff}
+    .dock .bar .btn{flex:1}
+
+    /* Alerts */
+    .callout{margin-top:10px; padding:12px 14px; border-left:4px solid var(--warn); border-radius:8px; background:rgba(0,0,0,.25); color:var(--muted); font-size:14px}
+    html[data-theme="light"] .callout{background:#fff6d1; color: #5d4c0c}
+
+    /* History table */
+    table{width:100%; border-collapse:separate; border-spacing:0; font-size:14px}
+    th,td{padding:10px 12px; border-bottom:1px solid var(--border)}
+    th{text-align:left; color:var(--muted); font-weight:700}
+
+    /* Accessibility helpers */
+    .sr{position:absolute; width:1px; height:1px; padding:0; margin:-1px; overflow:hidden; clip:rect(0,0,0,0); white-space:nowrap; border:0}
+  </style>
+</head>
+<body>
+  <header>
+    <div class="container hdr">
+      <a class="logo" href="index.html" aria-label="На главную Nefarma">
+        <img src="logo.webp" alt="Nefarma" width="128" height="32" />
+      </a>
+      <div class="row">
+        <button id="install" class="btn" aria-label="Установить как приложение">Установить</button>
+        <button id="theme" class="btn" aria-pressed="true" aria-label="Переключить тему">🌙</button>
+        <a class="btn" href="tel:+77780990459">+7 (778) 099‑04‑59</a>
+      </div>
+    </div>
+  </header>
+
+  <main class="container" id="app">
+    <section class="card section" style="margin-bottom:10px">
+      <h1>Тирзепатид (Мунджаро): Калькулятор и инструкция</h1>
+      <p class="muted">Мобильный калькулятор разведения: концентрация (мг/мл), точный объём набора (мл и U‑100), число доз из флакона. Пресеты, история, экспорт CSV/JSON, WhatsApp‑шаринг, офлайн‑режим.</p>
+    </section>
+
+    <section class="card section" style="margin-bottom:10px">
+      <div class="grid grid-2">
+        <div>
+          <h2>Интерактивный калькулятор</h2>
+          <label class="label" for="vial">1) Количество во флаконе</label>
+          <div class="row">
+            <input class="input" id="vial" type="number" inputmode="decimal" placeholder="например, 5" min="0" step="0.01" aria-describedby="vial-help" />
+            <div class="seg" role="group" aria-label="Единицы флакона">
+              <button type="button" data-vialunit="mg" aria-pressed="true">мг</button>
+              <button type="button" data-vialunit="mcg" aria-pressed="false">мкг</button>
+            </div>
+          </div>
+          <div id="vial-help" class="muted" style="font-size:13px; margin:6px 0 10px">Сколько вещества во флаконе.</div>
+
+          <label class="label" for="diluent">2) Объём растворителя (мл)</label>
+          <input class="input" id="diluent" type="number" inputmode="decimal" placeholder="например, 2" min="0" step="0.01" />
+          <div class="muted" style="font-size:13px; margin:6px 0 10px">Вода для инъекций или бактериостатическая вода.</div>
+
+          <label class="label" for="dose">3) Доза на инъекцию</label>
+          <div class="row">
+            <input class="input" id="dose" type="number" inputmode="decimal" placeholder="например, 2500" min="0" step="0.01" aria-describedby="dose-help" />
+            <div class="seg" role="group" aria-label="Единицы дозы">
+              <button type="button" data-doseunit="mg" aria-pressed="false">мг</button>
+              <button type="button" data-doseunit="mcg" aria-pressed="true">мкг</button>
+            </div>
+          </div>
+          <div id="dose-help" class="muted" style="font-size:13px">Можно указывать в мг или мкг (переключатель справа).</div>
+
+          <div class="btns">
+            <button id="preset_5_2_2_5mg" class="btn">Пример: 5 мг → 2 мл → 2.5 мг</button>
+            <button id="clear" class="btn">Очистить</button>
+            <button id="copy" class="btn primary">Скопировать</button>
+            <button id="wa" class="btn">WhatsApp</button>
+            <button id="share" class="btn" aria-label="Поделиться">Поделиться</button>
+          </div>
+          <div class="callout">Подсказка: U‑100 — это 100 ед = 1 мл. То есть 10 ед = 0.1 мл.</div>
+        </div>
+
+        <div>
+          <h2>Результаты</h2>
+          <div class="stats" aria-live="polite">
+            <div class="stat" id="box_vol">
+              <div class="k">Объём для инъекции</div>
+              <div class="v"><span id="out_ml">—</span><span class="u">мл</span></div>
+              <div class="muted" style="font-size:13px">U‑100: <span id="out_iu">—</span> ед.</div>
+            </div>
+            <div class="stat" id="box_conc">
+              <div class="k">Концентрация раствора</div>
+              <div class="v"><span id="out_conc">—</span><span class="u">мг/мл</span></div>
+              <div class="muted" style="font-size:13px">Формула: (мг во флаконе) ÷ (мл растворителя)</div>
+            </div>
+            <div class="stat" id="box_doses">
+              <div class="k">Количество доз из флакона</div>
+              <div class="v"><span id="out_doses">—</span><span class="u">доз</span></div>
+            </div>
+          </div>
+
+          <div class="card section" style="margin-top:10px">
+            <div class="row">
+              <input class="input" id="u100_in" type="number" inputmode="decimal" placeholder="Напр., 12 ед." min="0" step="0.1" />
+              <button class="btn" id="u2ml">ед → мл</button>
+              <input class="input" id="ml_in" type="number" inputmode="decimal" placeholder="Напр., 0.12 мл" min="0" step="0.01" />
+              <button class="btn" id="ml2u">мл → ед</button>
+            </div>
+            <div class="muted" style="font-size:13px; margin-top:6px">10 ед = 0.1 мл · 1 ед = 0.01 мл</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="card section" style="margin-bottom:10px">
+      <h2>Курс и пример разведения</h2>
+      <p class="muted">Инъекции раз в неделю, каждые 7 дней. Можно вставить курс из ТЗ, нормализовать недели, экспортировать CSV/JSON и добавить ближайшие даты.</p>
+      <div class="btns" style="margin-bottom:8px">
+        <button id="insertClientCourse" class="btn">Вставить курс из ТЗ</button>
+        <button id="normalizeCourse" class="btn">Нормализовать недели</button>
+        <button id="addDates" class="btn">Проставить даты</button>
+        <button id="exportCourse" class="btn primary">Скачать CSV</button>
+        <button id="exportJSON" class="btn">Скачать JSON</button>
+      </div>
+      <ul id="course" class="muted" style="margin-left:18px"></ul>
+    </section>
+
+    <section class="card section" style="margin-bottom:10px">
+      <div class="row" style="justify-content:space-between; align-items:center">
+        <h2 style="margin:0">История</h2>
+        <div class="btns" style="margin:0">
+          <button id="exportHistory" class="btn">Экспорт</button>
+          <label class="btn" for="importFile" style="cursor:pointer">Импорт</label>
+          <input id="importFile" type="file" accept="application/json" class="sr" />
+          <button id="clearHistory" class="btn">Очистить</button>
+        </div>
+      </div>
+      <div class="muted" style="font-size:13px; margin:6px 0 10px">Последние 12 расчётов сохраняются локально, можно выгрузить/загрузить.</div>
+      <div class="tablewrap">
+        <table id="history">
+          <thead><tr><th>Дата</th><th>Флакон</th><th>Растворитель</th><th>Доза</th><th>Конц.</th><th>Объём</th><th>U‑100</th></tr></thead>
+          <tbody></tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="card section" style="margin-bottom:10px">
+      <h2>Памятка и FAQ</h2>
+      <div class="acc" style="margin-top:8px">
+        <div class="item">
+          <button class="head" aria-expanded="false"><span>Хранение и инъекции</span><span class="icon">+</span></button>
+          <div class="body"><div class="inner">
+            <ul style="margin:6px 0 0 18px">
+              <li>Хранить в холодильнике (+2…+8°C), не замораживать.</li>
+              <li>Разводить водой для инъекций или бактериостатической водой.</li>
+              <li>Инъекции — подкожно (живот), шприц U‑100.</li>
+              <li>Внимательно считайте дозировку, чтобы снизить риск побочек.</li>
+            </ul>
+          </div></div>
+        </div>
+        <div class="item">
+          <button class="head" aria-expanded="false"><span>Чем отличается мг от мкг?</span><span class="icon">+</span></button>
+          <div class="body"><div class="inner">1 мг = 1000 мкг. В калькуляторе есть переключатели единиц для флакона и дозы.</div></div>
+        </div>
+        <div class="item">
+          <button class="head" aria-expanded="false"><span>Можно ли офлайн?</span><span class="icon">+</span></button>
+          <div class="body"><div class="inner">Да. Нажмите «Установить» в шапке — страница будет работать без интернета (PWA).</div></div>
+        </div>
+      </div>
+      <div class="callout"><strong>⚠️ Важно:</strong> Калькулятор — справочный инструмент, не медицинская рекомендация. Перед применением препаратов — консультация специалиста.</div>
+    </section>
+
+    <div class="dock">
+      <div class="bar">
+        <button id="quickPreset" class="btn">5 мг → 2 мл</button>
+        <button id="quickCopy" class="btn primary">Копировать</button>
+      </div>
+    </div>
+  </main>
+
+  <script>
+    (function(){
+      const $ = (s, r=document) => r.querySelector(s);
+      const $$ = (s, r=document) => r.querySelectorAll(s);
+      const st = { vialUnit:'mg', doseUnit:'mcg' };
+      const LS_KEY = 'nef_pep_calc_v3';
+      const HIST_KEY = 'nef_pep_hist_v1';
+
+      const vial = $('#vial');
+      const diluent = $('#diluent');
+      const dose = $('#dose');
+      const out_ml = $('#out_ml');
+      const out_iu = $('#out_iu');
+      const out_conc = $('#out_conc');
+      const out_doses = $('#out_doses');
+
+      function fmt(n, p=3){ return Number.isFinite(n) ? Number(n).toFixed(p) : '—'; }
+      function pulse(id){ const el=$('#'+id); if(!el) return; el.classList.remove('pulse'); void el.offsetWidth; el.classList.add('pulse'); }
+
+      function toMg(val, unit){ if(!Number.isFinite(val)) return NaN; return unit==='mcg' ? val/1000 : val; }
+      function toMcg(val, unit){ if(!Number.isFinite(val)) return NaN; return unit==='mg' ? val*1000 : val; }
+
+      function calc(){
+        const vialVal = parseFloat(vial.value);
+        const dilVal = parseFloat(diluent.value);
+        const doseVal = parseFloat(dose.value);
+
+        const vialMg = toMg(vialVal, st.vialUnit);
+        const doseMg = toMg(doseVal, st.doseUnit);
+
+        if(!(vialMg>0) || !(dilVal>0)){
+          out_conc.textContent = '—'; out_ml.textContent = '—'; out_iu.textContent = '—'; out_doses.textContent = '—';
+          return;
+        }
+
+        const conc = vialMg / dilVal; // мг/мл
+        out_conc.textContent = fmt(conc,3); pulse('box_conc');
+
+        if(!(doseMg>0)){
+          out_ml.textContent = '—'; out_iu.textContent = '—'; out_doses.textContent = '—';
+          return;
+        }
+
+        const volMl = doseMg / conc; // мл
+        const iu = volMl * 100; // U‑100
+        const dosesCount = Math.floor((vialMg * 1000) / (doseMg * 1000));
+
+        out_ml.textContent = fmt(volMl,3); pulse('box_vol');
+        out_iu.textContent = fmt(iu,1);
+        out_doses.textContent = String(dosesCount);
+
+        addToHistory({
+          ts: Date.now(),
+          vial: vial.value + ' ' + st.vialUnit,
+          diluent: diluent.value + ' мл',
+          dose: dose.value + ' ' + st.doseUnit,
+          conc: fmt(conc,3)+' мг/мл',
+          vol: fmt(volMl,3)+' мл',
+          iu: fmt(iu,1)+' ед'
+        });
+      }
+
+      function save(){
+        const data = {vial:vial.value, diluent:diluent.value, dose:dose.value, vialUnit:st.vialUnit, doseUnit:st.doseUnit, theme:document.documentElement.dataset.theme};
+        try{ localStorage.setItem(LS_KEY, JSON.stringify(data)); }catch(e){}
+      }
+      function load(){
+        try{ const d = JSON.parse(localStorage.getItem(LS_KEY)||'{}');
+          if(d.vial) vial.value = d.vial;
+          if(d.diluent) diluent.value = d.diluent;
+          if(d.dose) dose.value = d.dose;
+          if(d.vialUnit){ st.vialUnit = d.vialUnit; $$('[data-vialunit]').forEach(b=>b.setAttribute('aria-pressed', b.dataset.vialunit===st.vialUnit? 'true':'false')); }
+          if(d.doseUnit){ st.doseUnit = d.doseUnit; $$('[data-doseunit]').forEach(b=>b.setAttribute('aria-pressed', b.dataset.doseunit===st.doseUnit? 'true':'false')); }
+          if(d.theme){ document.documentElement.dataset.theme = d.theme; $('#theme').textContent = d.theme==='light' ? '☀️' : '🌙'; }
+        }catch(e){}
+      }
+
+      // Unit toggles
+      $$('[data-vialunit]').forEach(b=>b.addEventListener('click', ()=>{ $$('[data-vialunit]').forEach(x=>x.setAttribute('aria-pressed','false')); b.setAttribute('aria-pressed','true'); st.vialUnit=b.dataset.vialunit; calc(); save(); }));
+      $$('[data-doseunit]').forEach(b=>b.addEventListener('click', ()=>{ $$('[data-doseunit]').forEach(x=>x.setAttribute('aria-pressed','false')); b.setAttribute('aria-pressed','true'); st.doseUnit=b.dataset.doseunit; calc(); save(); }));
+
+      // Inputs
+      [vial,diluent,dose].forEach(i=> i.addEventListener('input', ()=>{ calc(); save(); }));
+
+      // Preset
+      const preset = ()=>{ vial.value=5; st.vialUnit='mg'; $$('[data-vialunit]').forEach(x=>x.setAttribute('aria-pressed', x.dataset.vialunit==='mg'?'true':'false'));
+                           diluent.value=2; dose.value=2.5; st.doseUnit='mg'; $$('[data-doseunit]').forEach(x=>x.setAttribute('aria-pressed', x.dataset.doseunit==='mg'?'true':'false')); calc(); save(); };
+      $('#preset_5_2_2_5mg').addEventListener('click', preset);
+      $('#quickPreset').addEventListener('click', preset);
+
+      // Clear / Copy / Share / WhatsApp
+      const getResultText = ()=> `Конц.: ${out_conc.textContent} мг/мл; Объём: ${out_ml.textContent} мл (≈ ${out_iu.textContent} U‑100); Доз из флакона: ${out_doses.textContent}.`;
+      const notify = (msg='Готово')=>{ const t=document.createElement('div'); t.textContent=msg; t.style.position='fixed'; t.style.bottom='18px'; t.style.left='50%'; t.style.transform='translateX(-50%)'; t.style.background='var(--primary)'; t.style.color='#fff'; t.style.padding='10px 14px'; t.style.borderRadius='10px'; t.style.boxShadow='var(--shadow)'; t.style.zIndex='1000'; t.style.opacity='0'; t.style.transition='opacity .2s, transform .2s'; document.body.appendChild(t); requestAnimationFrame(()=>{t.style.opacity='1'}); setTimeout(()=>{t.style.opacity='0'; t.style.transform='translateX(-50%) translateY(6px)'; setTimeout(()=>t.remove(),220)}, 1500); };
+      $('#clear').addEventListener('click', ()=>{ [vial,diluent,dose].forEach(i=>i.value=''); calc(); save(); notify('Очищено'); });
+      $('#copy').addEventListener('click', async()=>{ try{ await navigator.clipboard.writeText(getResultText()); notify('Скопировано'); }catch(e){ notify('Не удалось скопировать'); } });
+      $('#quickCopy').addEventListener('click', async()=>{ try{ await navigator.clipboard.writeText(getResultText()); notify('Скопировано'); }catch(e){ notify('Ошибка копирования'); } });
+      $('#share').addEventListener('click', async()=>{ const text=getResultText(); if(navigator.share){ try{ await navigator.share({title:'Калькулятор пептидов', text}); notify('Поделились'); }catch(e){} } else { try{ await navigator.clipboard.writeText(text); notify('Скопировано'); }catch(e){ notify('Нет Share/Clipboard'); } }});
+      $('#wa').addEventListener('click', ()=>{ const url = 'https://wa.me/?text='+encodeURIComponent(getResultText()); window.open(url, '_blank'); });
+
+      // Course (client-provided list with duplicates)
+      const CLIENT = [
+        ['Неделя 1','2,5мг'], ['Неделя 2','2,5мг'], ['Неделя 3','2,5мг'], ['Неделя 4','2,5мг'],
+        ['Неделя 5','5мг'], ['Неделя 6','5мг'], ['Неделя 7','5мг'], ['Неделя 8','5мг'],
+        ['Неделя 9','7,5мг'], ['Неделя 10','7,5мг'], ['Неделя 12','7,5мг'],
+        ['Неделя 10','10мг'], ['Неделя 11','10мг'], ['Неделя 12','10мг'], ['Неделя 14','10мг'],
+      ];
+      const list = $('#course');
+      function render(arr){ list.innerHTML=''; arr.forEach(([w,d])=>{ const li=document.createElement('li'); li.style.margin='6px 0'; li.innerHTML = `<strong>${w}:</strong> ${d}`; list.appendChild(li); }); }
+      $('#insertClientCourse').addEventListener('click', ()=>{ render(CLIENT); notify('Курс вставлен'); });
+      $('#normalizeCourse').addEventListener('click', ()=>{ const doses = (list.children.length? [...list.children].map(li=>li.textContent.split(':')[1].trim()) : CLIENT.map(x=>x[1])); const norm = doses.map((d,i)=>[`Неделя ${i+1}`, d]); render(norm); notify('Нормализовано'); });
+      $('#exportCourse').addEventListener('click', ()=>{ if(!list.children.length) render(CLIENT); const rows = [...list.children].map(li=>{ const [w,rest] = li.textContent.split(':'); return [w.trim(), rest.trim()]; }); const csv = [['Неделя','Доза'], ...rows].map(r=>r.map(x=>`"${String(x).replaceAll('"','""')}"`).join(',')).join('\n'); const blob = new Blob([csv], {type:'text/csv;charset=utf-8;'}); const url=URL.createObjectURL(blob); const a=document.createElement('a'); a.href=url; a.download='tirzepatide_course.csv'; a.click(); URL.revokeObjectURL(url); });
+      $('#exportJSON').addEventListener('click', ()=>{ const rows = [...list.children].map(li=>{ const [w,rest] = li.textContent.split(':'); return {week:w.trim(), dose:rest.trim()}; }); const blob = new Blob([JSON.stringify(rows,null,2)], {type:'application/json'}); const url=URL.createObjectURL(blob); const a=document.createElement('a'); a.href=url; a.download='tirzepatide_course.json'; a.click(); URL.revokeObjectURL(url); });
+      $('#addDates').addEventListener('click', ()=>{ const start = new Date(); if(!list.children.length) render(CLIENT); [...list.children].forEach((li,idx)=>{ const d = new Date(start.getTime() + idx*7*24*3600*1000); const dd = d.toLocaleDateString('ru-RU'); if(!/\(\d{2}\.\d{2}\.\d{4}\)$/.test(li.textContent)) li.textContent += ` (${dd})`; }); });
+
+      // Accordion
+      $$('.acc .item').forEach(item=>{ const head = $('.head', item); const body = $('.body', item); head.addEventListener('click', ()=>{ const open = item.classList.toggle('active'); head.setAttribute('aria-expanded', String(open)); body.style.maxHeight = open ? body.scrollHeight+'px' : 0; }); });
+
+      // Theme toggle
+      $('#theme').addEventListener('click', ()=>{ const cur = document.documentElement.dataset.theme; const next = cur==='light'?'dark':'light'; document.documentElement.dataset.theme = next; $('#theme').textContent = next==='light' ? '☀️' : '🌙'; save(); });
+
+      // Quick U100 converter
+      $('#u2ml').addEventListener('click', ()=>{ const v=parseFloat($('#u100_in').value); if(Number.isFinite(v)){ $('#ml_in').value = (v*0.01).toFixed(2); notify('Переведено в мл'); }});
+      $('#ml2u').addEventListener('click', ()=>{ const v=parseFloat($('#ml_in').value); if(Number.isFinite(v)){ $('#u100_in').value = (v*100).toFixed(1); notify('Переведено в ед'); }});
+
+      // History
+      function getHist(){ try{ return JSON.parse(localStorage.getItem(HIST_KEY)||'[]'); }catch(e){ return []; } }
+      function setHist(arr){ try{ localStorage.setItem(HIST_KEY, JSON.stringify(arr.slice(-12))); }catch(e){} }
+      function addToHistory(rec){ if(!rec || !Number.isFinite(Date.parse(new Date(rec.ts)))) return; const arr=getHist(); arr.push(rec); setHist(arr); renderHist(); }
+      function renderHist(){ const body=$('#history tbody'); const arr=getHist().slice().reverse(); body.innerHTML=''; arr.forEach(r=>{ const tr=document.createElement('tr'); const dt=new Date(r.ts).toLocaleString('ru-RU'); tr.innerHTML=`<td>${dt}</td><td>${r.vial}</td><td>${r.diluent}</td><td>${r.dose}</td><td>${r.conc}</td><td>${r.vol}</td><td>${r.iu}</td>`; body.appendChild(tr); }); }
+      $('#clearHistory').addEventListener('click', ()=>{ setHist([]); renderHist(); notify('История очищена'); });
+      $('#exportHistory').addEventListener('click', ()=>{ const blob = new Blob([JSON.stringify(getHist(),null,2)], {type:'application/json'}); const url=URL.createObjectURL(blob); const a=document.createElement('a'); a.href=url; a.download='nef_calculator_history.json'; a.click(); URL.revokeObjectURL(url); });
+      $('#importFile').addEventListener('change', (e)=>{ const f=e.target.files?.[0]; if(!f) return; const r=new FileReader(); r.onload=()=>{ try{ const arr=JSON.parse(r.result); if(Array.isArray(arr)){ setHist(arr); renderHist(); notify('Импортировано'); } }catch(err){ notify('Ошибка импорта'); } }; r.readAsText(f); });
+
+      // PWA minimal (in-page service worker via Blob)
+      let deferredPrompt=null; window.addEventListener('beforeinstallprompt', (e)=>{ e.preventDefault(); deferredPrompt=e; $('#install').disabled=false; });
+      $('#install').addEventListener('click', async()=>{ if(deferredPrompt){ deferredPrompt.prompt(); try{ await deferredPrompt.userChoice; }catch{} deferredPrompt=null; } else { notify('Если кнопка не работает: добавьте на главный экран из меню браузера.'); } });
+      // Register SW (cache this page + assets)
+      try{
+        const swCode = `self.addEventListener('install',e=>{e.waitUntil(caches.open('nef-cache-v1').then(c=>c.addAll(['./'])))}); self.addEventListener('fetch',e=>{e.respondWith(caches.match(e.request).then(r=>r||fetch(e.request)))})`;
+        const swBlob = new Blob([swCode], {type:'text/javascript'});
+        const swUrl = URL.createObjectURL(swBlob);
+        if('serviceWorker' in navigator){ navigator.serviceWorker.register(swUrl); }
+      }catch(e){}
+
+      // Init
+      load();
+      if(!vial.value && !diluent.value && !dose.value){ preset(); }
+      calc();
+      renderHist();
+      document.addEventListener('visibilitychange', ()=>{ if(!document.hidden) calc(); });
+
+      // Save on exit
+      window.addEventListener('beforeunload', save);
+    })();
+  </script>
+</body>
+</html>
