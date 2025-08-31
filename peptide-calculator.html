@@ -20,7 +20,7 @@
   <noscript>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap&subset=cyrillic">
   </noscript>
-
+  
   <style>
     :root{
       --bg:#0f1012; --surf:#181a1f; --text:#f4f6f8; --muted:#aeb6c2;
@@ -35,7 +35,7 @@
     *{box-sizing:border-box}
     html,body{height:100%}
     body{margin:0; font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,sans-serif; background:var(--bg); color:var(--text); line-height:1.6}
-
+    
     /* Layout */
     .container{max-width:980px; margin:0 auto; padding: clamp(12px, 4vw, 24px)}
     header{position:sticky; top:0; z-index:40; background:rgba(15,16,18,.75); backdrop-filter:saturate(130%) blur(8px); border-bottom:1px solid var(--border)}
@@ -51,7 +51,7 @@
     h2{margin:0 0 12px; font-size:clamp(18px, 5vw, 24px)}
     h3{font-size: 1.1rem; font-weight: 600; margin-top: 1.5rem; margin-bottom: 0.5rem;}
     .muted{color:var(--muted)}
-
+    
     /* Calculator Styles */
     .calc-container {display: flex; flex-wrap: wrap; gap: 1.5rem;}
     .calc-column-1 {flex: 1 1 380px;}
@@ -68,12 +68,12 @@
     html[data-theme="light"] .choice-label:hover {background-color: #e9ecef;}
     html[data-theme="dark"] .choice-label:hover {background-color: #2a2f36;}
     .syringe-input:checked + .choice-label {background: var(--primary); border-color: var(--primary); color: #fff;}
-    
+
     .other-input {width: 100px; background: var(--bg); color: var(--text); border: 1px solid var(--border); border-radius: 10px; padding: 10px; font-size: 1rem; text-align: center; display: none;}
     .syringe-input.other:checked ~ .other-input {display: inline-block;}
     input[type=number]{appearance:textfield}
     input[type=number]::-webkit-outer-spin-button, input[type=number]::-webkit-inner-spin-button{appearance:none; margin:0}
-
+    
     /* Result Block */
     .result_block {margin-top: 2rem;}
     .text_result {font-size: clamp(18px, 4vw, 22px); font-weight: bold; margin-bottom: 1.5rem;}
@@ -84,7 +84,7 @@
     .ruler .label {position: absolute; bottom: -25px; transform: translateX(-50%); font-size: 12px; color: var(--muted);}
     .ruler .filled-area {position: absolute; height: 30px; background-color: rgba(255, 165, 0, 0.5); top: 0; left: 0; border-right: 2px solid #FFA500; transition: width 0.5s cubic-bezier(0.25, 1, 0.5, 1);}
     .ruler .error-message {position: absolute; top: 0; left: 0; width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; color: var(--warn); font-weight: bold; text-align: center; background-color: rgba(0,0,0,0.5);}
-
+    
     /* Stats Display */
     .stats{display:grid; gap:10px; margin-top:1.5rem}
     @media (min-width:680px){.stats{grid-template-columns:repeat(2,1fr)}}
@@ -94,13 +94,13 @@
     .stat .u{font-size:14px; color:var(--muted); font-weight:600; margin-left:6px}
     .pulse{animation:pulse .9s ease}
     @keyframes pulse{from{box-shadow:0 0 0 0 rgba(0,170,255,.35)} to{box-shadow:0 0 0 10px rgba(0,170,255,0)}}
-
+    
     /* Buttons */
     .btn{min-height:var(--tap); padding:0 14px; border-radius:12px; border:1px solid var(--border); background:var(--bg); color:var(--text); font-weight:700; cursor:pointer; text-decoration: none; display: inline-flex; align-items: center; justify-content: center;}
     html[data-theme="light"] .btn{background:var(--surf); color: var(--text);}
     .btn.primary{background:var(--primary); border-color:var(--primary); color:#fff}
     .btn.subtle{background:transparent;}
-
+    
     /* Interactive Cheat Sheet */
     .interactive-example {
         color: var(--primary);
@@ -108,7 +108,7 @@
         border-bottom: 1px dashed var(--primary);
         font-weight: 500;
     }
-
+    
     /* History List */
     #history-list {
         list-style: none;
@@ -161,7 +161,7 @@
         <img src="logo.webp" alt="Nefarma" width="128" height="32" />
       </a>
       <div class="row">
-        <button id="theme" class="btn" aria-pressed="true" aria-label="Переключить тему">🌙</button>
+        <button id="theme" class="btn" aria-label="Переключить тему" aria-pressed="false">🌙</button>
       </div>
     </div>
   </header>
@@ -288,7 +288,7 @@
     </div>
 
   </main>
-
+  
   <script>
     (function(){
       const $ = (s, r=document) => r.querySelector(s);
@@ -300,11 +300,13 @@
           const theme = localStorage.getItem('nefarma_theme') || 'dark';
           document.documentElement.dataset.theme = theme;
           themeBtn.textContent = theme === 'light' ? '☀️' : '🌙';
+          themeBtn.setAttribute('aria-pressed', theme === 'light' ? 'true' : 'false');
       };
       themeBtn.addEventListener('click', () => {
         const nextTheme = document.documentElement.dataset.theme === 'light' ? 'dark' : 'light';
         document.documentElement.dataset.theme = nextTheme;
         themeBtn.textContent = nextTheme === 'light' ? '☀️' : '🌙';
+        themeBtn.setAttribute('aria-pressed', nextTheme === 'light' ? 'true' : 'false');
         localStorage.setItem('nefarma_theme', nextTheme);
       });
 
@@ -319,9 +321,12 @@
       const clearBtn = $('#clear_form');
       const dockShareBtn = $('#dock_share');
       const dockClearBtn = $('#dock_clear');
-      
+
       // --- Helper Functions ---
-      const notify = (msg='Готово') => { /* Visual feedback for actions */ }; // Simplified for brevity
+      const notify = (msg='Готово') => {
+          // Basic implementation for a visual feedback
+          alert(msg);
+      };
       const getCheckedValue = (name) => {
           const otherRadio = $(`input[name="${name}"].other`);
           if (otherRadio?.checked) {
@@ -343,7 +348,7 @@
               }
           }
       };
-      
+
       // --- Main Calculation Logic ---
       function calculateAndDisplayResult(saveToHistory = true) {
           const syringeValue = parseFloat(getCheckedValue('syringe_volume'));
@@ -367,13 +372,13 @@
           resultMarkSpan.textContent = resultInUnits.toFixed(1);
           out_conc.textContent = concentration.toFixed(3);
           out_doses.textContent = totalDoses;
-          
+
           $$('.stat, .text_result').forEach(el => {
               el.classList.remove('pulse'); void el.offsetWidth; el.classList.add('pulse');
           });
 
           drawSyringeScale(syringeValue, resultInUnits);
-          
+
           if (saveToHistory) {
               History.add({ syringeValue, peptideValue, waterValue, doseValue, resultInUnits });
           }
@@ -400,16 +405,15 @@
               tickDiv.appendChild(labelSpan);
               rulerDiv.appendChild(tickDiv);
           }
-          
+
           const filledDiv = document.createElement('div');
           filledDiv.className = 'filled-area';
           rulerDiv.appendChild(filledDiv);
-          // Animate the width after appending
           setTimeout(() => {
               let fillPercentage = (result / maxUnits * 100);
               filledDiv.style.width = (fillPercentage > 100 ? 100 : fillPercentage) + '%';
           }, 10);
-          
+
           if (result > maxUnits) {
               const errorDiv = document.createElement('div');
               errorDiv.className = 'error-message';
@@ -429,11 +433,13 @@
               presets.push(preset);
               Presets.saveAll(presets);
               Presets.render();
+              notify('Пресет сохранен!');
           },
           load: (preset) => {
               setCheckedValue('peptide_volume', preset.peptide);
               setCheckedValue('water_volume', preset.water);
               calculateAndDisplayResult();
+              notify('Пресет загружен!');
           },
           render: () => {
               const container = $('#presets-container');
@@ -452,9 +458,11 @@
           const water = getCheckedValue('water_volume');
           if (peptide > 0 && water > 0) {
               Presets.add({ peptide, water });
+          } else {
+              notify('Недостаточно данных для сохранения пресета.');
           }
       });
-      
+
       // --- History ---
       const History = {
           key: 'nefarma_history',
@@ -469,6 +477,7 @@
           clear: () => {
               History.saveAll([]);
               History.render();
+              notify('История очищена!');
           },
           render: () => {
               const list = $('#history-list');
@@ -489,28 +498,32 @@
       const shareAction = async () => {
           const textToShare = `🧪 Расчёт дозировки:\n- Флакон: ${getCheckedValue('peptide_volume')} мг\n- Растворитель: ${getCheckedValue('water_volume')} мл\n- Желаемая доза: ${getCheckedValue('dose_volume')} мг\n\n✅ Результат:\n- Концентрация: ${out_conc.textContent} мг/мл\n- Набрать в шприц: ${resultMarkSpan.textContent} единиц (U-100)`;
           if (navigator.share) {
-              await navigator.share({ title: 'Расчёт дозировки пептида', text: textToShare });
+              try {
+                  await navigator.share({ title: 'Расчёт дозировки пептида', text: textToShare });
+              } catch (error) {
+                  console.error('Ошибка при расшаривании:', error);
+              }
           } else {
               await navigator.clipboard.writeText(textToShare);
-              alert('Результат скопирован!');
+              notify('Результат скопирован!');
           }
       };
       shareBtn.addEventListener('click', shareAction);
       dockShareBtn.addEventListener('click', shareAction);
-      
+
       // --- Clear Form ---
       const clearAction = () => {
           $$('input[type="number"]').forEach(i => i.value = '');
-          // Reset to default radios
           $('#syringe_1').checked = true;
           $('#peptide_10').checked = true;
           $('#water_2').checked = true;
           $('#dose_2.5').checked = true;
           calculateAndDisplayResult();
+          notify('Форма очищена!');
       };
       clearBtn.addEventListener('click', clearAction);
       dockClearBtn.addEventListener('click', clearAction);
-      
+
       // --- Interactive Cheat Sheet ---
       $$('.interactive-example').forEach(el => {
           el.addEventListener('click', () => {
@@ -519,7 +532,6 @@
               if (water) setCheckedValue('water_volume', water);
               if (dose) setCheckedValue('dose_volume', dose);
               calculateAndDisplayResult();
-              // Scroll to calculator on mobile
               if (window.innerWidth < 768) {
                   $('.calc-container').scrollIntoView({ behavior: 'smooth' });
               }
@@ -531,7 +543,7 @@
       loadTheme();
       Presets.render();
       History.render();
-      calculateAndDisplayResult(false); // Initial calculation without saving to history
+      calculateAndDisplayResult(false);
     })();
   </script>
 </body>
